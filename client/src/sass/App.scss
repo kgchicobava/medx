@@ -1,0 +1,28 @@
+.flex {
+    display: flex;
+}
+.flex-direction-column {
+    flex-direction: column;
+}
+// Start CSS of / page
+
+
+.main-box {
+    display: flex;
+}
+
+.login-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    flex-direction: column;
+    margin-top: 10vh;
+}
+
+.login-container-dimension {
+    width: 70%;
+    margin: 3vh auto;
+    font-size: 30px;
+}
+
+
