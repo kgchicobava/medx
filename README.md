@@ -5,7 +5,32 @@ As i need something in my portfolio (Lol), i decided to make a full-stack app. A
 
 Now it is in development. I only made authentication system. But i hope more will coming.
 
-### Used technology
+## Installation
+Install dependencies for server
+```bash
+npm install
+```
+Then cd to client
+```bash
+cd client
+npm install
+```
+Then change back to root
+and you can run back-end and react server
+```bash
+npm run dev
+```
+
+## Keys
+In config folder you should create keys.js file and include your own keys
+```javascript
+module.exports = {
+    mongoURI: "YOUR MONGOURI",
+    secretKey: 'YOUR SECRET KEY'
+}
+```
+
+## Used technology
 * React - well known frontend library
 * Redux - for managing states in react
 * Material UI library - because bootstrap is borring, and i personally like Material Design
