@@ -8,9 +8,25 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import { withStyles } from "@material-ui/core/styles";
 import { logout } from "../../actions/authorizationAction";
+import { setToken } from "../../actions/utilsActions";
 import { connect } from "react-redux";
 import Avatar from "@material-ui/core/Avatar";
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Snackbar from '@material-ui/core/Snackbar';
+import {CopyToClipboard} from 'react-copy-to-clipboard';
+import store from "../../store";
 
+const TokenGenerator = require("uuid-token-generator");
+
+
+
+const token = new TokenGenerator().generate();
 const styles = theme => ({
   root: {
     width: "100%"
@@ -58,7 +74,9 @@ const styles = theme => ({
 class DashboardHeader extends React.Component {
   state = {
     anchorEl: null,
-    mobileMoreAnchorEl: null
+    mobileMoreAnchorEl: null,
+    open: false,
+    snackOpen: false
   };
 
   handleProfileMenuOpen = event => {
@@ -78,6 +96,29 @@ class DashboardHeader extends React.Component {
     this.setState({ mobileMoreAnchorEl: null });
   };
 
+  dialogOpen = () => {
+    this.setState({open: true});
+  }
+
+  dialogClose = () => {
+    this.setState({open: false});
+  }
+
+  dialogCopy = () => {
+    this.setState({snackOpen: true});
+    this.dialogClose();
+  }
+
+  snackClose = () => {
+    this.setState({ snackOpen: false });
+  }
+
+  handleSend = () => {
+    let id = store.getState().auth.user.id;
+    this.props.setToken(token, id);
+    this.setState({open: false});
+  }
+
   render() {
     const { anchorEl } = this.state;
     const { classes } = this.props;
@@ -92,6 +133,7 @@ class DashboardHeader extends React.Component {
         onClose={this.handleMenuClose}
       >
         <MenuItem onClick={this.handleMenuClose}>My Profile</MenuItem>
+        {this.props.userRole === "Doctor" ? <MenuItem onClick={this.dialogOpen}>Generate token</MenuItem> : ""}
         <MenuItem onClick={this.handleMenuClose}>Settings</MenuItem>
         <MenuItem onClick={this.props.logout}>Logout</MenuItem>
       </Menu>
@@ -99,6 +141,54 @@ class DashboardHeader extends React.Component {
 
     return (
       <div className={classes.root}>
+
+      <Dialog
+          open={this.state.open}
+          onClose={this.dialogClose}
+          aria-labelledby="form-dialog-title"
+        >
+          <DialogTitle id="form-dialog-title">Generate Token</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Send this unrecognasible letters to your patient`s email, to be sure that only him can be your client
+            </DialogContentText>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Token"
+              type="text"
+              value={token}
+              fullWidth
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.dialogClose} color="primary">
+              Cancel
+            </Button>
+            <CopyToClipboard text={token} >
+              <Button onClick={this.dialogCopy} color="primary">
+                Copy
+              </Button>
+            </CopyToClipboard>
+            <Button onClick={this.handleSend} color="primary">
+              Submit
+            </Button>
+          </DialogActions>
+        </Dialog>
+      <Snackbar
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}
+          open={this.state.snackOpen}
+          autoHideDuration={2000}
+          onClose={this.snackClose}
+          ContentProps={{
+            'aria-describedby': 'message-id',
+          }}
+          message={<span id="message-id">Copied!</span>}
+        />
         <AppBar position="static">
           <Toolbar>
             <Typography
@@ -138,5 +228,5 @@ DashboardHeader.propTypes = {
 
 export default connect(
   mapStateToProps,
-  { logout }
+  { logout, setToken }
 )(withStyles(styles)(DashboardHeader));

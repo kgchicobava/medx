@@ -9,7 +9,7 @@ import HomePage from "./components/mainpage/HomePage";
 import Login from "./components/register-and-login/Login";
 import Register from "./components/register-and-login/Register";
 import PrivateRoute from "./components/tools/PrivateRoute";
-import DoctorDashboard from "./components/dashboard/DoctorDashboard";
+import DoctorDashboard from "./components/dashboard/doctor/DoctorDashboard";
 import PatientDashboard from "./components/dashboard/PatientDashboard";
 
 

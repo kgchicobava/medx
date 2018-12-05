@@ -20,6 +20,14 @@ const DoctorSchema = new Schema({
         },
         typeOfUser: {
             type: String
+        },
+        tokens : {
+            type: [String],
+            default: []
+        },
+        patients : {
+            type: Schema.Types.ObjectId,
+            ref: "patients"
         }
 });
 
