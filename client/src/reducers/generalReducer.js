@@ -1,12 +1,13 @@
-import { SET_TOKEN } from "../actions/constants";
+import { FIND_TOKEN } from "../actions/constants";
 
 const initialState = {};
 
 export default function(state = initialState, action) {
-    switch(action) {
-        case SET_TOKEN:
+    switch(action.type) {
+        case FIND_TOKEN:
         return {
-
+            ...state,
+            findedDoctor: action.data
         };
         default:
         return state;

@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
-
+const passport = require("passport");
 const Doctor = require("../models/DoctorModel");
 
 router.post("/register", (req, res) => {
@@ -25,10 +25,10 @@ router.post("/register", (req, res) => {
     });
 });
 
-router.post("/tokens", (req, res) => {
+router.post("/tokens", passport.authenticate("jwt", {session : false }), (req, res) => {
     Doctor.findById(req.body.id, (err, doctor) => {if(err) console.log(err);
     console.log(doctor)});
-    Doctor.findByIdAndUpdate(req.body.id, {tokens: tokens.push(req.body.token)}, {new: true, upsert: true}, (err, doctor) => {
+    Doctor.findByIdAndUpdate(req.body.id, {$push: {tokens: req.body.token}}, {new: true, upsert: true}, (err, doctor) => {
         if(err) console.log(err);
         console.log(doctor);
     })

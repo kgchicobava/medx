@@ -10,7 +10,7 @@ import Login from "./components/register-and-login/Login";
 import Register from "./components/register-and-login/Register";
 import PrivateRoute from "./components/tools/PrivateRoute";
 import DoctorDashboard from "./components/dashboard/doctor/DoctorDashboard";
-import PatientDashboard from "./components/dashboard/PatientDashboard";
+import PatientDashboard from "./components/dashboard/patient/PatientDashboard";
 
 
 import store from "./store";

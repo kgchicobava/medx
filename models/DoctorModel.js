@@ -22,13 +22,14 @@ const DoctorSchema = new Schema({
             type: String
         },
         tokens : {
-            type: [String],
-            default: []
+            type: [String]
         },
-        patients : {
-            type: Schema.Types.ObjectId,
-            ref: "patients"
-        }
+        patients : [{
+            patient : {
+                type: Schema.Types.ObjectId,
+                ref: "patients"
+            }
+        }]
 });
 
 module.exports = Doctor = mongoose.model("Doctor", DoctorSchema);
