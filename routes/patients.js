@@ -67,4 +67,9 @@ router.post(
     }
 );
 
+router.post("/updateSettings", passport.authenticate("jwt", {session: false}), 
+  (req, res) => {
+    console.log(req.body);
+  })
+
 module.exports = router;

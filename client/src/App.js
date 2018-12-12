@@ -11,7 +11,7 @@ import Register from "./components/register-and-login/Register";
 import PrivateRoute from "./components/tools/PrivateRoute";
 import DoctorDashboard from "./components/dashboard/doctor/DoctorDashboard";
 import PatientDashboard from "./components/dashboard/patient/PatientDashboard";
-
+import PatientSettings from "./components/settings/PatientSettings";
 
 import store from "./store";
 import {Provider} from "react-redux";
@@ -28,6 +28,7 @@ class App extends Component {
           <Switch>
                 <PrivateRoute exact path="/patient/home" component={PatientDashboard} />
                 <PrivateRoute exact path="/doctor/home" component={DoctorDashboard} />
+                <PrivateRoute exact path="/patient/home/settings" component={PatientSettings} />
           </Switch>
         </div>
         </Router>

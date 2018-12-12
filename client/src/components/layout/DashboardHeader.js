@@ -21,6 +21,9 @@ import TextField from '@material-ui/core/TextField';
 import Snackbar from '@material-ui/core/Snackbar';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import store from "../../store";
+import { Link } from "react-router-dom";
+import ArrowBack from "@material-ui/icons/ArrowBack";
+
 
 const TokenGenerator = require("uuid-token-generator");
 
@@ -119,6 +122,10 @@ class DashboardHeader extends React.Component {
     this.setState({open: false});
   }
 
+  onSettings = () => {
+    
+  }
+
   render() {
     const { anchorEl } = this.state;
     const { classes } = this.props;
@@ -134,7 +141,7 @@ class DashboardHeader extends React.Component {
       >
         <MenuItem onClick={this.handleMenuClose}>My Profile</MenuItem>
         {this.props.userRole === "Doctor" ? <MenuItem onClick={this.dialogOpen}>Generate token</MenuItem> : ""}
-        <MenuItem onClick={this.handleMenuClose}>Settings</MenuItem>
+        <Link to="/patient/home/settings"><MenuItem onClick={this.onSettings}>Settings</MenuItem></Link>
         <MenuItem onClick={this.props.logout}>Logout</MenuItem>
       </Menu>
     );
@@ -191,6 +198,9 @@ class DashboardHeader extends React.Component {
         />
         <AppBar position="static">
           <Toolbar>
+          {this.props.back ? <IconButton href={this.props.toLocation}>
+            <ArrowBack />
+          </IconButton> : ""}
             <Typography
               className={classes.title}
               variant="h6"

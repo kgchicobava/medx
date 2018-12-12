@@ -1,5 +1,6 @@
-import { FIND_TOKEN } from "./constants";
+import { FIND_TOKEN, UPDATE_PATIENT_SETTINGS } from "./constants";
 import axios from "axios";
+
 export const setToken = (token, id) => dispatch => {
   axios
     .post("/api/doctors/tokens", { token, id })
@@ -22,5 +23,11 @@ export const merge = (doctor, patient) => dispatch => {
     console.log(patient);
     axios.post("/api/patients/merge", {doctor, patient})
         .then(res => console.log(res.data))
+        .catch(err => console.log(err))
+}
+
+export const updatePatientSettings = settings => dispatch => {
+    axios.post("/api/patients/updateSettings", {settings})
+        .then(res => console.log(res))
         .catch(err => console.log(err))
 }
