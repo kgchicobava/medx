@@ -37,14 +37,16 @@ class NavTabs extends Component {
         <div className={classes.root}>
         <AppBar position="static" color="default">
           <Tabs value={value} onChange={this.handleChange} centered>
+            <Tab label="Stats" />
             <Tab label="Patients" />
             <Tab label="Empty" />
             <Tab label="Empty" />
           </Tabs>
         </AppBar>
-        {value === 0 && <TabContainer><PatientsTab /></TabContainer>}
-        {value === 1 && <TabContainer>Item Two</TabContainer>}
-        {value === 2 && <TabContainer>Item Three</TabContainer>}
+        {value === 0 && <TabContainer>Stats</TabContainer>}
+        {value === 1 && <TabContainer><PatientsTab /></TabContainer>}
+        {value === 2 && <TabContainer>Item Two</TabContainer>}
+        {value === 3 && <TabContainer>Item Three</TabContainer>}
       </div>
       </div>
     )

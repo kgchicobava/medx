@@ -100,14 +100,14 @@ class PatientSettings extends React.Component {
     })
   }
 
-  onTest = ev => {
+  onChangeSettings = ev => {
     this.setState({
       [ev.target.name]: ev.target.value
     });
   };
 
   onSave = (ev) => {
-    this.props.updatePatientSettings(this.state)
+    this.props.updatePatientSettings(this.state, this.props.state.auth.user.id)
   }
 
   render() {
@@ -177,7 +177,7 @@ class PatientSettings extends React.Component {
                 variant="outlined"
                 defaultValue="2000-01-01"
                 name="birthday"
-                onChange={this.onTest}
+                onChange={this.onChangeSettings}
                 className={classes.dateField}
                 label="Birthday"
               />
@@ -200,7 +200,7 @@ class PatientSettings extends React.Component {
                   aria-label="Gender"
                   name="sex"
                   value={this.state.sex}
-                  onChange={this.onTest}
+                  onChange={this.onChangeSettings}
                 >
                   <FormControlLabel
                     value="female"
@@ -232,7 +232,7 @@ class PatientSettings extends React.Component {
                 type="email"
                 fullWidth
                 name="email"
-                onChange={this.onTest}
+                onChange={this.onChangeSettings}
                 variant="outlined"
                 label="Your E-mail"
                 placeholder="example@example.com"
@@ -256,7 +256,7 @@ class PatientSettings extends React.Component {
               <Select
                 value={this.state.maritalStatus}
                 name="maritalStatus"
-                onChange={this.onTest}
+                onChange={this.onChangeSettings}
                 variant="outlined"
                 className={classes.dateField}
               >
@@ -287,7 +287,7 @@ class PatientSettings extends React.Component {
                 type="text"
                 fullWidth
                 name="work"
-                onChange={this.onTest}
+                onChange={this.onChangeSettings}
                 variant="outlined"
                 label="Your Job"
                 placeholder="i.e main engineer in Mercedes-benz"
@@ -314,7 +314,7 @@ class PatientSettings extends React.Component {
                   label="Phone number"
                   name="phone"
                   InputProps={{ inputProps: { max: 10 } }}
-                  onChange={this.onTest}
+                  onChange={this.onChangeSettings}
                   placeholder="(XXX)-123-45-67"
                   variant="outlined"
                 />
@@ -338,7 +338,7 @@ class PatientSettings extends React.Component {
                 className={classes.dateField}
                 placeholder="Your height in cm"
                 name="height"
-                onChange={this.onTest}
+                onChange={this.onChangeSettings}
                 variant="outlined"
                 inputProps={{ min: "0", max: "300" }}
               />
@@ -362,7 +362,7 @@ class PatientSettings extends React.Component {
                 placeholder="Your weight in kg"
                 variant="outlined"
                 name="weight"
-                onChange={this.onTest}
+                onChange={this.onChangeSettings}
                 inputProps={{ min: "0", max: "300" }}
               />
             </ExpansionPanelDetails>
@@ -435,7 +435,7 @@ class PatientSettings extends React.Component {
                 type="text"
                 fullWidth
                 name="allergies"
-                onChange={this.onTest}
+                onChange={this.onChangeSettings}
                 variant="outlined"
                 label="Your allergies"
                 placeholder="i.e chocolate, dogs, lemons"
@@ -460,7 +460,7 @@ class PatientSettings extends React.Component {
                 type="text"
                 fullWidth
                 name="medAllergies"
-                onChange={this.onTest}
+                onChange={this.onChangeSettings}
                 variant="outlined"
                 label="Your medicine allergies"
                 placeholder="i.e amoxicillin, ampicillin, penicillin"
@@ -483,7 +483,7 @@ class PatientSettings extends React.Component {
                 type="text"
                 fullWidth
                 name="injuries"
-                onChange={this.onTest}
+                onChange={this.onChangeSettings}
                 variant="outlined"
                 label="Your injuries"
                 placeholder="i.e broke arm"
@@ -506,7 +506,7 @@ class PatientSettings extends React.Component {
                 type="text"
                 fullWidth
                 name="operations"
-                onChange={this.onTest}
+                onChange={this.onChangeSettings}
                 variant="outlined"
                 label="Your past operations"
                 placeholder="i.e plastic operations, appendix"
@@ -531,7 +531,7 @@ class PatientSettings extends React.Component {
                 type="text"
                 fullWidth
                 name="currMeds"
-                onChange={this.onTest}
+                onChange={this.onChangeSettings}
                 variant="outlined"
                 label="Are you taking some medicines right now?"
                 placeholder="if no, leave blank"

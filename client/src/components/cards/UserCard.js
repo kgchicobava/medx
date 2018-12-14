@@ -15,7 +15,7 @@ import WorkIcon from "@material-ui/icons/Work";
 
 const styles = {
   card: {
-    maxWidth: "25vw"
+    minWidth: "20vw"
   },
   media: {
     height: 100
@@ -57,7 +57,7 @@ class UserCard extends Component {
                 DD
               </Avatar>
               <Typography variant="h5" component="h2">
-                Doug Demuro
+                {`${this.props.user.firstName} ${this.props.user.lastName}`}
               </Typography>
             </div>
             {/* Living place */}

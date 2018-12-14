@@ -3,6 +3,8 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
 const Doctor = require("../models/DoctorModel");
+const Patient = require("../models/PatientModel");
+const mongoose = require("mongoose");
 
 router.post("/register", (req, res) => {
     const newDoctor = new Doctor({
@@ -35,5 +37,29 @@ router.post("/tokens", passport.authenticate("jwt", {session : false }), (req, r
     // req.body.token
 });
 
+router.get("/:id", passport.authenticate("jwt", {session : false }), (req, res)=> {
+    Doctor.findById(req.params.id)
+        .then(doc => {
+            let monData = doc.patients.map(elem => new mongoose.Types.ObjectId(elem._id))
+            Patient.find({"_id": { $in: monData}}, (err, patients) => {
+                if(err) console.log(err)
+                res.send(patients);
+            })
+        })
+        .catch(err => console.log(err))
+
+    })
 
 module.exports = router;
+
+// let arr = _categories.map(ele => new mongoose.Types.ObjectId(ele.id));
+
+// model.find({
+//     '_id': { $in: [
+//         mongoose.Types.ObjectId('4ed3ede8844f0f351100000c'),
+//         mongoose.Types.ObjectId('4ed3f117a844e0471100000d'), 
+//         mongoose.Types.ObjectId('4ed3f18132f50c491100000e')
+//     ]}
+// }, function(err, docs){
+//      console.log(docs);
+// });

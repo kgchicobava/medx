@@ -25,7 +25,10 @@ const PatientSchema = new Schema({
         doctor : {
             type: Schema.Types.ObjectId,
             ref: "doctors"
-    }}]
+    }}],
+    settings: {
+        type: Schema.Types.Mixed,
+    }
 });
 
 module.exports = Patient = mongoose.model("Patient", PatientSchema);

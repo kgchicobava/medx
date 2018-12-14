@@ -11,7 +11,7 @@ router.post("/register", (req, res) => {
     lastName: req.body.userdata.lastName,
     email: req.body.userdata.email,
     password: req.body.userdata.password,
-    typeOfUser: req.body.userdata.typeOfUser
+    typeOfUser: req.body.userdata.typeOfUser,
   });
 
   bcrypt.genSalt(10, (err, salt) => {
@@ -69,7 +69,16 @@ router.post(
 
 router.post("/updateSettings", passport.authenticate("jwt", {session: false}), 
   (req, res) => {
-    console.log(req.body);
+    const {settings, user} = req.body;
+    Patient.findById(user).then(patient => {
+      if(patient) {
+        console.log(patient)
+        patient.settings = settings;
+        patient.save();
+        console.log("saved")
+      }
+    })
+    .catch(err => console.log(err))
   })
 
 module.exports = router;

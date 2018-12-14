@@ -38,6 +38,12 @@
     justify-content: flex-end;
 }
 
+.grid-tab {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    grid-gap: 1em;
+}
+
 .creditsPos {
     margin-bottom: 1em;
 }

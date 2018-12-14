@@ -1,4 +1,4 @@
-import { FIND_TOKEN, UPDATE_PATIENT_SETTINGS } from "./constants";
+import { FIND_TOKEN, GET_PATIENTS_LIST, PATIENTS_LOADING } from "./constants";
 import axios from "axios";
 
 export const setToken = (token, id) => dispatch => {
@@ -26,8 +26,23 @@ export const merge = (doctor, patient) => dispatch => {
         .catch(err => console.log(err))
 }
 
-export const updatePatientSettings = settings => dispatch => {
-    axios.post("/api/patients/updateSettings", {settings})
+export const updatePatientSettings = (settings, user) => dispatch => {
+    axios.post("/api/patients/updateSettings", {settings, user})
         .then(res => console.log(res))
         .catch(err => console.log(err))
+}
+
+export const getPatientsList = (doctorID) => dispatch => {
+    dispatch({type: PATIENTS_LOADING});
+    axios.get(`/api/doctors/${doctorID}`)
+        .then(res => { 
+            dispatch({type: GET_PATIENTS_LIST, data: res.data});
+        })
+        .catch(err => console.log(err))
+}
+
+export const setPatientsLoading = () => {
+    return {
+        type: PATIENTS_LOADING
+    }
 }
