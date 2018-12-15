@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import UserCard from "../../cards/UserCard";
+import ThinCard from "../../cards/ThinCard";
 import { connect } from "react-redux";
 import { getPatientsList } from "../../../actions/utilsActions";
 import Loader from "../../tools/Loader";
@@ -15,12 +15,12 @@ class PatientsTab extends Component {
       content = <Loader />
     } else {
       content = patientData.map((elem, index) => {
-        return <UserCard key={index} user={elem} />
+        return <ThinCard key={index} user={elem} />
       })
     }
     
     return (
-      <div className="grid-tab">
+      <div>
         { content }
       </div>
     );

@@ -47,3 +47,22 @@
 .creditsPos {
     margin-bottom: 1em;
 }
+
+.infoItemMargin {
+    margin-right: 1em;
+}
+
+.iconMargin {
+    margin-right: 3px;
+}
+
+.profileGrid {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-row-gap: 3em;
+}
+
+.emergencyPanel {
+    grid-column-start: 1;
+    grid-column-end: 4;
+}

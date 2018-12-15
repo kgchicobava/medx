@@ -29,7 +29,11 @@ const DoctorSchema = new Schema({
                 type: Schema.Types.ObjectId,
                 ref: "patients"
             }
-        }]
+        }],
+	created: { 
+        	type: Date,
+        	default: Date.now
+    	}
 });
 
 module.exports = Doctor = mongoose.model("Doctor", DoctorSchema);

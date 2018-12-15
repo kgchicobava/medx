@@ -39,7 +39,7 @@ const styles = {
 
 class UserCard extends Component {
   render() {
-    const { classes } = this.props;
+    const { classes, user } = this.props;
     return (
       <Card className={classes.card}>
         <CardActionArea>
@@ -57,7 +57,7 @@ class UserCard extends Component {
                 DD
               </Avatar>
               <Typography variant="h5" component="h2">
-                {`${this.props.user.firstName} ${this.props.user.lastName}`}
+                {`${user.firstName} ${user.lastName}`}
               </Typography>
             </div>
             {/* Living place */}

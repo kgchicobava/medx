@@ -28,7 +28,11 @@ const PatientSchema = new Schema({
     }}],
     settings: {
         type: Schema.Types.Mixed,
-    }
+    },
+	created: { 
+        	type: Date,
+        	default: Date.now
+    	}
 });
 
 module.exports = Patient = mongoose.model("Patient", PatientSchema);
