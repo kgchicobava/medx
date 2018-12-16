@@ -1,3 +1,7 @@
+/*
+Component, part of Patient Profile, contains tabs.
+@imported in PatientProfile
+*/
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";

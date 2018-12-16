@@ -1,3 +1,8 @@
+/*
+Patient settings. Very fcking large component, bit how to change it no variants for now.
+@add a few items
+@imported in App
+*/
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
@@ -7,7 +12,6 @@ import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import TextField from "@material-ui/core/TextField";
-import { updatePatientSettings } from "../../actions/utilsActions";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import Radio from "@material-ui/core/Radio";
@@ -15,8 +19,10 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
+// Components
 import DashboardHeader from "../layout/DashboardHeader";
-
+// Actions
+import { updatePatientSettings } from "../../actions/utilsActions";
 
 
 const styles = theme => ({

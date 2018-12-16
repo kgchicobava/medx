@@ -1,7 +1,14 @@
+/*
+Component that show in doctors my patients tab, list of all registered with this doctor
+@NEED FOR RENAME
+@imported in NavTabs
+*/
 import React, { Component } from "react";
-import ThinCard from "../../cards/ThinCard";
 import { connect } from "react-redux";
+// Actions
 import { getPatientsList } from "../../../actions/utilsActions";
+// Components
+import ThinCard from "../../cards/ThinCard";
 import Loader from "../../tools/Loader";
 
 class PatientsTab extends Component {

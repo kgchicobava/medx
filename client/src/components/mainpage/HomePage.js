@@ -1,11 +1,16 @@
+/*
+The first page that user see, route at "/"
+@NEED FOR RENAME
+@imported in App
+*/
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import Header from "../layout/Header";
 import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
-
+// Components
+import Header from "../layout/Header";
 
 const styles = theme => ({
 	root: {

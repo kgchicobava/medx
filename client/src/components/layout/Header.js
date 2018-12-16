@@ -1,3 +1,7 @@
+/*
+Component that renders app header on login and reg screen (??)
+@imported in Login, Register 
+*/
 import React from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types'

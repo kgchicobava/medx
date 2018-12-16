@@ -1,3 +1,7 @@
+/*
+Component in Patient Profile, Tab, that show list of recepies. 
+@imported in PatientProfileTabs
+*/
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
@@ -120,7 +124,7 @@ const styles = theme => ({
   }
 });
 
-class ECard extends React.Component {
+class Recepies extends React.Component {
   state = {
     rows: [
       createData("Cupcake", 305, 101, 3.7),
@@ -209,4 +213,4 @@ class ECard extends React.Component {
   }
 }
 
-export default withStyles(styles)(ECard);
+export default withStyles(styles)(Recepies);

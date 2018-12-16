@@ -1,14 +1,21 @@
+/*
+Login page
+@Make validation and error messages
+@imported in App 
+*/
 import React, { Component } from "react";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
-import Header from "../layout/Header";
 import Input from "@material-ui/core/Input";
 import Button from "@material-ui/core/Button";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
-import { loginUser } from "../../actions/authorizationAction";
 import { connect } from "react-redux";
+// Components
+import Header from "../layout/Header";
+// Actions
+import { loginUser } from "../../actions/authorizationAction";
 
 const styles = theme => ({
   width: {

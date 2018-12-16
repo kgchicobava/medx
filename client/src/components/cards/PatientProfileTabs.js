@@ -1,3 +1,7 @@
+/*
+Component, part of Patient Profile, contains tabs. !NEED TO DIVIDE TO SMALLER COMPONENTS
+@imported in PatientProfile
+*/
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -16,6 +20,9 @@ import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+// Components
+//! import ECard from "./ECard";
+//! import Recepies from "./Recepies";
 
 function TabContainer(props) {
   return (
@@ -154,6 +161,7 @@ class PatientProfileTabs extends Component {
               <Tab label="General" />
               <Tab label="Medical questions" />
               <Tab label="E-card" />
+              <Tab label="Recepies" />
             </Tabs>
           </AppBar>
           {value === 0 && (
@@ -162,7 +170,8 @@ class PatientProfileTabs extends Component {
           {value === 1 && (
             <TabContainer>{this.medicalQuestions(user)}</TabContainer>
           )}
-          {value === 2 && <TabContainer>Item Two</TabContainer>}
+          {value === 2 && <TabContainer><ECard /></TabContainer>}
+          {value === 3 && <TabContainer><Recepies /></TabContainer>}
         </div>
       </div>
     );

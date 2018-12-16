@@ -1,3 +1,8 @@
+/*
+Dialog component, that renders find UI for token and doctor
+@REMOVE STORE
+@imported in DoctorsTab
+*/
 import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -6,7 +11,9 @@ import Avatar from '@material-ui/core/Avatar';
 import deepPurple from '@material-ui/core/colors/deepPurple';
 import Button from "@material-ui/core/Button";
 import { connect } from "react-redux";
+// Actions
 import { merge } from "../../../actions/utilsActions";
+
 import store from "../../../store";
 
 const styles = theme => ({

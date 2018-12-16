@@ -1,3 +1,11 @@
+/*
+Very shitty complicated component that show avatar icon in right side, and renders 
+dialog window for generating token for doctor
+@NEED FOR RENAME
+@NEED FOR REFACTOR
+@REMOVE STORE
+@imported in DoctorDashboard, PatientDashboard, PatientSettings
+*/
 import React from "react";
 import PropTypes from "prop-types";
 import AppBar from "@material-ui/core/AppBar";
@@ -7,8 +15,6 @@ import Typography from "@material-ui/core/Typography";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import { withStyles } from "@material-ui/core/styles";
-import { logout } from "../../actions/authorizationAction";
-import { setToken } from "../../actions/utilsActions";
 import { connect } from "react-redux";
 import Avatar from "@material-ui/core/Avatar";
 import Dialog from '@material-ui/core/Dialog';
@@ -23,11 +29,11 @@ import {CopyToClipboard} from 'react-copy-to-clipboard';
 import store from "../../store";
 import { Link } from "react-router-dom";
 import ArrowBack from "@material-ui/icons/ArrowBack";
-
+// Actions
+import { logout } from "../../actions/authorizationAction";
+import { setToken } from "../../actions/utilsActions";
 
 const TokenGenerator = require("uuid-token-generator");
-
-
 
 const token = new TokenGenerator().generate();
 const styles = theme => ({

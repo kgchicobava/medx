@@ -1,3 +1,7 @@
+/*
+Component that will be shown in My doctors tab for patients, looks like card
+@imported NOWHERE
+*/
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";

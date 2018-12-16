@@ -1,6 +1,11 @@
+/*
+Component that show dialog for registering token for patient
+@NEED FOR RENAME
+@REMOVE STORE
+@imported in NavTabs2 
+*/
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import { findToken } from "../../../actions/utilsActions";
 import { connect } from "react-redux";
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
@@ -12,9 +17,12 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import store from "../../../store";
-import SearchCard from "./SearchCard";
 import SearchIcon from "@material-ui/icons/Search";
 import IconButton from '@material-ui/core/IconButton';
+// Actions
+import { findToken } from "../../../actions/utilsActions";
+// Components
+import SearchCard from "./SearchCard";
 
 const styles = theme => ({
   fab: {

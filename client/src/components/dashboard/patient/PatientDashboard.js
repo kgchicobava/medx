@@ -1,4 +1,9 @@
+/*
+Main component for patient UI, contains tabs
+@imported in App
+*/
 import React, { Component } from 'react'
+// Component
 import DashboardHeader from "../../layout/DashboardHeader";
 import NavTabs2 from "./NavTabs2";
 

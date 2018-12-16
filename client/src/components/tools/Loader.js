@@ -1,3 +1,7 @@
+/*
+Loader, simple
+@imported in PatientsTab
+*/
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";

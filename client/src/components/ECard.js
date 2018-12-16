@@ -1,3 +1,7 @@
+/*
+Component in Patient Profile that show history of all visits to the doctor, threatment and so on.
+@imported in PatientProfileTabs
+*/
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";

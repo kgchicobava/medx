@@ -1,3 +1,7 @@
+/*
+Component, that show in My patients tab for doctor, thin and long, opens Patient profile component
+@imported in PatientsTab
+*/
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";

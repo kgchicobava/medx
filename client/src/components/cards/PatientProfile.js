@@ -1,9 +1,14 @@
+/*
+Component that shows when you click on profile in My patients tab, as doctor
+@imported in ThinCard
+*/
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
 import deepPurple from "@material-ui/core/colors/deepPurple";
+// Components
 import PatientProfileTabs from "./PatientProfileTabs";
 
 const styles = theme => ({

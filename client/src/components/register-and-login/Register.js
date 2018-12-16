@@ -1,5 +1,11 @@
+/*
+Register component
+@Change variant for pick role
+@try to make validation on server
+@imported in App
+*/
 import React, { Component } from "react";
-import Header from "../layout/Header";
+
 import Paper from "@material-ui/core/Paper";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -8,14 +14,16 @@ import Typography from "@material-ui/core/Typography";
 import MenuItem from "@material-ui/core/MenuItem";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { registerDoctor, registerPatient } from "../../actions/authorizationAction";
-
+import FormHelperText from "@material-ui/core/FormHelperText";
 import {
 	ValidatorForm,
 	TextValidator,
 	SelectValidator
 } from "react-material-ui-form-validator";
-import FormHelperText from "@material-ui/core/FormHelperText";
+// Components
+import Header from "../layout/Header";
+// Actions
+import { registerDoctor, registerPatient } from "../../actions/authorizationAction";
 
 const styles = theme => ({
 	paper: {

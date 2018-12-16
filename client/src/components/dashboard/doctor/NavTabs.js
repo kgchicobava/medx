@@ -1,9 +1,15 @@
+/*
+Component for doctor, that takes logic of all tabs for main page
+@NEED FOR RENAME
+@imported in DoctorDashboard
+*/
 import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
+// Components
 import PatientsTab from './PatientsTab'
 
 function TabContainer(props) {
