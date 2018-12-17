@@ -4,15 +4,15 @@ Main component for patient UI, contains tabs
 */
 import React, { Component } from 'react'
 // Component
-import DashboardHeader from "../../layout/DashboardHeader";
-import NavTabs2 from "./NavTabs2";
+import ProfileActions from "../app-bar/ProfileActions";
+import PatientTabs from "./PatientTabs";
 
 class PatientDashboard extends Component {
   render() {
     return (
       <div>
-          <DashboardHeader userRole="Patient" />
-          <NavTabs2 />
+          <ProfileActions userRole="Patient" />
+          <PatientTabs />
       </div>
     )
   }

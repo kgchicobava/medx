@@ -21,7 +21,7 @@ import {
 	SelectValidator
 } from "react-material-ui-form-validator";
 // Components
-import Header from "../layout/Header";
+import Header from "../app-bar/Header";
 // Actions
 import { registerDoctor, registerPatient } from "../../actions/authorizationAction";
 

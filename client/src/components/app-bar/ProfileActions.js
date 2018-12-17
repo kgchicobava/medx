@@ -1,5 +1,5 @@
 /*
-Very shitty complicated component that show avatar icon in right side, and renders 
+Very shitty complicated component that show avatar icon in right side, and renders
 dialog window for generating token for doctor
 @NEED FOR RENAME
 @NEED FOR REFACTOR
@@ -80,7 +80,7 @@ const styles = theme => ({
   }
 });
 
-class DashboardHeader extends React.Component {
+class ProfileActions extends React.Component {
   state = {
     anchorEl: null,
     mobileMoreAnchorEl: null,
@@ -129,7 +129,7 @@ class DashboardHeader extends React.Component {
   }
 
   onSettings = () => {
-    
+
   }
 
   render() {
@@ -238,11 +238,11 @@ function mapStateToProps(state) {
   return { state };
 }
 
-DashboardHeader.propTypes = {
+ProfileActions.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
 export default connect(
   mapStateToProps,
   { logout, setToken }
-)(withStyles(styles)(DashboardHeader));
+)(withStyles(styles)(ProfileActions));

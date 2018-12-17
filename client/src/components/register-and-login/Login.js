@@ -1,7 +1,7 @@
 /*
 Login page
 @Make validation and error messages
-@imported in App 
+@imported in App
 */
 import React, { Component } from "react";
 import Typography from "@material-ui/core/Typography";
@@ -13,7 +13,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 import { connect } from "react-redux";
 // Components
-import Header from "../layout/Header";
+import Header from "../app-bar/Header";
 // Actions
 import { loginUser } from "../../actions/authorizationAction";
 

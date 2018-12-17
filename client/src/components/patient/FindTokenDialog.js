@@ -2,7 +2,7 @@
 Component that show dialog for registering token for patient
 @NEED FOR RENAME
 @REMOVE STORE
-@imported in NavTabs2 
+@imported in NavTabs2
 */
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
@@ -16,13 +16,13 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import store from "../../../store";
+import store from "../../store";
 import SearchIcon from "@material-ui/icons/Search";
 import IconButton from '@material-ui/core/IconButton';
 // Actions
-import { findToken } from "../../../actions/utilsActions";
+import { findToken } from "../../actions/utilsActions";
 // Components
-import SearchCard from "./SearchCard";
+import SearchTokenDialog from "./SearchTokenDialog";
 
 const styles = theme => ({
   fab: {
@@ -35,7 +35,7 @@ const styles = theme => ({
   },
 });
 
-class DoctorsTab extends Component {
+class FindTokenDialog extends Component {
   state = {
     dialogOpen: false,
     token: ""
@@ -96,7 +96,7 @@ class DoctorsTab extends Component {
             </IconButton>
             </div>
           </DialogContent>
-          {store.getState().general.findedDoctor? <SearchCard doctor={store.getState().general.findedDoctor} /> : ""};
+          {store.getState().general.findedDoctor? <SearchTokenDialog doctor={store.getState().general.findedDoctor} /> : ""};
           <DialogActions>
             <Button onClick={this.dialogClose} color="primary">
               Cancel
@@ -116,4 +116,4 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   { findToken }
-)(withStyles(styles)(DoctorsTab));
+)(withStyles(styles)(FindTokenDialog));

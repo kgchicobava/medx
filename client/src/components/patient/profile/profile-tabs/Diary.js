@@ -124,7 +124,7 @@ const styles = theme => ({
   }
 });
 
-class ECard extends React.Component {
+class Diary extends React.Component {
   state = {
     rows: [
       createData("Cupcake", 305, 3.7),
@@ -209,4 +209,4 @@ class ECard extends React.Component {
   }
 }
 
-export default withStyles(styles)(ECard);
+export default withStyles(styles)(Diary);

@@ -10,7 +10,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 // Components
-import PatientsTab from './PatientsTab'
+import PatientsList from './PatientsList';
 
 function TabContainer(props) {
     return (
@@ -27,7 +27,7 @@ function TabContainer(props) {
     },
   });
 
-class NavTabs extends Component {
+class DoctorTabs extends Component {
     state = {
         value: 0,
       };
@@ -50,7 +50,7 @@ class NavTabs extends Component {
           </Tabs>
         </AppBar>
         {value === 0 && <TabContainer>Stats</TabContainer>}
-        {value === 1 && <TabContainer><PatientsTab /></TabContainer>}
+        {value === 1 && <TabContainer><PatientsList /></TabContainer>}
         {value === 2 && <TabContainer>Item Two</TabContainer>}
         {value === 3 && <TabContainer>Item Three</TabContainer>}
       </div>
@@ -59,4 +59,4 @@ class NavTabs extends Component {
   }
 }
 
-export default withStyles(styles)(NavTabs);
+export default withStyles(styles)(DoctorTabs);

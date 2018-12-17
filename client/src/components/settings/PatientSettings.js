@@ -20,7 +20,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 // Components
-import DashboardHeader from "../layout/DashboardHeader";
+import ProfileActions from "../app-bar/ProfileActions";
 // Actions
 import { updatePatientSettings } from "../../actions/utilsActions";
 
@@ -122,7 +122,7 @@ class PatientSettings extends React.Component {
 
     return (
       <div className={classes.root}>
-      <DashboardHeader userRole="Patient" back={true} toLocation="/patient/home" />
+      <ProfileActions userRole="Patient" back={true} toLocation="/patient/home" />
         <Paper elevation={5} className={classes.paperConfig}>
           <Typography variant="h4" className={classes.headerConfig}>
             General Settings

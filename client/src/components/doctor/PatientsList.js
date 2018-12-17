@@ -6,10 +6,10 @@ Component that show in doctors my patients tab, list of all registered with this
 import React, { Component } from "react";
 import { connect } from "react-redux";
 // Actions
-import { getPatientsList } from "../../../actions/utilsActions";
+import { getPatientsList } from "../../actions/utilsActions";
 // Components
-import ThinCard from "../../cards/ThinCard";
-import Loader from "../../tools/Loader";
+import ThinProfile from "./ThinProfile";
+import Loader from "../utils/Loader";
 
 class PatientsTab extends Component {
   componentDidMount() {
@@ -22,10 +22,10 @@ class PatientsTab extends Component {
       content = <Loader />
     } else {
       content = patientData.map((elem, index) => {
-        return <ThinCard key={index} user={elem} />
+        return <ThinProfile key={index} user={elem} />
       })
     }
-    
+
     return (
       <div>
         { content }

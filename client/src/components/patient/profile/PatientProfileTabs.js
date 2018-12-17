@@ -1,5 +1,5 @@
 /*
-Component, part of Patient Profile, contains tabs.
+Component, part of Patient Profile, contains tabs. !NEED TO DIVIDE TO SMALLER COMPONENTS
 @imported in PatientProfile
 */
 import React, { Component } from "react";
@@ -20,8 +20,9 @@ import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import ECard from "./ECard";
-import Recepies from "./Recepies";
+// Components
+import Diary from "./profile-tabs/Diary";
+import Recepies from "./profile-tabs/Recepies";
 
 function TabContainer(props) {
   return (
@@ -42,32 +43,6 @@ const styles = theme => ({
   }
 });
 
-const userdata = {
-  address: {
-    street: "Ivana Franka",
-    city: "Monte Carlo",
-    number: "58"
-  },
-  birthday: "14.5.2018",
-  sex: "Male",
-  email: "example@test.com",
-  work: "Tesla",
-  maritalStatus: "Married",
-  emergency: {
-    fName: "Lisa",
-    lName: "Simpson",
-    relation: "Sister",
-    phoneNumber: "+358412054"
-  },
-  phone: "+365521564",
-  allergies: "Lemon, apples",
-  medAllergies: "Peniciline",
-  injuries: "none",
-  operations: "none",
-  currMeds: "Decasanum",
-  height: "189",
-  weight: "88"
-};
 
 class PatientProfileTabs extends Component {
   state = {
@@ -84,50 +59,50 @@ class PatientProfileTabs extends Component {
         <div className="flex flex-center">
           <HomeIcon color="primary" fontSize="large" />
           <Typography className={classes.infoItems} variant="subtitle1">{`${
-            user.address.city
-          }, ${user.address.street} ${user.address.number}`}</Typography>
+            user.settings.address.city
+          }, ${user.settings.address.street} ${user.settings.address.number}`}</Typography>
         </div>
         <div className="flex flex-center">
           <PhoneIcon color="primary" fontSize="large" />
           <Typography className={classes.infoItems} variant="subtitle1">{`${
-            user.phone
+            user.settings.phone
           }`}</Typography>
         </div>
         <div className="flex flex-center">
           <EventIcon color="primary" fontSize="large" />
           <Typography className={classes.infoItems} variant="subtitle1">{`${
-            user.birthday
+            user.settings.birthday
           }`}</Typography>
         </div>
         <div className="flex flex-center">
           <FaceIcon color="primary" fontSize="large" />
           <Typography className={classes.infoItems} variant="subtitle1">{`${
-            user.sex
+            user.settings.sex
           }`}</Typography>
         </div>
         <div className="flex flex-center">
           <MailIcon color="primary" fontSize="large" />
           <Typography className={classes.infoItems} variant="subtitle1">{`${
-            user.email
+            user.settings.email
           }`}</Typography>
         </div>
         <div className="flex flex-center">
           <WorkIcon color="primary" fontSize="large" />
           <Typography className={classes.infoItems} variant="subtitle1">{`${
-            user.work
+            user.settings.work
           }`}</Typography>
         </div>
         <div className="flex flex-center">
           <ChildFriendlyIcon color="primary" fontSize="large" />
           <Typography className={classes.infoItems} variant="subtitle1">{`${
-            user.maritalStatus
+            user.settings.maritalStatus
           }`}</Typography>
         </div>
         <div className="flex flex-center">
           <AccessibilityIcon color="primary" fontSize="large" />
           <Typography className={classes.infoItems} variant="subtitle1">{`${
-            user.height
-          }cm/${user.weight}kg`}</Typography>
+            user.settings.height
+          }cm/${user.settings.weight}kg`}</Typography>
         </div>
         <ExpansionPanel className="emergencyPanel">
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
@@ -141,10 +116,10 @@ class PatientProfileTabs extends Component {
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
             <Typography variant="subtitle1">
-              {`Call contact ${user.emergency.fName} ${
-                user.emergency.lName
-              } which is ${user.emergency.relation}, Phone number: ${
-                user.emergency.phoneNumber
+              {`Call contact ${user.settings.emergency.fName} ${
+                user.settings.emergency.lName
+              } which is ${user.settings.emergency.relation}, Phone number: ${
+                user.settings.emergency.phoneNumber
               }`}
             </Typography>
           </ExpansionPanelDetails>
@@ -157,21 +132,22 @@ class PatientProfileTabs extends Component {
     return (
       <div>
         <div className="">
-          <Typography variant="h5">{`Allergies: ${user.allergies}`}</Typography>
+          <Typography variant="h5">{`Allergies: ${user.settings.allergies}`}</Typography>
           <Typography variant="h5">
-            {`Allergies on medicines: ${user.medAllergies}`}
+            {`Allergies on medicines: ${user.settings.medAllergies}`}
           </Typography>
-          <Typography variant="h5">{`Injuries: ${user.injuries}`}</Typography>
-          <Typography variant="h5">{`Past operations: ${user.operations}`}</Typography>
-          <Typography variant="h5">{`Current medicines: ${user.currMeds}`}</Typography>
+          <Typography variant="h5">{`Injuries: ${user.settings.injuries}`}</Typography>
+          <Typography variant="h5">{`Past operations: ${user.settings.operations}`}</Typography>
+          <Typography variant="h5">{`Current medicines: ${user.settings.currMeds}`}</Typography>
         </div>
       </div>
     );
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, user } = this.props;
     const { value } = this.state;
+    console.log(user)
     return (
       <div>
         <div className={classes.root}>
@@ -189,12 +165,12 @@ class PatientProfileTabs extends Component {
             </Tabs>
           </AppBar>
           {value === 0 && (
-            <TabContainer>{this.generalInfo(userdata, classes)}</TabContainer>
+            <TabContainer>{this.generalInfo(user, classes)}</TabContainer>
           )}
           {value === 1 && (
-            <TabContainer>{this.medicalQuestions(userdata)}</TabContainer>
+            <TabContainer>{this.medicalQuestions(user)}</TabContainer>
           )}
-          {value === 2 && <TabContainer><ECard /></TabContainer>}
+          {value === 2 && <TabContainer><Diary /></TabContainer>}
           {value === 3 && <TabContainer><Recepies /></TabContainer>}
         </div>
       </div>

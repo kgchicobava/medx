@@ -12,9 +12,9 @@ import deepPurple from '@material-ui/core/colors/deepPurple';
 import Button from "@material-ui/core/Button";
 import { connect } from "react-redux";
 // Actions
-import { merge } from "../../../actions/utilsActions";
+import { merge } from "../../actions/utilsActions";
 
-import store from "../../../store";
+import store from "../../store";
 
 const styles = theme => ({
     root: {

@@ -10,7 +10,7 @@ import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 // Components
-import Header from "../layout/Header";
+import Header from "../app-bar/Header";
 
 const styles = theme => ({
 	root: {
@@ -28,7 +28,7 @@ const styles = theme => ({
 	}
 });
 
-class HomePage extends Component {
+class RootPage extends Component {
 	render() {
 		const { classes } = this.props;
 		return (
@@ -49,8 +49,8 @@ class HomePage extends Component {
 	}
 }
 
-HomePage.propTypes = {
+RootPage.propTypes = {
 	classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(HomePage);
+export default withStyles(styles)(RootPage);

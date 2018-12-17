@@ -14,13 +14,13 @@ import MailIcon from "@material-ui/icons/Mail";
 import WorkIcon from "@material-ui/icons/Work";
 import Button from "@material-ui/core/Button";
 import Dialog from '@material-ui/core/Dialog';
-import PatientProfile from "./PatientProfile";
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
-
+//Components
+import PatientProfile from "../patient/profile/PatientProfile";
 
 
 const styles = theme => ({
@@ -42,7 +42,7 @@ const styles = theme => ({
   },
 });
 
-class ThinCard extends Component {
+class ThinProfile extends Component {
   state= {
     open: false
   }
@@ -137,4 +137,4 @@ class ThinCard extends Component {
   }
 }
 
-export default withStyles(styles)(ThinCard);
+export default withStyles(styles)(ThinProfile);
