@@ -31,6 +31,9 @@ const styles = theme => ({
   },
   typographyPadding: {
     paddingTop: "3vh"
+  },
+  labelLeft : {
+    marginLeft: "2.5vw"
   }
 });
 
@@ -107,7 +110,7 @@ class Login extends Component {
           <form onSubmit={this.onSubmit}>
             <div className="login-container">
               <FormControl>
-                <InputLabel>Enter your E-mail</InputLabel>
+                <InputLabel className={`${classes.labelLeft}`}>Enter your E-mail</InputLabel>
                 <Input
                   name="email"
                   type="email"
@@ -118,7 +121,7 @@ class Login extends Component {
                 />
               </FormControl>
               <FormControl>
-                <InputLabel>Enter your password</InputLabel>
+                <InputLabel className={`${classes.labelLeft}`}>Enter your password</InputLabel>
                 <Input
                   name="password"
                   type="password"

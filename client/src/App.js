@@ -15,9 +15,25 @@ import PatientSettings from "./components/settings/PatientSettings";
 
 import store from "./store";
 import {Provider} from "react-redux";
+import { setCurrentUser } from "./actions/authorizationAction";
+import setAuthToken from "./helpers/setAuthToken";
+import jwt_decode from 'jwt-decode';
+
+// Check for token
+if (localStorage.jwtToken) {
+  // Set auth token header auth
+  setAuthToken(localStorage.jwtToken);
+  // Decode token and get user info
+  const decoded = jwt_decode(localStorage.jwtToken);
+  // Set user and isAuthenticated
+  store.dispatch(setCurrentUser(decoded));
+}
+
+
 
 class App extends Component {
   render() {
+    console.log(store.getState())
     return (
       <Provider store={store}>
       <Router>

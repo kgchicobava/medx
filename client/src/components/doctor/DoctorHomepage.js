@@ -5,8 +5,9 @@ Main cimponent that shows for doctor and contain all tabs and info
 */
 import React, { Component } from 'react';
 import ProfileActions from "../app-bar/ProfileActions";
+import { withRouter } from "react-router-dom";
 // Components
-import DoctorTabs from './DoctorTabs'
+import DoctorTabs from './DoctorTabs';
 
 class DoctorDashboard extends Component {
   render() {
@@ -20,4 +21,4 @@ class DoctorDashboard extends Component {
 }
 
 
-export default DoctorDashboard;
+export default withRouter(DoctorDashboard);

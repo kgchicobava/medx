@@ -45,8 +45,8 @@ class DoctorTabs extends Component {
           <Tabs value={value} onChange={this.handleChange} centered>
             <Tab label="Stats" />
             <Tab label="Patients" />
-            <Tab label="Empty" />
-            <Tab label="Empty" />
+            <Tab label="Upcoming visits" />
+            <Tab label="Moth" />
           </Tabs>
         </AppBar>
         {value === 0 && <TabContainer>Stats</TabContainer>}
