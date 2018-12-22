@@ -32,10 +32,17 @@ export const updatePatientSettings = (settings, user) => dispatch => {
         .catch(err => console.log(err))
 }
 
+export const updateDoctorSettings = (settings, user) => dispatch => {
+    console.log(user)
+    axios.post("/api/doctors/updateSettings", {settings, user})
+        .then(res => console.log(res))
+        .catch(err => console.log(err))
+}
+
 export const getPatientsList = (doctorID) => dispatch => {
     dispatch({type: PATIENTS_LOADING});
     axios.get(`/api/doctors/${doctorID}`)
-        .then(res => { 
+        .then(res => {
             dispatch({type: GET_PATIENTS_LIST, data: res.data});
         })
         .catch(err => console.log(err))

@@ -12,7 +12,7 @@ import PrivateRoute from "./components/utils/PrivateRoute";
 import DoctorHomepage from "./components/doctor/DoctorHomepage";
 import PatientHomepage from "./components/patient/PatientHomepage";
 import PatientSettings from "./components/settings/PatientSettings";
-
+import DoctorSettings from './components/settings/DoctorSettings';
 import store from "./store";
 import {Provider} from "react-redux";
 import { setCurrentUser } from "./actions/authorizationAction";
@@ -45,6 +45,7 @@ class App extends Component {
                 <PrivateRoute exact path="/patient/home" component={PatientHomepage} />
                 <PrivateRoute exact path="/doctor/home" component={DoctorHomepage} />
                 <PrivateRoute exact path="/patient/home/settings" component={PatientSettings} />
+                <PrivateRoute exact path="/doctor/home/settings" component={DoctorSettings} />
           </Switch>
         </div>
         </Router>

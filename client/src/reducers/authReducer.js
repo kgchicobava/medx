@@ -9,15 +9,14 @@ export default function(state = initialState, action) {
     switch(action.type) {
         case SET_DOCTOR:
         return {
-            // !isEmpty(action.data)
             ...state,
-            isAuthenticated: true,
+            isAuthenticated: !isEmpty(action.data),
             user: action.data
         }
         case SET_PATIENT:
         return {
             ...state,
-            isAuthenticated: true,
+            isAuthenticated: !isEmpty(action.data),
             user: action.data
         };
         case LOGOUT:

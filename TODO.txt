@@ -3,3 +3,4 @@ Give some text on mainpage
 fix text on avatars
 make box on login less soft
 patient settings dont appear in doctor
+empty settings dont override current

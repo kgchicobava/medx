@@ -17,15 +17,15 @@ import Menu from "@material-ui/core/Menu";
 import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import Avatar from "@material-ui/core/Avatar";
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Snackbar from '@material-ui/core/Snackbar';
-import {CopyToClipboard} from 'react-copy-to-clipboard';
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import Snackbar from "@material-ui/core/Snackbar";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 import store from "../../store";
 import { Link } from "react-router-dom";
 import ArrowBack from "@material-ui/icons/ArrowBack";
@@ -106,31 +106,27 @@ class ProfileActions extends React.Component {
   };
 
   dialogOpen = () => {
-    this.setState({open: true});
-  }
+    this.setState({ open: true });
+  };
 
   dialogClose = () => {
-    this.setState({open: false});
-  }
+    this.setState({ open: false });
+  };
 
   dialogCopy = () => {
-    this.setState({snackOpen: true});
+    this.setState({ snackOpen: true });
     this.dialogClose();
-  }
+  };
 
   snackClose = () => {
     this.setState({ snackOpen: false });
-  }
+  };
 
   handleSend = () => {
     let id = store.getState().auth.user.id;
     this.props.setToken(token, id);
-    this.setState({open: false});
-  }
-
-  onSettings = () => {
-
-  }
+    this.setState({ open: false });
+  };
 
   render() {
     const { anchorEl } = this.state;
@@ -146,16 +142,24 @@ class ProfileActions extends React.Component {
         onClose={this.handleMenuClose}
       >
         <MenuItem onClick={this.handleMenuClose}>My Profile</MenuItem>
-        {this.props.userRole === "Doctor" ? <MenuItem onClick={this.dialogOpen}>Generate token</MenuItem> : ""}
-        <Link to="/patient/home/settings"><MenuItem onClick={this.onSettings}>Settings</MenuItem></Link>
+        {this.props.userRole === "Doctor" ? (
+          <div>
+          <MenuItem onClick={this.dialogOpen}>Generate token</MenuItem>
+          <Link to="/doctor/home/settings">
+            <MenuItem>Settings</MenuItem>
+          </Link>
+        </div>
+        ) : ("")}
+        {this.props.userRole === "Patient" ? (<Link to="/patient/home/settings">
+          <MenuItem onClick={this.onSettings}>Settings</MenuItem>
+        </Link>) : ""}
         <MenuItem onClick={this.props.logout}>Logout</MenuItem>
       </Menu>
     );
 
     return (
       <div className={classes.root}>
-
-      <Dialog
+        <Dialog
           open={this.state.open}
           onClose={this.dialogClose}
           aria-labelledby="form-dialog-title"
@@ -163,7 +167,8 @@ class ProfileActions extends React.Component {
           <DialogTitle id="form-dialog-title">Generate Token</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              Send this unrecognasible letters to your patient`s email, to be sure that only him can be your client
+              Send this unrecognasible letters to your patient`s email, to be
+              sure that only him can be your client
             </DialogContentText>
             <TextField
               autoFocus
@@ -179,7 +184,7 @@ class ProfileActions extends React.Component {
             <Button onClick={this.dialogClose} color="primary">
               Cancel
             </Button>
-            <CopyToClipboard text={token} >
+            <CopyToClipboard text={token}>
               <Button onClick={this.dialogCopy} color="primary">
                 Copy
               </Button>
@@ -189,24 +194,28 @@ class ProfileActions extends React.Component {
             </Button>
           </DialogActions>
         </Dialog>
-      <Snackbar
+        <Snackbar
           anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'left',
+            vertical: "bottom",
+            horizontal: "left"
           }}
           open={this.state.snackOpen}
           autoHideDuration={2000}
           onClose={this.snackClose}
           ContentProps={{
-            'aria-describedby': 'message-id',
+            "aria-describedby": "message-id"
           }}
           message={<span id="message-id">Copied!</span>}
         />
         <AppBar position="static">
           <Toolbar>
-          {this.props.back ? <IconButton href={this.props.toLocation}>
-            <ArrowBack />
-          </IconButton> : ""}
+            {this.props.back ? (
+              <IconButton href={this.props.toLocation}>
+                <ArrowBack />
+              </IconButton>
+            ) : (
+              ""
+            )}
             <Typography
               className={classes.title}
               variant="h6"

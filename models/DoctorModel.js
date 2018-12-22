@@ -30,10 +30,13 @@ const DoctorSchema = new Schema({
                 ref: "patients"
             }
         }],
-	created: { 
+	    created: {
         	type: Date,
         	default: Date.now
-    	}
+        },
+        settings: {
+            type: Schema.Types.Mixed,
+        }
 });
 
 module.exports = Doctor = mongoose.model("Doctor", DoctorSchema);
