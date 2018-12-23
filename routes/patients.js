@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs");
 const passport = require("passport");
 const Doctor = require("../models/DoctorModel");
 const Patient = require("../models/PatientModel");
+const mongoose = require("mongoose");
 
 router.post("/register", (req, res) => {
   const newPatient = new Patient({
@@ -67,7 +68,7 @@ router.post(
     }
 );
 
-router.post("/updateSettings", passport.authenticate("jwt", {session: false}), 
+router.post("/updateSettings", passport.authenticate("jwt", {session: false}),
   (req, res) => {
     const {settings, user} = req.body;
     Patient.findById(user).then(patient => {
@@ -79,6 +80,24 @@ router.post("/updateSettings", passport.authenticate("jwt", {session: false}),
       }
     })
     .catch(err => console.log(err))
-  })
+  });
+
+router.get(
+    "/:id",
+    passport.authenticate("jwt", { session: false }),
+    (req, res) => {
+      Patient.findById(req.params.id)
+        .then(patient => {
+          let monData = patient.doctors.map(
+            elem => new mongoose.Types.ObjectId(elem._id)
+          );
+          Doctor.find({ _id: { $in: monData } }, (err, doctors) => {
+            if (err) console.log(err);
+            res.send(doctors);
+          });
+        })
+        .catch(err => console.log(err));
+    }
+  );
 
 module.exports = router;

@@ -20,13 +20,15 @@ import store from "../../store";
 import SearchIcon from "@material-ui/icons/Search";
 import IconButton from '@material-ui/core/IconButton';
 // Actions
-import { findToken } from "../../actions/utilsActions";
+import { findToken, getDoctorsList } from "../../actions/utilsActions";
 // Components
 import SearchTokenDialog from "./SearchTokenDialog";
+import CardProfile from "./CardProfile";
+import Loader from "../utils/Loader";
 
 const styles = theme => ({
   fab: {
-    position: 'absolute',
+    position: 'fixed',
     bottom: theme.spacing.unit * 2,
     right: theme.spacing.unit * 2,
   },
@@ -35,7 +37,7 @@ const styles = theme => ({
   },
 });
 
-class FindTokenDialog extends Component {
+class DoctorsList extends Component {
   state = {
     dialogOpen: false,
     token: ""
@@ -61,11 +63,25 @@ class FindTokenDialog extends Component {
       token : ev.target.value
     })
   }
+
+  componentDidMount() {
+    this.props.getDoctorsList(this.props.auth.user.id);
+  }
+
   render() {
+    let content = null;
+    let { doctorData } = this.props.general;
+    if(doctorData == null) {
+      content = <Loader />
+    } else {
+      content = doctorData.map((elem, index) => {
+        return <CardProfile key={index} user={elem}/>
+      })
+    }
     const { classes } = this.props;
     return (
       <div className="doctorsTab">
-        Doctors tab motherfucker
+        {content}
         <div>
           <Fab color="secondary" aria-label="Add" className={classes.fab} onClick={this.handleFab}>
             <AddIcon />
@@ -109,11 +125,14 @@ class FindTokenDialog extends Component {
 }
 
 function mapStateToProps(state) {
-  return {state}
+  return {
+    general: state.general,
+    auth: state.auth
+  }
 }
 
 
 export default connect(
   mapStateToProps,
-  { findToken }
-)(withStyles(styles)(FindTokenDialog));
+  { findToken, getDoctorsList }
+)(withStyles(styles)(DoctorsList));

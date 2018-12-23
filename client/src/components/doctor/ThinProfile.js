@@ -126,7 +126,7 @@ class ThinProfile extends Component {
                 <CloseIcon />
               </IconButton>
               <Typography variant="h6" color="inherit" className={classes.flex}>
-                Sound
+              {`${this.props.user.firstName} ${this.props.user.lastName}`}
               </Typography>
             </Toolbar>
           </AppBar>

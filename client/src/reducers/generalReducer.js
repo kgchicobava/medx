@@ -1,7 +1,9 @@
 import {
     FIND_TOKEN,
     GET_PATIENTS_LIST,
-    PATIENTS_LOADING
+    PATIENTS_LOADING,
+    GET_DOCTORS_LIST,
+    DOCTORS_LOADING
 } from "../actions/constants";
 
 const initialState = {
@@ -27,6 +29,17 @@ export default function (state = initialState, action) {
                 ...state,
                 loading: true
             };
+        case GET_DOCTORS_LIST:
+            return {
+                ...state,
+                loading: false,
+                doctorData: action.data
+            };
+        case DOCTORS_LOADING:
+            return {
+                ...state,
+                loading: true
+            }
         default:
             return state;
     }

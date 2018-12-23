@@ -36,6 +36,9 @@ const DoctorSchema = new Schema({
         },
         settings: {
             type: Schema.Types.Mixed,
+        },
+        color: {
+            type: String
         }
 });
 

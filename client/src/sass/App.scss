@@ -1,3 +1,5 @@
+@import "colors";
+
 .flex {
     display: flex;
 }
@@ -75,4 +77,8 @@
     grid-template-rows: auto auto auto auto auto;
     grid-row-gap: 1em;
     grid-column-gap: 2vw;
+}
+
+.universityInfo {
+    grid-column: 1/4;
 }

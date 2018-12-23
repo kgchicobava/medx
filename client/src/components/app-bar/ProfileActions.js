@@ -29,6 +29,7 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import store from "../../store";
 import { Link } from "react-router-dom";
 import ArrowBack from "@material-ui/icons/ArrowBack";
+import getAvatarInitials from "../../helpers/getAvatarInitials";
 // Actions
 import { logout } from "../../actions/authorizationAction";
 import { setToken } from "../../actions/utilsActions";
@@ -132,7 +133,7 @@ class ProfileActions extends React.Component {
     const { anchorEl } = this.state;
     const { classes } = this.props;
     const isMenuOpen = Boolean(anchorEl);
-
+    let initials = getAvatarInitials(this.props.auth.user.firstName, this.props.auth.user.lastName).join("");
     const renderMenu = (
       <Menu
         anchorEl={anchorEl}
@@ -232,7 +233,7 @@ class ProfileActions extends React.Component {
                 onClick={this.handleProfileMenuOpen}
                 color="inherit"
               >
-                <Avatar className={classes.avatar}>RR</Avatar>
+                <Avatar className={classes.avatar}>{initials}</Avatar>
               </IconButton>
             </div>
           </Toolbar>
@@ -244,7 +245,7 @@ class ProfileActions extends React.Component {
 }
 
 function mapStateToProps(state) {
-  return { state };
+  return { auth: state.auth };
 }
 
 ProfileActions.propTypes = {

@@ -8,6 +8,7 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
 import deepPurple from "@material-ui/core/colors/deepPurple";
+import getAvatarInitials from "../../../helpers/getAvatarInitials";
 // Components
 import PatientProfileTabs from "./PatientProfileTabs";
 
@@ -37,11 +38,12 @@ const styles = theme => ({
 class PatientProfile extends Component {
   render() {
     const { classes, user } = this.props;
+    let initials = getAvatarInitials(user.firstName, user.lastName).join("");
     return (
       <div>
         <Paper className={classes.root} elevation={1}>
           <div className="flex flex-center">
-            <Avatar className={classes.purpleAvatar}>OP</Avatar>
+            <Avatar className={classes.purpleAvatar}>{initials}</Avatar>
             <Typography variant="h3">{`${user.firstName} ${user.lastName}`}</Typography>
           </div>
         </Paper>

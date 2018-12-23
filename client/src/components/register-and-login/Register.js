@@ -5,7 +5,6 @@ Register component
 @imported in App
 */
 import React, { Component } from "react";
-
 import Paper from "@material-ui/core/Paper";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -20,6 +19,7 @@ import {
 	TextValidator,
 	SelectValidator
 } from "react-material-ui-form-validator";
+import getRandomMaterialColor from "../../helpers/getRandomMaterialColor";
 // Components
 import Header from "../app-bar/Header";
 // Actions
@@ -88,7 +88,8 @@ class Register extends Component {
 			lastName: this.state.lastName,
 			email: this.state.email,
 			password: this.state.password,
-			typeOfUser: this.state.typeOfUser
+			typeOfUser: this.state.typeOfUser,
+			color: getRandomMaterialColor()
 	};
 
 	if(this.state.typeOfUser === "Doctor") {

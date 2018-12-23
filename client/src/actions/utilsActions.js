@@ -1,4 +1,4 @@
-import { FIND_TOKEN, GET_PATIENTS_LIST, PATIENTS_LOADING } from "./constants";
+import { FIND_TOKEN, GET_PATIENTS_LIST, PATIENTS_LOADING, GET_DOCTORS_LIST, DOCTORS_LOADING } from "./constants";
 import axios from "axios";
 
 export const setToken = (token, id) => dispatch => {
@@ -48,8 +48,23 @@ export const getPatientsList = (doctorID) => dispatch => {
         .catch(err => console.log(err))
 }
 
+export const getDoctorsList = (patientId) => dispatch => {
+    dispatch({type: DOCTORS_LOADING});
+    axios.get(`/api/patients/${patientId}`)
+        .then(res => {
+            dispatch({type: GET_DOCTORS_LIST, data: res.data});
+        })
+        .catch(err => console.log(err))
+}
+
 export const setPatientsLoading = () => {
     return {
         type: PATIENTS_LOADING
+    }
+}
+
+export const setDoctorsLoading = () => {
+    return {
+        type: DOCTORS_LOADING
     }
 }
