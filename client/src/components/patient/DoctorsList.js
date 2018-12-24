@@ -35,6 +35,7 @@ const styles = theme => ({
   extendedIcon: {
     marginRight: theme.spacing.unit,
   },
+
 });
 
 class DoctorsList extends Component {
@@ -71,17 +72,19 @@ class DoctorsList extends Component {
   render() {
     let content = null;
     let { doctorData } = this.props.general;
-    if(doctorData == null) {
-      content = <Loader />
-    } else {
-      content = doctorData.map((elem, index) => {
-        return <CardProfile key={index} user={elem}/>
-      })
-    }
     const { classes } = this.props;
+      if(doctorData == null) {
+        content = <Loader />
+      } else {
+        content = doctorData.map((elem, index) => {
+          return <CardProfile key={index} user={elem}/>
+        })
+      }
     return (
       <div className="doctorsTab">
+      <div className="gridCardProdile">
         {content}
+      </div>
         <div>
           <Fab color="secondary" aria-label="Add" className={classes.fab} onClick={this.handleFab}>
             <AddIcon />

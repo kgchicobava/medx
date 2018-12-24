@@ -38,6 +38,12 @@ const PatientSchema = new Schema({
   },
   color: {
       type: String
+  },
+  diary : {
+    type: [Schema.Types.Mixed]
+  },
+  recepies: {
+    type: [Schema.Types.Mixed]
   }
 });
 

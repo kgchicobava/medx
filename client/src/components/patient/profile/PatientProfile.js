@@ -9,6 +9,7 @@ import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
 import deepPurple from "@material-ui/core/colors/deepPurple";
 import getAvatarInitials from "../../../helpers/getAvatarInitials";
+import { colors } from "../../../helpers/palette";
 // Components
 import PatientProfileTabs from "./PatientProfileTabs";
 
@@ -43,7 +44,7 @@ class PatientProfile extends Component {
       <div>
         <Paper className={classes.root} elevation={1}>
           <div className="flex flex-center">
-            <Avatar className={classes.purpleAvatar}>{initials}</Avatar>
+            <Avatar style={{backgroundColor: `${colors[user.color].bgc}`}} className={classes.purpleAvatar}>{initials}</Avatar>
             <Typography variant="h3">{`${user.firstName} ${user.lastName}`}</Typography>
           </div>
         </Paper>

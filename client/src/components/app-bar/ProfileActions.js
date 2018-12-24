@@ -3,7 +3,6 @@ Very shitty complicated component that show avatar icon in right side, and rende
 dialog window for generating token for doctor
 @NEED FOR RENAME
 @NEED FOR REFACTOR
-@REMOVE STORE
 @imported in DoctorDashboard, PatientDashboard, PatientSettings
 */
 import React from "react";
@@ -26,7 +25,6 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Snackbar from "@material-ui/core/Snackbar";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import store from "../../store";
 import { Link } from "react-router-dom";
 import ArrowBack from "@material-ui/icons/ArrowBack";
 import getAvatarInitials from "../../helpers/getAvatarInitials";
@@ -124,7 +122,7 @@ class ProfileActions extends React.Component {
   };
 
   handleSend = () => {
-    let id = store.getState().auth.user.id;
+    let id = this.props.auth.user.id;
     this.props.setToken(token, id);
     this.setState({ open: false });
   };

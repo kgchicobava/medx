@@ -7,9 +7,8 @@ import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
-import deepPurple from "@material-ui/core/colors/deepPurple";
 import getAvatarInitials from "../../../helpers/getAvatarInitials";
-
+import { colors } from "../../../helpers/palette";
 // Components
 import DoctorProfileTabs from "./DoctorProfileTabs";
 
@@ -21,14 +20,12 @@ const styles = theme => ({
 		width: "80%",
 		margin: "auto"
 	},
-	purpleAvatar: {
+	avatar: {
 		marginLeft: theme.spacing.unit * 2,
 		marginRight: theme.spacing.unit * 2,
-		color: "#fff",
 		width: 150,
 		fontSize: "50px",
 		height: 150,
-		backgroundColor: deepPurple[500]
 	},
 	secondPaper: {
 		width: "80%",
@@ -38,13 +35,14 @@ const styles = theme => ({
 
 class DoctorProfile extends Component {
 	render() {
-    const { classes, user } = this.props;
+	const { classes, user } = this.props;
+	console.log(user)
     let initials = getAvatarInitials(user.firstName, user.lastName).join("");
 		return (
 			<div>
 				<Paper className={classes.root} elevation={1}>
 					<div className="flex flex-center">
-						<Avatar className={classes.purpleAvatar}>{initials}</Avatar>
+						<Avatar style={{backgroundColor: `${colors[user.color].bgc}`}} className={`${classes.avatar}`}>{initials}</Avatar>
 						<Typography variant="h3">{`Dr. ${user.firstName} ${
 							user.lastName
 						}`}</Typography>

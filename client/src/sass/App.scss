@@ -82,3 +82,9 @@
 .universityInfo {
     grid-column: 1/4;
 }
+
+.gridCardProdile {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    grid-gap: 1em;
+}

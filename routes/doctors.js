@@ -13,7 +13,9 @@ router.post("/register", (req, res) => {
     lastName: req.body.userdata.lastName,
     email: req.body.userdata.email,
     password: req.body.userdata.password,
-    typeOfUser: req.body.userdata.typeOfUser
+    typeOfUser: req.body.userdata.typeOfUser,
+    color: req.body.userdata.color,
+    settings: {}
   });
   bcrypt.genSalt(10, (err, salt) => {
     if (err) throw err;

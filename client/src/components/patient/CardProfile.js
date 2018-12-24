@@ -10,12 +10,10 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
-import deepOrange from "@material-ui/core/colors/deepOrange";
 import DateIcon from "@material-ui/icons/DateRange";
 import PhoneIcon from "@material-ui/icons/Phone";
 import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
-import getRandomMaterialColor from "../../helpers/getRandomMaterialColor";
 import LocalHospitalIcon from "@material-ui/icons/LocalHospital";
 import PlaceIcon from "@material-ui/icons/Place";
 import StarIcon from "@material-ui/icons/Star";
@@ -28,28 +26,21 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import getAvatarInitials from "../../helpers/getAvatarInitials";
+import { colors } from "../../helpers/palette";
 // components
 import DoctorProfile from "../doctor/profile/DoctorProfile";
 
-
 const styles = {
   card: {
-    width: "25vw"
+    width: "23vw"
   },
   media: {
     height: 100
-    // backgroundColor: "#333"
-  },
-  avatar: {
-    margin: "0 10px 10px 0"
-  },
-  orangeAvatar: {
-    color: "#fff",
-    backgroundColor: deepOrange[500]
   },
   bigAvatar: {
     width: 60,
-    height: 60
+    height: 60,
+    margin: "0 10px 10px 0",
   },
   typoMargin: {
     marginBottom: "-6px",
@@ -59,6 +50,7 @@ const styles = {
     position: 'relative',
   },
 };
+
 
 class UserCard extends Component {
   state = {
@@ -109,20 +101,18 @@ class UserCard extends Component {
         recievedDate
       )} years)`;
     } else birthday = "N/A";
-    console.log(user);
     return (
       <div>
         <Card className={classes.card}>
           <CardActionArea>
-            <CardMedia className={`${classes.media} deepOrange`} src="none" />
+            <CardMedia className={`${classes.media} ${user.color}`} src="none" />
             <CardContent>
               {/* Title */}
               <div className="flex flex-center">
                 <Avatar
                   sizes="large"
-                  className={`${classes.orangeAvatar} ${classes.bigAvatar} ${
-                    classes.avatar
-                  }`}>
+                  style={{backgroundColor: `${colors[user.color].bgc}`}}
+                  className={`${classes.bigAvatar}`}>
                   {initials}
                 </Avatar>
                 <Typography variant="h5" component="h2">

@@ -70,7 +70,7 @@ class DoctorProfileTabs extends Component {
       <div className="flex flex-center universityInfo">
           <SchoolIcon color="primary" fontSize="large" />
           <Typography className={classes.infoItems} variant="subtitle1">
-            {settings.university ? `Studied at ${settings.univName},in ${settings.univCity} city, for ${settings.univSpecialty}, years of study ${settings.yearOfEntry} - ${settings.yearOfOut}` : NOT_AVAILABLE}
+            {settings.university ? `Studied at ${settings.university.univName},in ${settings.university.univCity} city, for ${settings.university.univSpecialty}, years of study ${settings.university.yearOfEntry} - ${settings.university.yearOfOut}` : NOT_AVAILABLE}
           </Typography>
         </div>
 

@@ -1,6 +1,10 @@
 Align signs in login window +
-Give some text on mainpage
+empty settings dont override current +
 fix text on avatars +
+Give some text on mainpage
 make box on login less soft
 patient settings dont appear in doctor
-empty settings dont override current +
+fix crashes when no settings in user
+copying token will write it, not just close
+change shitty date picker in doctor settings
+make to disappear mini-card of doctor in token search window
