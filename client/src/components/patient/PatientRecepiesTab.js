@@ -1,7 +1,3 @@
-/*
-Component in Patient Profile, Tab, that show list of recepies.
-@imported in PatientProfileTabs
-*/
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
@@ -16,10 +12,8 @@ import FirstPageIcon from "@material-ui/icons/FirstPage";
 import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 import LastPageIcon from "@material-ui/icons/LastPage";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
 import { connect } from "react-redux";
-import { sendRecepie, getPatientsRecepies } from "../../../../actions/utilsActions";
+import { getPatientsRecepies } from "../../actions/utilsActions";
 import TableHead from "@material-ui/core/TableHead";
 
 const actionsStyles = theme => ({
@@ -127,12 +121,10 @@ const styles = theme => ({
   }
 });
 
-class Recepies extends React.Component {
+class PatientRecepiesTab extends React.Component {
   state = {
     page: 0,
     rowsPerPage: 5,
-    meds: "",
-    order: ""
   };
 
   handleChangePage = (event, page) => {
@@ -144,20 +136,7 @@ class Recepies extends React.Component {
   };
 
   componentDidMount = () => {
-    this.props.getPatientsRecepies(this.props.user._id);
-  }
-
-  onAddRecepie = () => {
-    let now = new Date();
-    const recepie = {
-      meds: this.state.meds,
-      order: this.state.order,
-      date: `${now.getHours()}:${now.getMinutes()}, ${now.getDate()}.${now.getMonth()+1}.${now.getFullYear()}`,
-      doctor: `${this.props.auth.user.firstName} ${this.props.auth.user.lastName}`
-    }
-    this.props.sendRecepie(recepie, this.props.user._id);
-    this.setState({meds: "", order: ""});
-    rows.unshift(createData(recepie.doctor, recepie.meds, recepie.order, recepie.date));
+    this.props.getPatientsRecepies(this.props.auth.user.id);
   }
 
   render() {
@@ -177,11 +156,6 @@ class Recepies extends React.Component {
       }
     return (
       <Paper className={classes.root}>
-      <div className="flex flex-center">
-        <TextField multiline value={this.state.meds} onChange={(ev)=> this.setState({meds: ev.target.value})} placeholder="placeholder" label="label" className={classes.inputAdjustment} variant="outlined" />
-        <TextField multiline value={this.state.order} onChange={(ev) => this.setState({order: ev.target.value})} placeholder="placeholder" label="label" className={classes.inputAdjustment} variant="outlined" />
-        <Button variant="contained" onClick={this.onAddRecepie} className={classes.btnAdd} color="secondary">Add</Button>
-      </div>
         <div className={classes.tableWrapper}>
           <Table className={classes.table}>
           <TableHead>
@@ -255,5 +229,5 @@ const mapStateToProps = (state) => {
 
 export default connect(
   mapStateToProps,
-  { sendRecepie, getPatientsRecepies }
-)(withStyles(styles)(Recepies));
+  { getPatientsRecepies }
+)(withStyles(styles)(PatientRecepiesTab));

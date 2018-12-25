@@ -102,4 +102,46 @@ router.get(
     }
   );
 
+  router.post("/setdiaryrecord", passport.authenticate("jwt", {session: false}), (req, res) => {
+    const { record, patientID } = req.body;
+    Patient.findById(patientID).then(patient => {
+      if(patient) {
+        patient.diary.push(record);
+        patient.save();
+        console.log("saved");
+      }
+    })
+  });
+
+  router.get("/records/:id", passport.authenticate("jwt", {session: false}), (req, res) => {
+    Patient.findById(req.params.id)
+        .then(patient => {
+          if(patient) {
+            res.send(patient.diary);
+          }
+        })
+        .catch(err => console.log(err));
+  });
+
+  router.post("/setrecepie", passport.authenticate("jwt", {session: false}), (req, res) => {
+    const { recepie, patientID } = req.body;
+    Patient.findById(patientID).then(patient => {
+      if(patient) {
+        patient.recepies.push(recepie);
+        patient.save();
+        console.log("saved");
+      }
+    })
+  });
+
+  router.get("/recepies/:id", passport.authenticate("jwt", {session: false}), (req, res) => {
+    Patient.findById(req.params.id)
+        .then(patient => {
+          if(patient) {
+            res.send(patient.recepies);
+          }
+        })
+        .catch(err => console.log(err));
+  });
+
 module.exports = router;

@@ -17,7 +17,10 @@ import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 import LastPageIcon from "@material-ui/icons/LastPage";
 import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button"
+import Button from "@material-ui/core/Button";
+import TableHead from "@material-ui/core/TableHead";
+import { connect } from "react-redux";
+import { sendDiaryRecord, getPatientsRecords } from "../../../../actions/utilsActions";
 
 const actionsStyles = theme => ({
   root: {
@@ -97,10 +100,10 @@ const TablePaginationActionsWrapped = withStyles(actionsStyles, {
   withTheme: true
 })(TablePaginationActions);
 
-let counter = 0;
-function createData(name, calories, fat) {
+let counter = 0, rows = [];
+function createData(doctor, record, date) {
   counter += 1;
-  return { id: counter, name, calories, fat };
+  return { id: counter, doctor, record, date};
 }
 
 const styles = theme => ({
@@ -126,14 +129,26 @@ const styles = theme => ({
 
 class Diary extends React.Component {
   state = {
-    rows: [
-      createData("Cupcake", 305, 3.7),
-      createData("Donut", 34, 25.0),
-      createData("Eclair", 262, 16.0)
-    ].sort((a, b) => (a.calories < b.calories ? -1 : 1)),
     page: 0,
-    rowsPerPage: 5
+    rowsPerPage: 5,
+    diaryRecord: ""
   };
+
+  componentDidMount = () => {
+    this.props.getPatientsRecords(this.props.user._id);
+  }
+
+  onAddRecord = () => {
+    let now = new Date();
+    const record = {
+      diaryRecord: this.state.diaryRecord,
+      date: `${now.getHours()}:${now.getMinutes()}, ${now.getDate()}.${now.getMonth()+1}.${now.getFullYear()}`,
+      doctor: `${this.props.auth.user.firstName} ${this.props.auth.user.lastName}`
+    }
+    this.props.sendDiaryRecord(record, this.props.user._id)
+    this.setState({diaryRecord: ""});
+    rows.unshift(createData(record.doctor, record.diaryRecord, record.date))
+  }
 
   handleChangePage = (event, page) => {
     this.setState({ page });
@@ -145,18 +160,35 @@ class Diary extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { rows, rowsPerPage, page } = this.state;
+    let content = "";
+    const { rowsPerPage, page } = this.state;
+    let { patientRecords } = this.props.general;
+    if(patientRecords == null) {
+      let content = "loader"
+    } else {
+      if(rows.length === 0) {
+      for (let i = 0; i < patientRecords.length; i++) {
+        rows.unshift(createData(patientRecords[i].doctor, patientRecords[i].diaryRecord, patientRecords[i].date));
+      }
+    }
+    }
     const emptyRows =
       rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
-
     return (
       <Paper className={classes.root}>
       <div className="flex flex-center">
-        <TextField multiline placeholder="placeholder" label="label" className={classes.inputAdjustment} variant="outlined" />
-        <Button variant="contained" className={classes.btnAdd} color="secondary">Add</Button>
+        <TextField multiline placeholder="placeholder" value={this.state.diaryRecord} label="label" className={classes.inputAdjustment} variant="outlined" onChange={(ev)=> {this.setState({diaryRecord: ev.target.value})}} />
+        <Button variant="contained" onClick={this.onAddRecord} className={classes.btnAdd} color="secondary">Add record</Button>
       </div>
         <div className={classes.tableWrapper}>
           <Table className={classes.table}>
+          <TableHead>
+          <TableRow>
+            <TableCell>Doctor</TableCell>
+            <TableCell>Diary records</TableCell>
+            <TableCell>Date</TableCell>
+          </TableRow>
+        </TableHead>
             <TableBody>
               {rows
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -168,13 +200,13 @@ class Diary extends React.Component {
                         component="th"
                         scope="row"
                       >
-                        {row.name}
+                        {row.doctor}
                       </TableCell>
                       <TableCell style={{ fontSize: "1.2em" }}>
-                        {row.calories}
+                        {row.record}
                       </TableCell>
                       <TableCell style={{ fontSize: "1.2em" }}>
-                        {row.fat}
+                        {row.date}
                       </TableCell>
                     </TableRow>
                   );
@@ -209,4 +241,14 @@ class Diary extends React.Component {
   }
 }
 
-export default withStyles(styles)(Diary);
+const mapStateToProps = (state) => {
+  return {
+    auth: state.auth,
+    general: state.general
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  { sendDiaryRecord, getPatientsRecords }
+)(withStyles(styles)(Diary));

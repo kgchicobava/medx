@@ -10,6 +10,8 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 // Components
 import DoctorsList from './DoctorsList';
+import PatientDiaryTab from "./PatientDiaryTab";
+import PatientRecepiesTab from "./PatientRecepiesTab";
 
 function TabContainer(props) {
     return (
@@ -42,14 +44,16 @@ class PatientTabs extends Component {
         <div className={classes.root}>
         <AppBar position="static" color="default">
           <Tabs value={value} onChange={this.handleChange} centered>
-            <Tab label="My Doctors" />
-            <Tab label="Empty" />
-            <Tab label="Empty" />
+            <Tab label="Doctors" />
+            <Tab label="E-card" />
+            <Tab label="recepies" />
+            <Tab label="planned visits" />
           </Tabs>
         </AppBar>
         {value === 0 && <TabContainer><DoctorsList /></TabContainer>}
-        {value === 1 && <TabContainer>Item Two</TabContainer>}
-        {value === 2 && <TabContainer>Item Three</TabContainer>}
+        {value === 1 && <TabContainer><PatientDiaryTab /></TabContainer>}
+        {value === 2 && <TabContainer><PatientRecepiesTab /></TabContainer>}
+        {value === 3 && <TabContainer>Planned visits</TabContainer>}
       </div>
       </div>
     )

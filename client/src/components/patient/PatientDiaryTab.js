@@ -1,7 +1,3 @@
-/*
-Component in Patient Profile, Tab, that show list of recepies.
-@imported in PatientProfileTabs
-*/
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
@@ -16,11 +12,9 @@ import FirstPageIcon from "@material-ui/icons/FirstPage";
 import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 import LastPageIcon from "@material-ui/icons/LastPage";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
-import { connect } from "react-redux";
-import { sendRecepie, getPatientsRecepies } from "../../../../actions/utilsActions";
 import TableHead from "@material-ui/core/TableHead";
+import { connect } from "react-redux";
+import { getPatientsRecords } from "../../actions/utilsActions";
 
 const actionsStyles = theme => ({
   root: {
@@ -101,9 +95,9 @@ const TablePaginationActionsWrapped = withStyles(actionsStyles, {
 })(TablePaginationActions);
 
 let counter = 0, rows = [];
-function createData(doctor, meds, order, date) {
+function createData(doctor, record, date) {
   counter += 1;
-  return { id: counter, doctor, meds, order, date };
+  return { id: counter, doctor, record, date};
 }
 
 const styles = theme => ({
@@ -127,13 +121,15 @@ const styles = theme => ({
   }
 });
 
-class Recepies extends React.Component {
+class PatientDiaryTab extends React.Component {
   state = {
     page: 0,
     rowsPerPage: 5,
-    meds: "",
-    order: ""
   };
+
+  componentDidMount = () => {
+    this.props.getPatientsRecords(this.props.auth.user.id);
+  }
 
   handleChangePage = (event, page) => {
     this.setState({ page });
@@ -143,52 +139,28 @@ class Recepies extends React.Component {
     this.setState({ rowsPerPage: event.target.value });
   };
 
-  componentDidMount = () => {
-    this.props.getPatientsRecepies(this.props.user._id);
-  }
-
-  onAddRecepie = () => {
-    let now = new Date();
-    const recepie = {
-      meds: this.state.meds,
-      order: this.state.order,
-      date: `${now.getHours()}:${now.getMinutes()}, ${now.getDate()}.${now.getMonth()+1}.${now.getFullYear()}`,
-      doctor: `${this.props.auth.user.firstName} ${this.props.auth.user.lastName}`
-    }
-    this.props.sendRecepie(recepie, this.props.user._id);
-    this.setState({meds: "", order: ""});
-    rows.unshift(createData(recepie.doctor, recepie.meds, recepie.order, recepie.date));
-  }
-
   render() {
     const { classes } = this.props;
     const { rowsPerPage, page } = this.state;
+    let { patientRecords } = this.props.general;
+    if(patientRecords == null) {
+    } else {
+      if(rows.length === 0) {
+      for (let i = 0; i < patientRecords.length; i++) {
+        rows.unshift(createData(patientRecords[i].doctor, patientRecords[i].diaryRecord, patientRecords[i].date));
+      }
+    }
+    }
     const emptyRows =
       rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
-      let { patientRecepie } = this.props.general;
-      if(patientRecepie == null) {
-
-      } else {
-        if(rows.length === 0) {
-        for (let i = 0; i < patientRecepie.length; i++) {
-          rows.unshift(createData(patientRecepie[i].doctor, patientRecepie[i].meds, patientRecepie[i].order, patientRecepie[i].date));
-        }
-      }
-      }
     return (
       <Paper className={classes.root}>
-      <div className="flex flex-center">
-        <TextField multiline value={this.state.meds} onChange={(ev)=> this.setState({meds: ev.target.value})} placeholder="placeholder" label="label" className={classes.inputAdjustment} variant="outlined" />
-        <TextField multiline value={this.state.order} onChange={(ev) => this.setState({order: ev.target.value})} placeholder="placeholder" label="label" className={classes.inputAdjustment} variant="outlined" />
-        <Button variant="contained" onClick={this.onAddRecepie} className={classes.btnAdd} color="secondary">Add</Button>
-      </div>
         <div className={classes.tableWrapper}>
           <Table className={classes.table}>
           <TableHead>
           <TableRow>
             <TableCell>Doctor</TableCell>
-            <TableCell>What medicines to use</TableCell>
-            <TableCell>In what order</TableCell>
+            <TableCell>Diary records</TableCell>
             <TableCell>Date</TableCell>
           </TableRow>
         </TableHead>
@@ -206,10 +178,7 @@ class Recepies extends React.Component {
                         {row.doctor}
                       </TableCell>
                       <TableCell style={{ fontSize: "1.2em" }}>
-                        {row.meds}
-                      </TableCell>
-                      <TableCell style={{ fontSize: "1.2em" }}>
-                        {row.order}
+                        {row.record}
                       </TableCell>
                       <TableCell style={{ fontSize: "1.2em" }}>
                         {row.date}
@@ -246,6 +215,7 @@ class Recepies extends React.Component {
     );
   }
 }
+
 const mapStateToProps = (state) => {
   return {
     auth: state.auth,
@@ -255,5 +225,5 @@ const mapStateToProps = (state) => {
 
 export default connect(
   mapStateToProps,
-  { sendRecepie, getPatientsRecepies }
-)(withStyles(styles)(Recepies));
+  { getPatientsRecords }
+)(withStyles(styles)(PatientDiaryTab));

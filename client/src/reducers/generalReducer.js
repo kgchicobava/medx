@@ -3,7 +3,9 @@ import {
     GET_PATIENTS_LIST,
     PATIENTS_LOADING,
     GET_DOCTORS_LIST,
-    DOCTORS_LOADING
+    DOCTORS_LOADING,
+    GET_PATIENT_RECORD,
+    GET_PATIENT_RECEPIE
 } from "../actions/constants";
 
 const initialState = {
@@ -35,6 +37,18 @@ export default function (state = initialState, action) {
                 loading: false,
                 doctorData: action.data
             };
+        case GET_PATIENT_RECORD:
+            return {
+                ...state,
+                loading: false,
+                patientRecords: action.data
+            }
+        case GET_PATIENT_RECEPIE:
+            return {
+                ...state,
+                loading: false,
+                patientRecepie: action.data
+            }
         case DOCTORS_LOADING:
             return {
                 ...state,

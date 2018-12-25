@@ -109,7 +109,6 @@ class PatientProfileTabs extends Component {
             <Typography
               className={classes.infoItems}
               variant="subtitle1"
-              color="red"
             >
               In case of emergency!
             </Typography>
@@ -151,7 +150,7 @@ class PatientProfileTabs extends Component {
     return (
       <div>
         <div className={classes.root}>
-          <AppBar position="static" color="white" elevation={0}>
+          <AppBar position="static" color="inherit" elevation={0}>
             <Tabs
               value={value}
               onChange={this.handleChange}
@@ -170,8 +169,8 @@ class PatientProfileTabs extends Component {
           {value === 1 && (
             <TabContainer>{this.medicalQuestions(user)}</TabContainer>
           )}
-          {value === 2 && <TabContainer><Diary /></TabContainer>}
-          {value === 3 && <TabContainer><Recepies /></TabContainer>}
+          {value === 2 && <TabContainer><Diary user={user} /></TabContainer>}
+          {value === 3 && <TabContainer><Recepies user={user} /></TabContainer>}
         </div>
       </div>
     );

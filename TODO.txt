@@ -8,3 +8,4 @@ fix crashes when no settings in user
 copying token will write it, not just close
 change shitty date picker in doctor settings
 make to disappear mini-card of doctor in token search window
+make loader in patient in the center
