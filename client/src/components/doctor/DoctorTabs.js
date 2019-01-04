@@ -11,6 +11,7 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 // Components
 import PatientsList from './PatientsList';
+import Stats from "./Stats";
 
 function TabContainer(props) {
     return (
@@ -49,7 +50,7 @@ class DoctorTabs extends Component {
             <Tab label="Moth" />
           </Tabs>
         </AppBar>
-        {value === 0 && <TabContainer>Stats</TabContainer>}
+        {value === 0 && <TabContainer><Stats /></TabContainer>}
         {value === 1 && <TabContainer><PatientsList /></TabContainer>}
         {value === 2 && <TabContainer>Item Two</TabContainer>}
         {value === 3 && <TabContainer>Item Three</TabContainer>}
