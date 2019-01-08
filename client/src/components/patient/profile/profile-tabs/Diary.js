@@ -160,11 +160,9 @@ class Diary extends React.Component {
 
   render() {
     const { classes } = this.props;
-    let content = "";
     const { rowsPerPage, page } = this.state;
     let { patientRecords } = this.props.general;
     if(patientRecords == null) {
-      let content = "loader"
     } else {
       if(rows.length === 0) {
       for (let i = 0; i < patientRecords.length; i++) {
