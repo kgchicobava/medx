@@ -87,11 +87,7 @@ class DoctorTabs extends Component {
         </AppBar>
         {value === 0 && <TabContainer><Stats /></TabContainer>}
         {value === 1 && <TabContainer><PatientsList /></TabContainer>}
-<<<<<<< HEAD
-        {value === 2 && <TabContainer><Calendar appointments={calendarProps}/></TabContainer>}
-=======
         {value === 2 && <TabContainer><Calendar appointments={calendarProps} /></TabContainer>}
->>>>>>> 0ba4f8c1bfd92dce139562db63198c8c3e45f6a6
         {value === 3 && <TabContainer>Item Three</TabContainer>}
       </div>
       </div>
