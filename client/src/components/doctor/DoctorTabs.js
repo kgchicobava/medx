@@ -46,6 +46,23 @@ function TabContainer(props) {
     },
   });
 
+  const calendarProps = {
+  monday: [
+    // { nombre: 'Gustavo', hora_inicio: '08:00', hora_termino: '09:00' },
+    { name: 'Gustavo', time_start: '08:00', time_end: '09:00' },
+    { name: 'Felipe', time_start: '09:30', time_end: '11:00' },
+    { name: 'Cony', time_start: '18:00', time_end: '18:30' }
+  ],
+  tuesday: [{ name: 'Gustavo', time_start: '08:00', time_end: '09:00' }],
+  wednesday: [
+  	{ name: 'Nicole', time_start: '11:30', time_end: '14:00' }
+  ],
+  thursday: [
+  	{ name: 'Alejandro', time_start: '00:00', time_end: '00:30' }
+  ],
+  friday: []
+};
+
 class DoctorTabs extends Component {
     state = {
         value: 0,
@@ -70,7 +87,11 @@ class DoctorTabs extends Component {
         </AppBar>
         {value === 0 && <TabContainer><Stats /></TabContainer>}
         {value === 1 && <TabContainer><PatientsList /></TabContainer>}
+<<<<<<< HEAD
         {value === 2 && <TabContainer><Calendar appointments={calendarProps}/></TabContainer>}
+=======
+        {value === 2 && <TabContainer><Calendar appointments={calendarProps} /></TabContainer>}
+>>>>>>> 0ba4f8c1bfd92dce139562db63198c8c3e45f6a6
         {value === 3 && <TabContainer>Item Three</TabContainer>}
       </div>
       </div>
