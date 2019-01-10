@@ -123,10 +123,9 @@
   .calendar__appointment {
     background: $appointment-background-color;
     color: $appointment-color;
-    border: darken($appointment-background-color, 10%) solid 1px;
     border-left: $appointment-border-color solid 2px;
-    padding: 4px 6px;
-    font-size: 12px;
+    border-top: $appointment-border-color solid 2px;
+    font-size: 14px;
     position: absolute;
     top: -1px;
     right: -1px;
@@ -148,9 +147,6 @@
     z-index: 1;
   }
 
-  /* TODO: La hora actual está quedando fuera del bloque
-   * del calendario.
-   */
   .calendar__current-time__text {
     font-family: $heading-font-family;
     color: $active-color;

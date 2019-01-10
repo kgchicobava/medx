@@ -26,9 +26,6 @@ export const findToken = token => dispatch => {
 };
 
 export const merge = (doctor, patient) => dispatch => {
-	console.log(`welcome from action`);
-	console.log(doctor);
-	console.log(patient);
 	axios
 		.post("/api/patients/merge", { doctor, patient })
 		.then(res => console.log(res.data))
@@ -43,7 +40,6 @@ export const updatePatientSettings = (settings, user) => dispatch => {
 };
 
 export const updateDoctorSettings = (settings, user) => dispatch => {
-	console.log(user);
 	axios
 		.post("/api/doctors/updateSettings", { settings, user })
 		.then(res => console.log(res))

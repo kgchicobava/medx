@@ -1,289 +1,276 @@
 import React, { Component } from "react";
-import classNames from "classnames";
+import { connect } from "react-redux";
+import { mondayAdd } from "../../actions/calendarActions";
+
 
 const DAYS_OF_WEEK = [
-	"Sunday", "Monday", "Tuesday", "Wednesday",
-   "Thursday", "Friday", "Saturday"
+	"Sunday",
+	"Monday",
+	"Tuesday",
+	"Wednesday",
+	"Thursday",
+	"Friday",
+	"Saturday"
 ];
 
-
 /* Helpers */
-const padLeft = (number, padding) => (
-  padding.substring(number.toString().length) + number
-);
+const padLeft = (number, padding) =>
+	padding.substring(number.toString().length) + number;
 
-const toTimeString = (hours, minutes) => (
-	`${padLeft(hours, '00')}:${padLeft(minutes, '00')}`
-);
+const toTimeString = (hours, minutes) =>
+	`${padLeft(hours, "00")}:${padLeft(minutes, "00")}`;
 
-const startOfWeek = (date) => {
+const startOfWeek = date => {
 	const clone = new Date(date);
-  const day = date.getDay();
+	const day = date.getDay();
 	const diff = date.getDate() - day + (day === 0 ? -6 : 1);
-  clone.setDate(diff);
+	clone.setDate(diff);
 
-  return clone;
+	return clone;
 };
 
 const addDays = (date, days) => {
-  const clone = new Date(date);
-  clone.setDate(clone.getDate() + days);
+	const clone = new Date(date);
+	clone.setDate(clone.getDate() + days);
 
-  return clone;
+	return clone;
 };
-
 
 /* COMPONENTS */
 class Calendar extends Component {
+	constructor(props) {
+		super(props);
+		this.addAppointment = this.addAppointment.bind(this);
+		this.normalizeTimeBlocks(this.props.appointments);
+	}
 
-  constructor(props) {
-    super(props);
-    this.normalizeTimeBlocks(props.appointments);
-  }
 
-  componentWillReceiveProps(nextProps) {
-  	if (this.props.appointments !== nextProps.appointments) {
-    	this.normalizeTimeBlock(nextProps.appointments);
-    }
-  }
 
-  normalizeTimeBlocks = (appointments) => {
-  	const blockSize = 15;
-    const timeBlocks = {};
-    const eventBlocks = {};
+	componentWillReceiveProps(nextProps) {
+		if (this.props.appointments !== nextProps.appointments) {
+			this.normalizeTimeBlock(nextProps.appointments);
+		}
+	}
 
-    for (let day in appointments) {
-      appointments[day].forEach(appointment => {
-      	const startTime = appointment.time_start;
-        const endTime = appointment.time_end;
-      	let blockSpan = 0;
+	addAppointment = ev => {
+		let confirmation = window.confirm(
+			"Do you really want to sign up for this date?"
+			);
+			let { attributes } = ev.target;
+		if (confirmation) {
+			this.props.mondayAdd(`${this.props.auth.user.firstName} ${this.props.auth.user.lastName}`, attributes[1].nodeValue, this.props.auth.user.id, this.props.calendar);
+		}
+	};
 
-        if (startTime === '00:00' && endTime === '00:00') {
-        	blockSpan = Math.ceil(24 * 60 / blockSize);
-        }
-        else {
-          const startSplit = startTime.split(':');
-          let hour = parseInt(startSplit[0]);
-          let minutes = parseInt(startSplit[1]);
-          let timeString = appointment.startTime;
+	normalizeTimeBlocks = appointments => {
+		const blockSize = 15;
+		const timeBlocks = {};
+		const eventBlocks = {};
+		console.log(appointments)
+		for (let day in appointments) {
+			appointments[day].forEach(appointment => {
+				const startTime = appointment.time_start;
+				const endTime = appointment.time_end;
+				let blockSpan = 0;
 
-          while (timeString !== appointment.time_end) {
-            blockSpan++;
-            minutes += blockSize;
+				if (startTime === "00:00" && endTime === "00:00") {
+					blockSpan = Math.ceil((24 * 60) / blockSize);
+				} else {
+					const startSplit = startTime.split(":");
+					let hour = parseInt(startSplit[0]);
+					let minutes = parseInt(startSplit[1]);
+					let timeString = appointment.startTime;
 
-            if (minutes >= 60) {
-              minutes = 0;
-              hour += 1;
-            }
+					while (timeString !== appointment.time_end) {
+						blockSpan++;
+						minutes += blockSize;
 
-            timeString = toTimeString(hour, minutes);
-          }
-        }
+						if (minutes >= 60) {
+							minutes = 0;
+							hour += 1;
+						}
 
-        eventBlocks[startTime] = eventBlocks[startTime] || {};
-        eventBlocks[startTime][day] = Object.assign({}, appointment, {
-          blockSpan
-        });
-      });
-    }
+						timeString = toTimeString(hour, minutes);
+					}
+				}
 
-    for (let hour = 7; hour < 19; hour++) {
-      for (let minutes = 0; minutes < 60; minutes += blockSize) {
-        const timeString = toTimeString(hour, minutes);
+				eventBlocks[startTime] = eventBlocks[startTime] || {};
+				eventBlocks[startTime][day] = Object.assign({}, appointment, {
+					blockSpan
+				});
+			});
+		}
 
-        timeBlocks[timeString] = eventBlocks[timeString] || {};
-      }
-    }
-    this.timeBlocks = timeBlocks;
-  };
+		for (let hour = 7; hour < 19; hour++) {
+			for (let minutes = 0; minutes < 60; minutes += blockSize) {
+				const timeString = toTimeString(hour, minutes);
 
-  render() {
-    const rows = [];
-    for (let time in this.timeBlocks) {
-      const block = this.timeBlocks[time];
+				timeBlocks[timeString] = eventBlocks[timeString] || {};
+			}
+		}
+		this.timeBlocks = timeBlocks;
+	};
 
-      rows.push(
-        <Row key={time}>
-          <TimeCell className="calendar__cell--time-col">{time}</TimeCell>
-          <AppointmentCell className="calendar__cell--time-spacing" />
-          <AppointmentCell appointment={block.monday} />
-          <AppointmentCell appointment={block.tuesday} />
-          <AppointmentCell appointment={block.wednesday} />
-          <AppointmentCell appointment={block.thursday} />
-          <AppointmentCell appointment={block.friday} />
-          {/* <AppointmentCell className="calendar__cell--weekend" />
-          <AppointmentCell className="calendar__cell--weekend" /> */}
-        </Row>
-      );
-    }
+	render() {
+		console.log(this.props)
+		const rows = [];
+		for (let time in this.timeBlocks) {
+			const block = this.timeBlocks[time];
 
-    const monday = startOfWeek(new Date());
+			rows.push(
+				<Row key={time}>
+					<TimeCell className="calendar__cell--time-col">
+						{time}
+					</TimeCell>
+					<AppointmentCell className="calendar__cell--time-spacing" />
+					<AppointmentCell
+						appointment={block.monday}
+						day="monday"
+						time={time}
+						onClick={this.addAppointment}
+					/>
+					<AppointmentCell
+						appointment={block.tuesday}
+						day="tuesday"
+						time={time}
+					/>
+					<AppointmentCell
+						appointment={block.wednesday}
+						day="wednesday"
+						time={time}
+					/>
+					<AppointmentCell
+						appointment={block.thursday}
+						day="thursday"
+						time={time}
+					/>
+					<AppointmentCell
+						appointment={block.friday}
+						day="friday"
+						time={time}
+					/>
+				</Row>
+			);
+		}
 
-    return (
-      <div className="calendar">
-        <Row>
-          <HeaderCell className="calendar__cell--time-col" />
-          <Cell className="calendar__cell--time-spacing" />
-          <HeaderCell day={monday} />
-          <HeaderCell day={addDays(monday, 1)} />
-          <HeaderCell day={addDays(monday, 2)} />
-          <HeaderCell day={addDays(monday, 3)} />
-          <HeaderCell day={addDays(monday, 4)} />
-          {/* <HeaderCell day={addDays(monday, 5)} />
-          <HeaderCell day={addDays(monday, 6)} /> */}
-        </Row>
+		const monday = startOfWeek(new Date());
 
-  			<div className="calendar__body">
-	        {rows}
+		return (
+			<div className="calendar">
+				<Row>
+					<HeaderCell className="calendar__cell--time-col" />
+					<Cell className="calendar__cell--time-spacing" />
+					<HeaderCell day={monday} />
+					<HeaderCell day={addDays(monday, 1)} />
+					<HeaderCell day={addDays(monday, 2)} />
+					<HeaderCell day={addDays(monday, 3)} />
+					<HeaderCell day={addDays(monday, 4)} />
+				</Row>
 
-          <Row className="calendar__row--deco-last-row">
-            <TimeCell className="calendar__cell--time-col">00:00</TimeCell>
-            <AppointmentCell />
-          </Row>
+				<div className="calendar__body">
+					{rows}
 
-          {/* <CurrentTimeIndicator /> */}
-        </div>
-      </div>
-    );
-  }
+					<Row className="calendar__row--deco-last-row">
+						<TimeCell className="calendar__cell--time-col">
+							00:00
+						</TimeCell>
+						<AppointmentCell />
+					</Row>
+				</div>
+			</div>
+		);
+	}
 }
 
-// class CurrentTimeIndicator extends Component {
-// 	state = {
-// 		now: new Date()
-// 	};
-
-//   componentDidMount() {
-//   	const seconds = this.state.now.getSeconds();
-
-//     this.timeout = setTimeout(() => {
-//     	this.updateDate();
-//       this.interval = setInterval(this.updateDate, 60 * 1000);
-//     }, (60 - seconds) * 1000);
-//   }
-
-//   componentWillUnmount() {
-//   	clearTimeout(this.timeout);
-//   	clearInterval(this.interval);
-//   }
-
-//   updateDate = () => {
-//   	this.setState({
-//       now: new Date()
-//     });
-//   };
-
-//   getPercentage = () => {
-//   	const { now } = this.state;
-//   	const minutesPassed = now.getHours() * 60 + now.getMinutes();
-
-//   	return minutesPassed * 100 / 1440;
-//   };
-
-//   render() {
-//   	const { now } = this.state;
-//   	const style = {
-//       top: this.getPercentage() + '%'
-//     };
-
-//     return (
-//       <div className="calendar__current-time" style={style}>
-//         <div className="calendar__current-time__text">
-//           {toTimeString(now.getHours(), now.getMinutes())}
-//         </div>
-//       </div>
-//     );
-//   }
-// };
-
-const Appointment = (props) => {
+const Appointment = props => {
 	const { appointment } = props;
-	const wholeDay = appointment.time_start === '00:00' &&
-  	appointment.time_end === '00:00';
+	const wholeDay =
+		appointment.time_start === "00:00" && appointment.time_end === "00:00";
 
-  const time = wholeDay ?
-  	'Todo el día' :
-    `${appointment.time_start} - ${appointment.time_end}`;
+	const time = wholeDay
+		? "Todo el dÃ­a"
+		: `${appointment.time_start} - ${appointment.time_end}`;
 
 	return (
-    <div {...props} className="calendar__appointment">
-      <div className="calendar__appointment__time">
-        {time}
-      </div>
-      <div className="calendar__appointment__name">
-        {appointment.name}
-      </div>
-    </div>
+		<div {...props} className="calendar__appointment">
+			<div className="calendar__appointment__time">{time}</div>
+			<div className="calendar__appointment__name">
+				{appointment.name}
+			</div>
+		</div>
 	);
-}
+};
 
-const Row = (props) => (
-  <div {...props}
-  	className={classNames("calendar__row", props.className)}
-  />
+const Row = props => (
+	<div {...props} className={`calendar__row ${props.className}`} />
 );
 
-const Cell = (props) => (
-  <div {...props}
-  	className={classNames("calendar__cell", props.className)}
-  />
+const Cell = props => (
+	<div {...props} className={`calendar__cell ${props.className}`} />
 );
 
-const HeaderCell = (props) => {
+const HeaderCell = props => {
 	const { day } = props;
-	const isToday = day &&
-  	day.toDateString() === new Date().toDateString();
+	const isToday = day && day.toDateString() === new Date().toDateString();
 
 	return (
-    <Cell {...props}
-      className={
-        `calendar__cell--day-of-week  ${props.className} ${{
-          'calendar__cell--day-of-week--today': isToday
-        }}`
-      }
-      >
-      {day &&
-        <div className="calendar__cell--day-of-week__day">
-          {DAYS_OF_WEEK[day.getDay()]}
-        </div>
-      }
-      {day &&
-        <div className="calendar__cell--day-of-week__date">
-          {day.getDate()}
-        </div>
-      }
-    </Cell>
-  );
+		<Cell
+			{...props}
+			className={`calendar__cell--day-of-week  ${props.className} ${{
+				"calendar__cell--day-of-week--today": isToday
+			}}`}>
+			{day && (
+				<div className="calendar__cell--day-of-week__day">
+					{DAYS_OF_WEEK[day.getDay()]}
+				</div>
+			)}
+			{day && (
+				<div className="calendar__cell--day-of-week__date">
+					{day.getDate()}
+				</div>
+			)}
+		</Cell>
+	);
 };
 
-const TimeCell = (props) => (
-  <Cell {...props}
-  	className={`calendar__cell--time ${props.className}`}
-  />
+const TimeCell = props => (
+	<Cell {...props} className={`calendar__cell--time ${props.className}`} />
 );
 
-const AppointmentCell = (props) => {
+const AppointmentCell = props => {
 	const { appointment } = props;
-  let appointmentComponent = null;
+	let appointmentComponent = null;
 
-  if (appointment) {
-    const { blockSpan } = appointment;
-    const height = (100 * blockSpan) + '%';
-    const borderPixels = (blockSpan + 1) + 'px';
-    const cssHeight = 'calc(' + height + ' + ' + borderPixels + ')';
+	if (appointment) {
+		const { blockSpan } = appointment;
+		const height = 100 * blockSpan + "%";
+		const borderPixels = blockSpan + 1 + "px";
+		const cssHeight = "calc(" + height + " + " + borderPixels + ")";
 
-    appointmentComponent = (
-	    <Appointment style={{ height: cssHeight }} appointment={appointment} />
-    );
-  }
+		appointmentComponent = (
+			<Appointment
+				style={{ height: cssHeight }}
+				appointment={appointment}
+			/>
+		);
+	}
 
 	return (
-    <Cell {...props}
-    	className={classNames("calendar__cell--appointment",props.className)}
-      >
-      {appointmentComponent}
-    </Cell>
-  );
+		<Cell
+			{...props}
+			className={`calendar__cell--appointment ${props.className}`}>
+			{appointmentComponent}
+		</Cell>
+	);
 };
 
-export default Calendar;
+const mapStateToProps = state => ({
+	auth: state.auth,
+	general: state.general,
+	calendar: state.appointments
+});
+
+export default connect(
+	mapStateToProps,
+	{ mondayAdd }
+)(Calendar);

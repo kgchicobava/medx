@@ -7,6 +7,7 @@ const Patient = require("../models/PatientModel");
 const mongoose = require("mongoose");
 const omitEmpty = require('omit-empty');
 
+
 router.post("/register", (req, res) => {
   const newDoctor = new Doctor({
     firstName: req.body.userdata.firstName,
@@ -75,17 +76,26 @@ router.post("/updateSettings", passport.authenticate("jwt", {session: false}),
     Doctor.updateOne({_id: user}, {$set : {settings: omitEmpty(settings)}}, (err) => console.log(err));
   });
 
+router.get("/appointments/:id", passport.authenticate("jwt", {session: false}), (req, res) => {
+  Doctor.findById(req.params.id)
+    .then(doc => {
+      if(doc) {
+        res.send(doc.appointments);
+      } else res.send("doc not found")
+    })
+})
+
+router.post("/appointments/add", passport.authenticate("jwt", {session: false}), (req, res) => {
+  const { doctorID, appointments } = req.body;
+  Doctor.updateOne({_id: doctorID}, {$set : {appointments}}, (err) => console.log(err));
+  // Doctor.findById(doctorID)
+  //   .then(doc => {
+  //     if(doc) {
+
+  //     } else res.send("error")
+  //   })
+})
+
 
 module.exports = router;
 
-// let arr = _categories.map(ele => new mongoose.Types.ObjectId(ele.id));
-
-// model.find({
-//     '_id': { $in: [
-//         mongoose.Types.ObjectId('4ed3ede8844f0f351100000c'),
-//         mongoose.Types.ObjectId('4ed3f117a844e0471100000d'),
-//         mongoose.Types.ObjectId('4ed3f18132f50c491100000e')
-//     ]}
-// }, function(err, docs){
-//      console.log(docs);
-//
