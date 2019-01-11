@@ -87,13 +87,32 @@ router.get("/appointments/:id", passport.authenticate("jwt", {session: false}), 
 
 router.post("/appointments/add", passport.authenticate("jwt", {session: false}), (req, res) => {
   const { doctorID, appointments } = req.body;
-  Doctor.updateOne({_id: doctorID}, {$set : {appointments}}, (err) => console.log(err));
-  // Doctor.findById(doctorID)
-  //   .then(doc => {
-  //     if(doc) {
+  // Doctor.updateOne({_id: doctorID}, {$set : {appointments}}, (err) => console.log(err));
+  Doctor.findById(doctorID)
+    .then(doc => {
+      if(doc) {
+        let schedule = doc.settings.schedule;
+        appointments.monday.push({name: "Not working", time_start: "07:00", time_end: schedule.monday.fromMonday});
+        appointments.monday.push({name: "Not working", time_start: `${schedule.monday.toMonday}`, time_end: "19:00"});
 
-  //     } else res.send("error")
-  //   })
+        appointments.tuesday.push({name: "Not working", time_start: "07:00", time_end: schedule.tuesday.fromTuesday});
+        appointments.tuesday.push({name: "Not working", time_start: `${schedule.tuesday.toTuesday}`, time_end: "19:00"});
+
+        appointments.wednesday.push({name: "Not working", time_start: "07:00", time_end: schedule.wednesday.fromWednesday});
+        appointments.wednesday.push({name: "Not working", time_start: `${schedule.wednesday.toWednesday}`, time_end: "19:00"});
+
+        appointments.thursday.push({name: "Not working", time_start: "07:00", time_end: schedule.thursday.fromThursday});
+        appointments.thursday.push({name: "Not working", time_start: `${schedule.thursday.toThursday}`, time_end: "19:00"});
+
+        appointments.friday.push({name: "Not working", time_start: "07:00", time_end: schedule.friday.fromFriday});
+        appointments.friday.push({name: "Not working", time_start: `${schedule.friday.toFriday}`, time_end: "19:00"});
+
+        doc.appointments = appointments;
+        doc.save();
+        console.log(`saved weekend`)
+      } else res.send("error")
+    })
+    .catch(err => console.log(err));
 })
 
 

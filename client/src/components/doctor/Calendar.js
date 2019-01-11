@@ -46,11 +46,11 @@ class Calendar extends Component {
 
 
 
-	componentWillReceiveProps(nextProps) {
-		if (this.props.appointments !== nextProps.appointments) {
-			this.normalizeTimeBlock(nextProps.appointments);
-		}
-	}
+	// componentWillReceiveProps(nextProps) {
+	// 	if (this.props.appointments !== nextProps.appointments) {
+	// 		this.normalizeTimeBlock(nextProps.appointments);
+	// 	}
+	// }
 
 	addAppointment = ev => {
 		let confirmation = window.confirm(
@@ -192,7 +192,7 @@ const Appointment = props => {
 		: `${appointment.time_start} - ${appointment.time_end}`;
 
 	return (
-		<div {...props} className="calendar__appointment">
+		<div {...props} className={`calendar__appointment ${appointment.name === "Not working" ? "weekend" : ""}`}>
 			<div className="calendar__appointment__time">{time}</div>
 			<div className="calendar__appointment__name">
 				{appointment.name}

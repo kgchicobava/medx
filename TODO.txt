@@ -1,6 +1,6 @@
 Align signs in login window +
-empty settings dont override current +
 fix text on avatars +
+empty settings dont override current
 Give some text on mainpage
 make box on login less soft
 patient settings dont appear in doctor
@@ -11,3 +11,6 @@ make to disappear mini-card of doctor in token search window
 make loader in patient in the center
 make satisfaction system
 http://jsfiddle.net/user/rdiaz/fiddles/
+fix crash when doctor doesnt have address
+fix empty calendar without apps
+fix adding appts

@@ -69,28 +69,28 @@ const styles = theme => ({
 
 const scheduleObj = {
     monday: {
-        fromMonday: "",
-        toMonday: ""
+        fromMonday: "08:00",
+        toMonday: "18:00"
 
     },
     tuesday: {
-        fromTuesday: "",
-        toTuesday: ""
+        fromTuesday: "08:00",
+        toTuesday: "18:00"
 
     },
     wednesday: {
-        fromWednesday: "",
-        toWednesday: ""
+        fromWednesday: "08:00",
+        toWednesday: "18:00"
 
     },
     thursday: {
-        fromThursday: "",
-        toThursday: ""
+        fromThursday: "08:00",
+        toThursday: "18:00"
 
     },
     friday: {
-        fromFriday: "",
-        toFriday: ""
+        fromFriday: "08:00",
+        toFriday: "18:00"
 
     }
 };

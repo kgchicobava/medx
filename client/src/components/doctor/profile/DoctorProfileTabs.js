@@ -14,6 +14,8 @@ import PlaceIcon from "@material-ui/icons/Place";
 import CabinetIcon from "@material-ui/icons/MeetingRoom";
 import FolderSpecialIcon from "@material-ui/icons/FolderSpecial";
 import SchoolIcon from "@material-ui/icons/School";
+import DoctorSchedule from "./Schedule";
+import SortedRecepies from "./SortedRecepies";
 // Components
 const NOT_AVAILABLE = "N/A";
 
@@ -152,6 +154,16 @@ class DoctorProfileTabs extends Component {
     );
   }
 
+  NotAvailable() {
+    return (
+      <div>
+        <Typography variant="h4" align="center">
+          Sorry, schedule not available. Our doctor forget to set it(
+        </Typography>
+      </div>
+    )
+  }
+
   render() {
     const { classes, user } = this.props;
     const { value } = this.state;
@@ -164,7 +176,7 @@ class DoctorProfileTabs extends Component {
               value={value}
               onChange={this.handleChange}
               centered
-              fullWidth={true}
+              variant="fullWidth"
             >
               <Tab label="General" />
               <Tab label="Schedule" />
@@ -175,9 +187,11 @@ class DoctorProfileTabs extends Component {
           {value === 0 && (
             <TabContainer>{this.generalInfo(settings, classes)}</TabContainer>
           )}
-          {value === 1 && <TabContainer>Schedule</TabContainer>}
+          {value === 1 && <TabContainer>{user.settings.schedule ? <DoctorSchedule timeTable={user.settings.schedule} /> :  <Typography variant="h4" align="center">
+          Sorry, schedule not available. Our doctor forget to set it(
+        </Typography>}</TabContainer>}
           {value === 2 && <TabContainer>Item</TabContainer>}
-          {value === 3 && <TabContainer>Item</TabContainer>}
+          {value === 3 && <TabContainer><SortedRecepies user={user}/></TabContainer>}
         </div>
       </div>
     );

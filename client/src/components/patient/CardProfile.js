@@ -136,9 +136,9 @@ class UserCard extends Component {
                   component="p"
                   variant="body2"
                   className={classes.typoMargin}>
-                  {`${user.settings.address.city || "N/A"}, ${user.settings
+                  {user.settings ? `${user.settings.address.city || "N/A"}, ${user.settings
                     .address.street || "N/A"} ${user.settings.address.number ||
-                    "N/A"}`}
+                    "N/A"}` : "N/A"}
                 </Typography>
               </div>
               {/* Cabinet */}
