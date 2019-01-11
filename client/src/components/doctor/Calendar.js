@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { mondayAdd } from "../../actions/calendarActions";
+import { appointmentAdd } from "../../actions/calendarActions";
 
 
 const DAYS_OF_WEEK = [
@@ -58,7 +58,7 @@ class Calendar extends Component {
 			);
 			let { attributes } = ev.target;
 		if (confirmation) {
-			this.props.mondayAdd(`${this.props.auth.user.firstName} ${this.props.auth.user.lastName}`, attributes[1].nodeValue, this.props.auth.user.id, this.props.calendar);
+			this.props.appointmentAdd(`${this.props.auth.user.firstName} ${this.props.auth.user.lastName}`, attributes[1].nodeValue, this.props.auth.user.id, this.props.calendar);
 		}
 	};
 
@@ -272,5 +272,5 @@ const mapStateToProps = state => ({
 
 export default connect(
 	mapStateToProps,
-	{ mondayAdd }
+	{ appointmentAdd }
 )(Calendar);

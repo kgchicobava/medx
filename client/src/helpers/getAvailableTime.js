@@ -1,4 +1,5 @@
 export default function getAvailableTime(day, appt, dayName) {
+	dayName = capitalizeFirstLetter(dayName);
 	let times = [
 		"07:00",
 		"07:15",
@@ -50,7 +51,6 @@ export default function getAvailableTime(day, appt, dayName) {
 		"18:45",
 		"19:00"
 	];
-
 	for (let val of appt) {
 		times.splice(times.indexOf(val.time_start), 1);
 	}
@@ -61,3 +61,7 @@ export default function getAvailableTime(day, appt, dayName) {
 	);
 	return times;
 }
+
+function capitalizeFirstLetter(string) {
+	return string.charAt(0).toUpperCase() + string.slice(1);
+  }

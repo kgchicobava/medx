@@ -1,5 +1,5 @@
 import {
-	MONDAY_ADD,
+	APPOINTMENT_ADD,
 	GET_APPOINTMENTS,
 } from "../actions/constants";
 import getEndTime from "../helpers/getEndTime";
@@ -17,12 +17,8 @@ export default (state = initialState, action) => {
 		case GET_APPOINTMENTS:
 			return action.data
 
-		case MONDAY_ADD:
-			state.monday.push({
-				name: action.data.name,
-				time_start: action.data.time,
-				time_end: getEndTime(action.data.time)
-			});
+		case APPOINTMENT_ADD:
+			state[action.day].push(action.appointment);
 			return { ...state };
 
 

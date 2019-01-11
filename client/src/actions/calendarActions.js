@@ -1,4 +1,4 @@
-import { MONDAY_ADD, GET_APPOINTMENTS } from "./constants";
+import { APPOINTMENT_ADD, GET_APPOINTMENTS } from "./constants";
 import axios from "axios";
 
 export const getAppointments = (doctorID) => dispatch => {
@@ -10,7 +10,9 @@ export const getAppointments = (doctorID) => dispatch => {
         .catch(err => console.log(err));
 }
 
-export const mondayAdd = (name, time, doctorID, appointments) => dispatch => {
-    axios.post("/api/doctors/appointments/add", {doctorID, appointments})
-    dispatch({type: MONDAY_ADD, data: {name, time}});
+export const appointmentAdd = (appointment, day, doctorID ) => dispatch => {
+    axios.post("/api/doctors/appointments/add", {doctorID, appointment, day})
+        .then(res => console.log(res))
+        .catch(err => console.log(err))
+    dispatch({type: APPOINTMENT_ADD, data: appointment, day});
 }

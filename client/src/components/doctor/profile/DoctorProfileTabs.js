@@ -16,6 +16,7 @@ import FolderSpecialIcon from "@material-ui/icons/FolderSpecial";
 import SchoolIcon from "@material-ui/icons/School";
 import DoctorSchedule from "./Schedule";
 import SortedRecepies from "./SortedRecepies";
+import SetMeeting from "./SetMeeting";
 // Components
 const NOT_AVAILABLE = "N/A";
 
@@ -190,7 +191,7 @@ class DoctorProfileTabs extends Component {
           {value === 1 && <TabContainer>{user.settings.schedule ? <DoctorSchedule timeTable={user.settings.schedule} /> :  <Typography variant="h4" align="center">
           Sorry, schedule not available. Our doctor forget to set it(
         </Typography>}</TabContainer>}
-          {value === 2 && <TabContainer>Item</TabContainer>}
+          {value === 2 && <TabContainer><SetMeeting user={user}/></TabContainer>}
           {value === 3 && <TabContainer><SortedRecepies user={user}/></TabContainer>}
         </div>
       </div>
