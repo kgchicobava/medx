@@ -134,6 +134,10 @@ class SortedRecepies extends React.Component {
 		rowsPerPage: 5
 	};
 
+	componentWillUnmount = () => {
+		rows = [];
+	}
+
 	handleChangePage = (event, page) => {
 		this.setState({ page });
 	};
@@ -148,7 +152,6 @@ class SortedRecepies extends React.Component {
 
 	render() {
 		const { classes } = this.props;
-		console.log(this.props);
 		const { rowsPerPage, page } = this.state;
 		const emptyRows =
 			rowsPerPage -
@@ -159,7 +162,7 @@ class SortedRecepies extends React.Component {
 			if (rows.length === 0) {
 				for (let i = 0; i < patientRecepie.length; i++) {
 					if (
-						patientRecepie[i].doctor ===
+						patientRecepie[i].doctor ==
 						`${this.props.user.firstName} ${
 							this.props.user.lastName
 						}`

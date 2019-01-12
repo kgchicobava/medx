@@ -141,7 +141,17 @@ router.get(
             res.send(patient.recepies);
           }
         })
-        .catch(err => console.log(err));
+
   });
+
+  router.get("/appointments/:id", passport.authenticate("jwt", {session: false}), (req, res) => {
+    Patient.findById(req.params.id)
+      .then(patient => {
+        if(patient) {
+          res.send(patient.appointments);
+        }
+      })
+      .catch(err => console.log(err));
+  })
 
 module.exports = router;

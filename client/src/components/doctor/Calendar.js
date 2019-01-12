@@ -40,6 +40,7 @@ const addDays = (date, days) => {
 class Calendar extends Component {
 	constructor(props) {
 		super(props);
+		console.log(props);
 		this.addAppointment = this.addAppointment.bind(this);
 		this.normalizeTimeBlocks(this.props.appointments);
 	}
@@ -66,7 +67,6 @@ class Calendar extends Component {
 		const blockSize = 15;
 		const timeBlocks = {};
 		const eventBlocks = {};
-		console.log(appointments)
 		for (let day in appointments) {
 			appointments[day].forEach(appointment => {
 				const startTime = appointment.time_start;

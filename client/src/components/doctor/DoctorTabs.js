@@ -14,7 +14,7 @@ import PatientsList from "./PatientsList";
 import Stats from "./Stats";
 import Calendar from "./Calendar";
 import { connect } from "react-redux";
-import { getAppointments } from "../../actions/calendarActions";
+import { getDoctorAppointments } from "../../actions/calendarActions";
 import omitEmpty from "omit-empty";
 import isEmpty from "../../helpers/isempty";
 import Loader from "../utils/Loader";
@@ -44,7 +44,7 @@ class DoctorTabs extends Component {
 		this.setState({ value });
 	};
 	componentDidMount = () => {
-		this.props.getAppointments(this.props.auth.user.id);
+		this.props.getDoctorAppointments(this.props.auth.user.id);
 	};
 
 	render() {
@@ -106,5 +106,5 @@ const mapStateToProps = state => ({
 
 export default connect(
 	mapStateToProps,
-	{ getAppointments }
+	{ getDoctorAppointments }
 )(withStyles(styles)(DoctorTabs));

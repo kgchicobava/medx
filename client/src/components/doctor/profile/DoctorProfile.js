@@ -36,7 +36,7 @@ const styles = theme => ({
 class DoctorProfile extends Component {
 	render() {
 	const { classes, user } = this.props;
-	console.log(user)
+	// console.log(user)
     let initials = getAvatarInitials(user.firstName, user.lastName).join("");
 		return (
 			<div>

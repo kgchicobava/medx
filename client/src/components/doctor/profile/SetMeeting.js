@@ -47,13 +47,12 @@ class SetMeeting extends Component {
 
     registerMeet = (ev) => {
         let appointment = {name: this.state.name, time_start: this.state.time_start, time_end: this.state.time_end}
-        this.props.appointmentAdd(appointment, this.state.day.toLowerCase(), this.props.user._id)
+        this.props.appointmentAdd(appointment, this.state.day.toLowerCase(), this.props.user._id, this.props.auth.user.id);
     }
+
 
 	render() {
 		const { classes } = this.props;
-		const { appointments } = this.props.user;
-		const { schedule } = this.props.user.settings;
 		// console.log(appointments, schedule);
 		return (
 			<div>
