@@ -162,7 +162,7 @@ class SortedRecepies extends React.Component {
 			if (rows.length === 0) {
 				for (let i = 0; i < patientRecepie.length; i++) {
 					if (
-						patientRecepie[i].doctor ==
+						patientRecepie[i].doctor ===
 						`${this.props.user.firstName} ${
 							this.props.user.lastName
 						}`

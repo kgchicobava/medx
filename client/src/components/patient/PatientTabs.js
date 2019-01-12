@@ -14,7 +14,7 @@ import DoctorsList from "./DoctorsList";
 import PatientDiaryTab from "./PatientDiaryTab";
 import PatientRecepiesTab from "./PatientRecepiesTab";
 import Calendar from "../doctor/Calendar";
-import Loader from "../utils/Loader";
+// import Loader from "../utils/Loader";
 import { getPatientAppointments } from "../../actions/calendarActions";
 import omitEmpty from "omit-empty";
 import isEmpty from "../../helpers/isempty";
@@ -36,6 +36,15 @@ const styles = theme => ({
 	}
 });
 
+const defProps = {
+		monday: [],
+		tuesday: [],
+		wednesday: [],
+		thursday: [],
+		friday: []
+
+}
+
 class PatientTabs extends Component {
 	state = {
 		value: 0
@@ -49,10 +58,6 @@ class PatientTabs extends Component {
     this.props.getPatientAppointments(this.props.auth.user.id);
   };
 
-  componentWillUpdate = () => {
-    this.props.getPatientAppointments(this.props.auth.user.id);
-
-  }
 
 	render() {
 		const { classes, appointments } = this.props;
@@ -98,8 +103,8 @@ class PatientTabs extends Component {
 							{content ? (
 								<Calendar appointments={content} />
 							) : (
-								<Loader />
-							)}
+								<Calendar appointments={defProps} />
+              )}
 						</TabContainer>
 					)}
 				</div>

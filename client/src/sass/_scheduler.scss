@@ -75,16 +75,7 @@
 
   .calendar__cell--day-of-week__date {
     font-size: 2.5em;
-  }
-
-  .calendar__cell--day-of-week--today {
-    .calendar__cell--day-of-week__day, .calendar__cell--day-of-week__date {
-      color: $active-color;
-    }
-  }
-
-  .calendar__cell--weekend {
-    background: $weekend-cell-background-color;
+    margin-top: 1vh;
   }
 
   .calendar__cell--time-col {

@@ -118,7 +118,7 @@ router.post(
 
 				Patient.findById(patientID).then(patient => {
 					if (patient) {
-            appointment.name = `Dr. ${doc.firstName} ${doc.lastName}`;
+            appointment.name = `Dr. ${doc.firstName} ${doc.lastName}, ${doc.settings.cabinet ? `cab. #${doc.settings.cabinet}` : ""}`;
 						let tempApps = patient.appointments;
 						tempApps[day].push(appointment);
 						patient.appointments = null;

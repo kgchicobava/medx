@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { appointmentAdd } from "../../actions/calendarActions";
 
-
 const DAYS_OF_WEEK = [
 	"Sunday",
 	"Monday",
@@ -45,8 +44,6 @@ class Calendar extends Component {
 		this.normalizeTimeBlocks(this.props.appointments);
 	}
 
-
-
 	// componentWillReceiveProps(nextProps) {
 	// 	if (this.props.appointments !== nextProps.appointments) {
 	// 		this.normalizeTimeBlock(nextProps.appointments);
@@ -56,10 +53,17 @@ class Calendar extends Component {
 	addAppointment = ev => {
 		let confirmation = window.confirm(
 			"Do you really want to sign up for this date?"
-			);
-			let { attributes } = ev.target;
+		);
+		let { attributes } = ev.target;
 		if (confirmation) {
-			this.props.appointmentAdd(`${this.props.auth.user.firstName} ${this.props.auth.user.lastName}`, attributes[1].nodeValue, this.props.auth.user.id, this.props.calendar);
+			this.props.appointmentAdd(
+				`${this.props.auth.user.firstName} ${
+					this.props.auth.user.lastName
+				}`,
+				attributes[1].nodeValue,
+				this.props.auth.user.id,
+				this.props.calendar
+			);
 		}
 	};
 
@@ -112,7 +116,7 @@ class Calendar extends Component {
 	};
 
 	render() {
-		console.log(this.props)
+		console.log(this.props);
 		const rows = [];
 		for (let time in this.timeBlocks) {
 			const block = this.timeBlocks[time];
@@ -192,7 +196,11 @@ const Appointment = props => {
 		: `${appointment.time_start} - ${appointment.time_end}`;
 
 	return (
-		<div {...props} className={`calendar__appointment ${appointment.name === "Not working" ? "weekend" : ""}`}>
+		<div
+			{...props}
+			className={`calendar__appointment ${
+				appointment.name === "Not working" ? "weekend" : ""
+			}`}>
 			<div className="calendar__appointment__time">{time}</div>
 			<div className="calendar__appointment__name">
 				{appointment.name}
@@ -263,6 +271,8 @@ const AppointmentCell = props => {
 		</Cell>
 	);
 };
+
+
 
 const mapStateToProps = state => ({
 	auth: state.auth,

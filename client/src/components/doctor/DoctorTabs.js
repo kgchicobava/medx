@@ -65,13 +65,24 @@ class DoctorTabs extends Component {
 							value={value}
 							onChange={this.handleChange}
 							centered>
-							<Tab label="Upcoming visits" />
 							<Tab label="Stats" />
 							<Tab label="Patients" />
+							<Tab label="Upcoming visits" />
 							<Tab label="Moth" />
 						</Tabs>
 					</AppBar>
+
 					{value === 0 && (
+						<TabContainer>
+							<Stats />
+						</TabContainer>
+					)}
+					{value === 1 && (
+						<TabContainer>
+							<PatientsList />
+						</TabContainer>
+					)}
+					{value === 2 && (
 						<TabContainer>
 							{content ? (
 								<Calendar appointments={content} />
@@ -79,16 +90,6 @@ class DoctorTabs extends Component {
 								<Loader />
 							)}
 							}
-						</TabContainer>
-					)}
-					{value === 1 && (
-						<TabContainer>
-							<Stats />
-						</TabContainer>
-					)}
-					{value === 2 && (
-						<TabContainer>
-							<PatientsList />
 						</TabContainer>
 					)}
 					{value === 3 && <TabContainer>Item Three</TabContainer>}

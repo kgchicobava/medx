@@ -2,7 +2,6 @@ import {
 	APPOINTMENT_ADD,
 	GET_APPOINTMENTS,
 } from "../actions/constants";
-import getEndTime from "../helpers/getEndTime";
 
 const initialState = {
 	monday: [],
