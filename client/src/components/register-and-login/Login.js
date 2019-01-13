@@ -32,9 +32,6 @@ const styles = theme => ({
   typographyPadding: {
     paddingTop: "3vh"
   },
-  labelLeft : {
-    marginLeft: "2.5vw"
-  }
 });
 
 class Login extends Component {
@@ -73,8 +70,19 @@ class Login extends Component {
 
   onChange(ev) {
     this.setState({
-      [ev.target.name]: ev.target.value
+      [ev.target.name]: ev.target.value,
+      errors: {}
     });
+  }
+
+  loginErr(errMsg) {
+    if(errMsg) {
+      return (
+        <div className="login-err">
+          {errMsg}
+        </div>
+      )
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -95,6 +103,7 @@ class Login extends Component {
 
   render() {
     const { classes } = this.props;
+    const { errors } = this.state;
     return (
       <div>
         <Header headerLabel={"Login"} back={true} toLocation="/" />
@@ -107,10 +116,12 @@ class Login extends Component {
           >
             Log In
           </Typography>
+          
           <form onSubmit={this.onSubmit}>
             <div className="login-container">
-              <FormControl>
-                <InputLabel className={`${classes.labelLeft}`}>Enter your E-mail</InputLabel>
+            {this.loginErr(`${errors ? errors.email? errors.email : errors.password ? errors.password : "" : ""}`)}
+              <FormControl error={errors.email}>
+                <InputLabel>Enter your E-mail</InputLabel>
                 <Input
                   name="email"
                   type="email"
@@ -120,8 +131,8 @@ class Login extends Component {
                   onChange={this.onChange}
                 />
               </FormControl>
-              <FormControl>
-                <InputLabel className={`${classes.labelLeft}`}>Enter your password</InputLabel>
+              <FormControl error={errors.password}>
+                <InputLabel>Enter your password</InputLabel>
                 <Input
                   name="password"
                   type="password"

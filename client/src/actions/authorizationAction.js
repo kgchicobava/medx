@@ -1,4 +1,9 @@
-import { SET_PATIENT, SET_DOCTOR, LOGOUT, GET_ERRORS } from "./constants";
+import {
+  SET_PATIENT,
+  SET_DOCTOR,
+  LOGOUT,
+  GET_ERRORS
+} from "./constants";
 import axios from "axios";
 import jwtDecode from "jwt-decode";
 import setAuthToken from "../helpers/setAuthToken";
@@ -6,7 +11,9 @@ import setAuthToken from "../helpers/setAuthToken";
 export const registerDoctor = (userdata, history) => dispatch => {
   console.log(history);
   axios
-    .post("/api/doctors/register", { userdata })
+    .post("/api/doctors/register", {
+      userdata
+    })
     .then(res => {
       history.push("/login");
     })
@@ -15,7 +22,9 @@ export const registerDoctor = (userdata, history) => dispatch => {
 
 export const registerPatient = (userdata, history) => dispatch => {
   axios
-    .post("/api/patients/register", { userdata })
+    .post("/api/patients/register", {
+      userdata
+    })
     .then(res => {
       history.push("/login");
     })
@@ -24,10 +33,14 @@ export const registerPatient = (userdata, history) => dispatch => {
 
 export const loginUser = userdata => dispatch => {
   axios
-    .post("/api/user/login", { userdata })
+    .post("/api/user/login", {
+      userdata
+    })
     .then(res => {
-      if(res.data.token) {
-        const { token } = res.data;
+      if (res.data.token) {
+        const {
+          token
+        } = res.data;
         localStorage.setItem("jwtToken", token);
         setAuthToken(token);
         const decoded = jwtDecode(token);
@@ -36,11 +49,12 @@ export const loginUser = userdata => dispatch => {
 
     })
     .catch(err => {
-      console.log(err);
+      console.log(err.response);
       dispatch({
         type: GET_ERRORS,
-                 data: err.message
-         })});
+        data: err.response.data
+      })
+    });
 };
 
 export const logout = () => dispatch => {

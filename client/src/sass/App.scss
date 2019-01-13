@@ -24,7 +24,8 @@
     flex-wrap: wrap;
     align-content: center;
     flex-direction: column;
-    margin-top: 10vh;
+    width: 25vw;
+    margin: 8vh auto 0 auto;
 }
 
 .login-container-dimension {
@@ -68,6 +69,18 @@
     display: grid;
     grid-template-columns: auto auto auto;
     grid-row-gap: 3em;
+}
+
+.login-err {
+    box-sizing: border-box;
+    color: red;
+    font-weight: bold;
+    text-align: center;
+    border: 1px solid red;
+    margin: -7vh auto 0 auto;
+    padding: 10px;
+    width: 25vw;
+    position: absolute;
 }
 
 .emergencyPanel {

@@ -1,5 +1,4 @@
-Align signs in login window +
-fix text on avatars +
+fix text on avatars +-
 empty settings dont override current
 Give some text on mainpage
 make box on login less soft
