@@ -32,12 +32,7 @@ export const merge = (doctor, patient) => dispatch => {
 		.catch(err => console.log(err));
 };
 
-export const updatePatientSettings = (settings, user) => dispatch => {
-	axios
-		.post("/api/patients/updateSettings", { settings, user })
-		.then(res => console.log(res))
-		.catch(err => console.log(err));
-};
+
 
 export const updateDoctorSettings = (settings, user) => dispatch => {
 	axios

@@ -19,10 +19,14 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
+import Snackbar from "@material-ui/core/Snackbar";
+import IconButton from "@material-ui/core/Icon";
+import CloseIcon from "@material-ui/icons/Close";
+
 // Components
 import ProfileActions from "../app-bar/ProfileActions";
 // Actions
-import { updatePatientSettings } from "../../actions/utilsActions";
+import { updatePatientSettings, getPatientSettings } from "../../actions/settingsActions";
 
 
 const styles = theme => ({
@@ -62,6 +66,7 @@ const styles = theme => ({
 class PatientSettings extends React.Component {
   state = {
     expanded: null,
+    openSnackBar: false,
     address: {
       street: "",
       city: "",
@@ -85,7 +90,11 @@ class PatientSettings extends React.Component {
     operations: "",
     currMeds: "",
     height: "",
-    weight: ""
+    weight: "",
+    blood: {
+      type: "",
+      rhesus: ""
+    }
   };
 
   handleExpand = panel => (event, expanded) => {
@@ -93,6 +102,10 @@ class PatientSettings extends React.Component {
       expanded: expanded ? panel : false
     });
   };
+
+  handleCloseSnackBar = () => {
+    this.setState({openSnackBar: false})
+  }
 
   onAddress = (ev) => {
     this.setState({
@@ -112,8 +125,25 @@ class PatientSettings extends React.Component {
     });
   };
 
+  onChangeBloodType = ev => {
+    this.setState({
+      blood: Object.assign({}, this.state.blood, {[ev.target.name]: ev.target.value})
+    })
+  }
+
+  componentDidMount = () => {
+    this.props.getPatientSettings(this.props.auth.user.id);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.settings) {
+      this.setState(Object.assign({}, nextProps.settings));
+    }
+  }
+
   onSave = (ev) => {
-    this.props.updatePatientSettings(this.state, this.props.state.auth.user.id)
+    this.props.updatePatientSettings(this.state, this.props.auth.user.id);
+    this.setState({openSnackBar: true})
   }
 
   render() {
@@ -142,6 +172,7 @@ class PatientSettings extends React.Component {
                 type="text"
                 onChange={this.onAddress}
                 name="city"
+                value={this.state.address.city}
                 variant="outlined"
                 label="Your city"
                 placeholder="i.e. Kyiv, Kharkiv, Odessa"
@@ -153,6 +184,7 @@ class PatientSettings extends React.Component {
                 name="street"
                 variant="outlined"
                 label="Your street"
+                value={this.state.address.street}
                 placeholder="i.e. Ivana Franka, Zelena"
               />
 
@@ -161,6 +193,7 @@ class PatientSettings extends React.Component {
                 onChange={this.onAddress}
                 name="number"
                 variant="outlined"
+                value={this.state.address.number}
                 label="Your house number"
                 placeholder="i.e. 46"
               />
@@ -183,6 +216,7 @@ class PatientSettings extends React.Component {
                 variant="outlined"
                 defaultValue="2000-01-01"
                 name="birthday"
+                value={this.state.birthday}
                 onChange={this.onChangeSettings}
                 className={classes.dateField}
                 label="Birthday"
@@ -238,6 +272,7 @@ class PatientSettings extends React.Component {
                 type="email"
                 fullWidth
                 name="email"
+                value={this.state.email}
                 onChange={this.onChangeSettings}
                 variant="outlined"
                 label="Your E-mail"
@@ -293,6 +328,7 @@ class PatientSettings extends React.Component {
                 type="text"
                 fullWidth
                 name="work"
+                value={this.state.work}
                 onChange={this.onChangeSettings}
                 variant="outlined"
                 label="Your Job"
@@ -319,6 +355,7 @@ class PatientSettings extends React.Component {
                   className={classes.dateField}
                   label="Phone number"
                   name="phone"
+                  value={this.state.phone}
                   InputProps={{ inputProps: { max: 10 } }}
                   onChange={this.onChangeSettings}
                   placeholder="(XXX)-123-45-67"
@@ -344,6 +381,7 @@ class PatientSettings extends React.Component {
                 className={classes.dateField}
                 placeholder="Your height in cm"
                 name="height"
+                value={this.state.height}
                 onChange={this.onChangeSettings}
                 variant="outlined"
                 inputProps={{ min: "0", max: "300" }}
@@ -367,6 +405,7 @@ class PatientSettings extends React.Component {
                 className={classes.dateField}
                 placeholder="Your weight in kg"
                 variant="outlined"
+                value={this.state.weight}
                 name="weight"
                 onChange={this.onChangeSettings}
                 inputProps={{ min: "0", max: "300" }}
@@ -390,6 +429,7 @@ class PatientSettings extends React.Component {
               <TextField
                 type="text"
                 name="fName"
+                value={this.state.emergency.fName}
                 onChange={this.onEmergency}
                 className={classes.dateField}
                 placeholder="First name"
@@ -398,6 +438,7 @@ class PatientSettings extends React.Component {
               <TextField
                 type="text"
                 name="lName"
+                value={this.state.emergency.lName}
                 onChange={this.onEmergency}
                 className={classes.dateField}
                 placeholder="Last Name"
@@ -406,6 +447,7 @@ class PatientSettings extends React.Component {
               <TextField
                 type="text"
                 name="relation"
+                value={this.state.emergency.relation}
                 onChange={this.onEmergency}
                 className={classes.dateField}
                 placeholder="Relationship"
@@ -414,6 +456,7 @@ class PatientSettings extends React.Component {
               <TextField
                 type="number"
                 name="phoneNumber"
+                value={this.state.emergency.phoneNumber}
                 onChange={this.onEmergency}
                 className={classes.dateField}
                 placeholder="Phone number"
@@ -431,6 +474,43 @@ class PatientSettings extends React.Component {
             onChange={this.handleExpand("panel11")}
           >
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography className={classes.heading}>
+                Blood type
+              </Typography>
+              <Typography className={classes.secondaryHeading}>
+                Let us know your blood type
+              </Typography>
+            </ExpansionPanelSummary>
+            <ExpansionPanelDetails>
+            <Select
+                value={this.state.blood.type}
+                name="type"
+                onChange={this.onChangeBloodType}
+                className={classes.dateField}
+              >
+                <MenuItem value={"0"}>0</MenuItem>
+                <MenuItem value={"A"}>A</MenuItem>
+                <MenuItem value={"B"}>B</MenuItem>
+                <MenuItem value={"AB"}>AB</MenuItem>
+              </Select>
+
+              <Select
+                value={this.state.blood.rhesus}
+                name="rhesus"
+                onChange={this.onChangeBloodType}
+                className={classes.dateField}
+              >
+                <MenuItem value={"+"}>+</MenuItem>
+                <MenuItem value={"-"}>-</MenuItem>
+              </Select>
+            </ExpansionPanelDetails>
+          </ExpansionPanel>
+
+          <ExpansionPanel
+            expanded={expanded === "panel12"}
+            onChange={this.handleExpand("panel12")}
+          >
+            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
               <Typography className={classes.heading}>Allergies</Typography>
               <Typography className={classes.secondaryHeading}>
                 What allergies do you have? (fruits, pets, plants, etc)
@@ -440,6 +520,7 @@ class PatientSettings extends React.Component {
               <TextField
                 type="text"
                 fullWidth
+                value={this.state.allergies}
                 name="allergies"
                 onChange={this.onChangeSettings}
                 variant="outlined"
@@ -450,8 +531,8 @@ class PatientSettings extends React.Component {
           </ExpansionPanel>
 
           <ExpansionPanel
-            expanded={expanded === "panel12"}
-            onChange={this.handleExpand("panel12")}
+            expanded={expanded === "panel13"}
+            onChange={this.handleExpand("panel13")}
           >
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
               <Typography className={classes.heading}>
@@ -465,6 +546,7 @@ class PatientSettings extends React.Component {
               <TextField
                 type="text"
                 fullWidth
+                value={this.state.medAllergies}
                 name="medAllergies"
                 onChange={this.onChangeSettings}
                 variant="outlined"
@@ -475,8 +557,8 @@ class PatientSettings extends React.Component {
           </ExpansionPanel>
 
           <ExpansionPanel
-            expanded={expanded === "panel13"}
-            onChange={this.handleExpand("panel13")}
+            expanded={expanded === "panel14"}
+            onChange={this.handleExpand("panel14")}
           >
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
               <Typography className={classes.heading}>Injuries</Typography>
@@ -488,6 +570,7 @@ class PatientSettings extends React.Component {
               <TextField
                 type="text"
                 fullWidth
+                value={this.state.injuries}
                 name="injuries"
                 onChange={this.onChangeSettings}
                 variant="outlined"
@@ -498,8 +581,8 @@ class PatientSettings extends React.Component {
           </ExpansionPanel>
 
           <ExpansionPanel
-            expanded={expanded === "panel14"}
-            onChange={this.handleExpand("panel14")}
+            expanded={expanded === "panel15"}
+            onChange={this.handleExpand("panel15")}
           >
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
               <Typography className={classes.heading}>Operations</Typography>
@@ -511,6 +594,7 @@ class PatientSettings extends React.Component {
               <TextField
                 type="text"
                 fullWidth
+                value={this.state.operations}
                 name="operations"
                 onChange={this.onChangeSettings}
                 variant="outlined"
@@ -521,8 +605,8 @@ class PatientSettings extends React.Component {
           </ExpansionPanel>
 
           <ExpansionPanel
-            expanded={expanded === "panel15"}
-            onChange={this.handleExpand("panel15")}
+            expanded={expanded === "panel16"}
+            onChange={this.handleExpand("panel16")}
           >
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
               <Typography className={classes.heading}>
@@ -537,6 +621,7 @@ class PatientSettings extends React.Component {
                 type="text"
                 fullWidth
                 name="currMeds"
+                value={this.state.currMeds}
                 onChange={this.onChangeSettings}
                 variant="outlined"
                 label="Are you taking some medicines right now?"
@@ -546,7 +631,7 @@ class PatientSettings extends React.Component {
           </ExpansionPanel>
 
           <div className="flex flex-end">
-            <Button variant="outlined" onClick={this.onCancel} color="secondary" className={classes.btn}>
+            <Button variant="outlined" href="/patient/home" color="secondary" className={classes.btn}>
               Cancel
             </Button>
             <Button variant="contained" onClick={this.onSave} color="secondary" className={classes.btn}>
@@ -554,16 +639,43 @@ class PatientSettings extends React.Component {
             </Button>
           </div>
         </Paper>
+        <Snackbar
+					anchorOrigin={{
+						vertical: "bottom",
+						horizontal: "left"
+					}}
+					open={this.state.openSnackBar}
+					autoHideDuration={4000}
+					onClose={this.handleCloseSnackBar}
+					ContentProps={{
+						"aria-describedby": "message-id"
+					}}
+					message={<span id="message-id">Saved</span>}
+					action={[
+						<IconButton
+							key="close"
+							aria-label="Close"
+							color="inherit"
+							className={classes.close}
+							onClick={this.handleCloseSnackBar}>
+							<CloseIcon />
+						</IconButton>
+					]}
+				/>
       </div>
     );
   }
 }
 
 function mapStateToProps(state) {
-  return {state};
+  return {
+    auth: state.auth,
+    general: state.general,
+    settings: state.settings
+  };
 };
 
 export default connect(
   mapStateToProps,
-  { updatePatientSettings }
+  { updatePatientSettings, getPatientSettings }
 )(withStyles(styles)(PatientSettings));

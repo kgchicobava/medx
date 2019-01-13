@@ -123,6 +123,17 @@ router.get(
         .catch(err => console.log(err));
   });
 
+  router.get("/getSettings/:id", passport.authenticate("jwt", {session: false}), (req, res) => {
+    console.log(`seeya`)
+    Patient.findById(req.params.id)
+        .then(patient => {
+          if(patient) {
+            res.send(patient.settings);
+          }
+        })
+        .catch(err => console.log(err));
+  })
+
   router.post("/setrecepie", passport.authenticate("jwt", {session: false}), (req, res) => {
     const { recepie, patientID } = req.body;
     Patient.findById(patientID).then(patient => {

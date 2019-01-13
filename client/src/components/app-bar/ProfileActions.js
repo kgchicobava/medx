@@ -1,7 +1,6 @@
 /*
 Very shitty complicated component that show avatar icon in right side, and renders
 dialog window for generating token for doctor
-@NEED FOR RENAME
 @NEED FOR REFACTOR
 @imported in DoctorDashboard, PatientDashboard, PatientSettings
 */
@@ -114,7 +113,6 @@ class ProfileActions extends React.Component {
 
   dialogCopy = () => {
     this.setState({ snackOpen: true });
-    this.dialogClose();
   };
 
   snackClose = () => {

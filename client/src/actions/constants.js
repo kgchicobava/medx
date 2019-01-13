@@ -15,12 +15,4 @@ export const GET_PATIENT_RECEPIE = "GET_PATIENT_RECEPIE";
 export const APPOINTMENT_ADD = "APPOINTMENT_ADD";
 export const GET_APPOINTMENTS = "GET_APPOINTMENTS";
 export const APPOINTMENTS_LOADING = "APPOINTMENTS_LOADING";
-export const DAYS_OF_WEEK = [
-	"Sunday",
-	"Monday",
-	"Tuesday",
-	"Wednesday",
-	"Thursday",
-	"Friday",
-	"Saturday"
-];
+export const GET_SETTINGS = "GET_SETTINGS";
