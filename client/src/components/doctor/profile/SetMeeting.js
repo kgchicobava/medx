@@ -215,7 +215,7 @@ class SetMeeting extends Component {
 							aria-label="Close"
 							color="inherit"
 							className={classes.close}
-							onClick={this.handleClose}>
+							onClick={this.handleCloseSnackBar}>
 							<CloseIcon />
 						</IconButton>
 					]}

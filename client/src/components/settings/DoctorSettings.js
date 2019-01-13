@@ -14,10 +14,13 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import { connect } from "react-redux";
+import Snackbar from "@material-ui/core/Snackbar";
+import IconButton from "@material-ui/core/Icon";
+import CloseIcon from "@material-ui/icons/Close";
 // Components
 import ProfileActions from "../app-bar/ProfileActions";
 // Actions
-import { updateDoctorSettings } from "../../actions/utilsActions";
+import { updateDoctorSettings, getDoctorSettings } from "../../actions/settingsActions";
 
 
 
@@ -91,13 +94,13 @@ const scheduleObj = {
     friday: {
         fromFriday: "08:00",
         toFriday: "18:00"
-
     }
 };
 
 class DoctorSettings extends React.Component {
   state = {
     expanded: null,
+    openSnackBar: false,
     birthday: "",
     sex: "",
     workPhone: "",
@@ -118,7 +121,32 @@ class DoctorSettings extends React.Component {
       yearOfOut: "",
       univSpecialty: ""
     },
-    schedule: ""
+    schedule: {
+      monday: {
+        fromMonday: "08:00",
+        toMonday: "18:00"
+
+    },
+    tuesday: {
+        fromTuesday: "08:00",
+        toTuesday: "18:00"
+
+    },
+    wednesday: {
+        fromWednesday: "08:00",
+        toWednesday: "18:00"
+
+    },
+    thursday: {
+        fromThursday: "08:00",
+        toThursday: "18:00"
+
+    },
+    friday: {
+        fromFriday: "08:00",
+        toFriday: "18:00"
+    }
+    }
   };
 
   handleExpand = panel => (event, expanded) => {
@@ -126,6 +154,10 @@ class DoctorSettings extends React.Component {
       expanded: expanded ? panel : false
     });
   };
+
+  handleCloseSnackBar = () => {
+    this.setState({openSnackBar: false})
+  }
 
   onChangeSettings = ev => {
     this.setState({
@@ -150,7 +182,18 @@ class DoctorSettings extends React.Component {
   };
 
   assignSchedule(targetName, targetValue, day) {
-    return Object.assign({}, scheduleObj[day], { [targetName]: targetValue });
+    console.log(Object.assign({},this.state.schedule[day], { [targetName]: targetValue }))
+    return Object.assign({}, this.state.schedule[day], { [targetName]: targetValue });
+  }
+
+  componentDidMount = () => {
+    this.props.getDoctorSettings(this.props.auth.user.id);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.settings) {
+      this.setState(Object.assign({}, nextProps.settings));
+    }
   }
 
   handleDateChange = ev => {
@@ -158,7 +201,7 @@ class DoctorSettings extends React.Component {
     let day = name.match(/[A-Z].+/g)[0].toLowerCase();
     switch (day) {
       case "monday":
-        scheduleObj.monday = this.assignSchedule(name, value, day);
+        this.setState(Object.assign({}, this.state.schedule.monday, this.assignSchedule(name, value, day)));
         break;
       case "tuesday":
         scheduleObj.tuesday = this.assignSchedule(name, value, day);
@@ -185,7 +228,7 @@ class DoctorSettings extends React.Component {
         <Typography variant="body2">From: </Typography>
         <TextField
           id="time"
-          defaultValue="08:00"
+          value={this.state.schedule.monday.fromMonday}
           inputProps={{
             step: 300
           }}
@@ -197,7 +240,7 @@ class DoctorSettings extends React.Component {
         <Typography variant="body2">To: </Typography>
         <TextField
           id="time"
-          defaultValue="18:00"
+          value={this.state.schedule.monday.toMonday}
           inputProps={{
             step: 300
           }}
@@ -211,7 +254,7 @@ class DoctorSettings extends React.Component {
         <Typography variant="body2">From: </Typography>
         <TextField
           id="time"
-          defaultValue="08:00"
+          value={this.state.schedule.tuesday.fromTuesday}
           inputProps={{
             step: 300
           }}
@@ -222,7 +265,7 @@ class DoctorSettings extends React.Component {
         <Typography variant="body2">To: </Typography>
         <TextField
           id="time"
-          defaultValue="18:00"
+          value={this.state.schedule.tuesday.toTuesday}
           inputProps={{
             step: 300
           }}
@@ -235,7 +278,7 @@ class DoctorSettings extends React.Component {
         <Typography variant="body2">From: </Typography>
         <TextField
           id="time"
-          defaultValue="08:00"
+          value={this.state.schedule.wednesday.fromWednesday}
           inputProps={{
             step: 300
           }}
@@ -246,7 +289,7 @@ class DoctorSettings extends React.Component {
         <Typography variant="body2">To: </Typography>
         <TextField
           id="time"
-          defaultValue="18:00"
+          value={this.state.schedule.wednesday.toWednesday}
           inputProps={{
             step: 300
           }}
@@ -259,7 +302,7 @@ class DoctorSettings extends React.Component {
         <Typography variant="body2">From: </Typography>
         <TextField
           id="time"
-          defaultValue="08:00"
+          value={this.state.schedule.thursday.fromThursday}
           inputProps={{
             step: 300
           }}
@@ -270,7 +313,7 @@ class DoctorSettings extends React.Component {
         <Typography variant="body2">To: </Typography>
         <TextField
           id="time"
-          defaultValue="18:00"
+          value={this.state.schedule.thursday.toThursday}
           inputProps={{
             step: 300
           }}
@@ -283,7 +326,7 @@ class DoctorSettings extends React.Component {
         <Typography variant="body2">From: </Typography>
         <TextField
           id="time"
-          defaultValue="08:00"
+          value={this.state.schedule.friday.fromFriday}
           inputProps={{
             step: 300
           }}
@@ -294,7 +337,7 @@ class DoctorSettings extends React.Component {
         <Typography variant="body2">To: </Typography>
         <TextField
           id="time"
-          defaultValue="18:00"
+          value={this.state.schedule.friday.toFriday}
           inputProps={{
             step: 300
           }}
@@ -309,6 +352,7 @@ class DoctorSettings extends React.Component {
   onSave = ev => {
     this.setState({ schedule: scheduleObj });
     this.props.updateDoctorSettings(this.state, this.props.auth.user.id);
+    this.setState({openSnackBar: true})
   };
 
   render() {
@@ -337,9 +381,11 @@ class DoctorSettings extends React.Component {
               <TextField
                 type="date"
                 variant="outlined"
-                defaultValue="2000-0 inputProps={{
-          step: 300,
-        }}1-01"
+                // defaultValue="2000-01-01"
+                value={this.state.birthday || "2000-01-01"}
+                inputProps={{
+                step: 300,
+                }}
                 name="birthday"
                 onChange={this.onChangeSettings}
                 className={classes.dateField}
@@ -397,6 +443,7 @@ class DoctorSettings extends React.Component {
                 name="univCity"
                 onChange={this.onChangeUniversity}
                 variant="outlined"
+                value={this.state.university.univCity}
                 label="Write the city where you were studying"
                 placeholder="i.e. Kyiv, Kharkiv, Warsaw"
                 className={`${classes.halfWidth} ${classes.marginInput}`}
@@ -406,6 +453,7 @@ class DoctorSettings extends React.Component {
                 name="univName"
                 onChange={this.onChangeUniversity}
                 variant="outlined"
+                value={this.state.university.univName}
                 label="Write name of your educational institution"
                 placeholder="i.e. Bogomolets Nationsl Medical University"
                 className={`${classes.halfWidth} ${classes.marginInput}`}
@@ -414,6 +462,7 @@ class DoctorSettings extends React.Component {
                 name="yearOfEntry"
                 variant="outlined"
                 type="number"
+                value={this.state.university.yearOfEntry}
                 label="Year of entry"
                 onChange={this.onChangeUniversity}
                 placeholder="i.e. 2006"
@@ -423,6 +472,7 @@ class DoctorSettings extends React.Component {
                 name="yearOfOut"
                 variant="outlined"
                 type="number"
+                value={this.state.university.yearOfOut}
                 label="Graduation year"
                 onChange={this.onChangeUniversity}
                 placeholder="i.e. 2012"
@@ -432,6 +482,7 @@ class DoctorSettings extends React.Component {
                 name="univSpecialty"
                 variant="outlined"
                 label="Your specialty"
+                value={this.state.university.univSpecialty}
                 onChange={this.onChangeUniversity}
                 placeholder="i.e. surgery"
                 className={`${classes.marginInput} ${classes.halfWidth}`}
@@ -488,6 +539,7 @@ class DoctorSettings extends React.Component {
                   type="number"
                   className={classes.dateField}
                   label="Phone number"
+                  value={this.state.workPhone}
                   name="workPhone"
                   InputProps={{ inputProps: { max: 10 } }}
                   onChange={this.onChangeSettings}
@@ -515,6 +567,7 @@ class DoctorSettings extends React.Component {
                 name="achievements"
                 multiline
                 fullWidth
+                value={this.state.achievements}
                 onChange={this.onChangeSettings}
                 label="Your contests, diplomasm certificates, etc"
                 variant="outlined"
@@ -541,6 +594,7 @@ class DoctorSettings extends React.Component {
               <TextField
                 fullWidth
                 name="clinicName"
+                value={this.state.clinicName}
                 onChange={this.onChangeSettings}
                 label="Full name"
                 variant="outlined"
@@ -566,6 +620,7 @@ class DoctorSettings extends React.Component {
                 className={classes.marginInput}
                 onChange={this.onChangeAddress}
                 name="city"
+                value={this.state.address.city}
                 variant="outlined"
                 label="City"
                 placeholder="i.e. Kyiv, Kharkiv, Odessa"
@@ -578,6 +633,7 @@ class DoctorSettings extends React.Component {
                 onChange={this.onChangeAddress}
                 name="street"
                 variant="outlined"
+                value={this.state.address.street}
                 label="Street"
                 placeholder="i.e. Ivana Franka, Zelena"
               />
@@ -588,6 +644,7 @@ class DoctorSettings extends React.Component {
                 className={classes.marginInput}
                 onChange={this.onChangeAddress}
                 name="number"
+                value={this.state.address.number}
                 variant="outlined"
                 label="Building number"
                 placeholder="i.e. 46"
@@ -610,6 +667,7 @@ class DoctorSettings extends React.Component {
                 name="cabinet"
                 onChange={this.onChangeSettings}
                 label="Number"
+                value={this.state.cabinet}
                 variant="outlined"
                 placeholder="i.e. 234"
               />
@@ -630,6 +688,7 @@ class DoctorSettings extends React.Component {
               <TextField
                 fullWidth
                 name="specialty"
+                value={this.state.specialty}
                 onChange={this.onChangeSettings}
                 label="Current specialty"
                 variant="outlined"
@@ -654,7 +713,7 @@ class DoctorSettings extends React.Component {
           <div className="flex flex-end">
             <Button
               variant="outlined"
-              onClick={this.onCancel}
+              hred="/doctor/home"
               color="secondary"
               className={classes.btn}
             >
@@ -670,16 +729,43 @@ class DoctorSettings extends React.Component {
             </Button>
           </div>
         </Paper>
+        <Snackbar
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left"
+          }}
+          open={this.state.openSnackBar}
+          autoHideDuration={4000}
+          onClose={this.handleCloseSnackBar}
+          ContentProps={{
+            "aria-describedby": "message-id"
+          }}
+          message={<span id="message-id">Saved</span>}
+          action={[
+            <IconButton
+              key="close"
+              aria-label="Close"
+              color="inherit"
+              className={classes.close}
+              onClick={this.handleCloseSnackBar}>
+              <CloseIcon />
+            </IconButton>
+          ]}
+        />
       </div>
     );
   }
 }
 
 function mapStateToProps(state) {
-  return {auth: state.auth};
+  return {
+    auth: state.auth,
+    general: state.general,
+    settings: state.settings
+  };
 };
 
 export default connect(
   mapStateToProps,
-  { updateDoctorSettings }
+  { updateDoctorSettings, getDoctorSettings }
 )(withStyles(styles)(DoctorSettings));

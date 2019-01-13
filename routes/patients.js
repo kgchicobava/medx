@@ -31,9 +31,13 @@ router.post("/register", (req, res) => {
 
 router.post(
   "/adddoctor",
-  passport.authenticate("jwt", { session: false }),
+  passport.authenticate("jwt", {
+    session: false
+  }),
   (req, res) => {
-    Doctor.findOne({ tokens: req.body.token }, (err, doctor) => {
+    Doctor.findOne({
+      tokens: req.body.token
+    }, (err, doctor) => {
       if (err) console.log(err);
       if (doctor) {
         res.send(doctor);
@@ -46,123 +50,155 @@ router.post(
 
 router.post(
   "/merge",
-  passport.authenticate("jwt", { session: false }),
+  passport.authenticate("jwt", {
+    session: false
+  }),
   (req, res) => {
-    const { doctor, patient } = req.body;
+    const {
+      doctor,
+      patient
+    } = req.body;
     Patient.findById(patient.id)
       .then(patient => {
-          if(patient) {
-            patient.doctors.push(doctor._id);
-            patient.save().then(patient => res.json(patient));
-          }
+        if (patient) {
+          patient.doctors.push(doctor._id);
+          patient.save().then(patient => res.json(patient));
+        }
       })
       .catch(err => console.log(err));
 
     Doctor.findById(doctor._id)
-        .then(doc => {
-            if(doc) {
-                doc.patients.push(patient.id);
-                doc.save();
-            }
-        })
-        .catch(err => console.log(err));
-
-    }
-);
-
-router.post("/updateSettings", passport.authenticate("jwt", {session: false}),
-  (req, res) => {
-    const {settings, user} = req.body;
-    Patient.findById(user).then(patient => {
-      if(patient) {
-        console.log(patient)
-        patient.settings = settings;
-        patient.save();
-        console.log("saved")
-      }
-    })
-    .catch(err => console.log(err))
-  });
-
-router.get(
-    "/:id",
-    passport.authenticate("jwt", { session: false }),
-    (req, res) => {
-      Patient.findById(req.params.id)
-        .then(patient => {
-          let monData = patient.doctors.map(
-            elem => new mongoose.Types.ObjectId(elem._id)
-          );
-          Doctor.find({ _id: { $in: monData } }, (err, doctors) => {
-            if (err) console.log(err);
-            res.send(doctors);
-          });
-        })
-        .catch(err => console.log(err));
-    }
-  );
-
-  router.post("/setdiaryrecord", passport.authenticate("jwt", {session: false}), (req, res) => {
-    const { record, patientID } = req.body;
-    Patient.findById(patientID).then(patient => {
-      if(patient) {
-        patient.diary.push(record);
-        patient.save();
-        console.log("saved");
-      }
-    })
-  });
-
-  router.get("/records/:id", passport.authenticate("jwt", {session: false}), (req, res) => {
-    Patient.findById(req.params.id)
-        .then(patient => {
-          if(patient) {
-            res.send(patient.diary);
-          }
-        })
-        .catch(err => console.log(err));
-  });
-
-  router.get("/getSettings/:id", passport.authenticate("jwt", {session: false}), (req, res) => {
-    console.log(`seeya`)
-    Patient.findById(req.params.id)
-        .then(patient => {
-          if(patient) {
-            res.send(patient.settings);
-          }
-        })
-        .catch(err => console.log(err));
-  })
-
-  router.post("/setrecepie", passport.authenticate("jwt", {session: false}), (req, res) => {
-    const { recepie, patientID } = req.body;
-    Patient.findById(patientID).then(patient => {
-      if(patient) {
-        patient.recepies.push(recepie);
-        patient.save();
-        console.log("saved");
-      }
-    })
-  });
-
-  router.get("/recepies/:id", passport.authenticate("jwt", {session: false}), (req, res) => {
-    Patient.findById(req.params.id)
-        .then(patient => {
-          if(patient) {
-            res.send(patient.recepies);
-          }
-        })
-
-  });
-
-  router.get("/appointments/:id", passport.authenticate("jwt", {session: false}), (req, res) => {
-    Patient.findById(req.params.id)
-      .then(patient => {
-        if(patient) {
-          res.send(patient.appointments);
+      .then(doc => {
+        if (doc) {
+          doc.patients.push(patient.id);
+          doc.save();
         }
       })
       .catch(err => console.log(err));
+
+  }
+);
+
+router.post("/updateSettings", passport.authenticate("jwt", {
+    session: false
+  }),
+  (req, res) => {
+    const {
+      settings,
+      user
+    } = req.body;
+    Patient.findById(user).then(patient => {
+        if (patient) {
+          patient.settings = settings;
+          patient.save();
+          console.log("saved")
+        }
+      })
+      .catch(err => console.log(err))
+  });
+
+router.get(
+  "/:id",
+  passport.authenticate("jwt", {
+    session: false
+  }),
+  (req, res) => {
+    Patient.findById(req.params.id)
+      .then(patient => {
+        let monData = patient.doctors.map(
+          elem => new mongoose.Types.ObjectId(elem._id)
+        );
+        Doctor.find({
+          _id: {
+            $in: monData
+          }
+        }, (err, doctors) => {
+          if (err) console.log(err);
+          res.send(doctors);
+        });
+      })
+      .catch(err => console.log(err));
+  }
+);
+
+router.post("/setdiaryrecord", passport.authenticate("jwt", {
+  session: false
+}), (req, res) => {
+  const {
+    record,
+    patientID
+  } = req.body;
+  Patient.findById(patientID).then(patient => {
+    if (patient) {
+      patient.diary.push(record);
+      patient.save();
+      console.log("saved");
+    }
   })
+});
+
+router.get("/records/:id", passport.authenticate("jwt", {
+  session: false
+}), (req, res) => {
+  Patient.findById(req.params.id)
+    .then(patient => {
+      if (patient) {
+        res.send(patient.diary);
+      }
+    })
+    .catch(err => console.log(err));
+});
+
+router.get("/getSettings/:id", passport.authenticate("jwt", {
+  session: false
+}), (req, res) => {
+  Patient.findById(req.params.id)
+    .then(patient => {
+      if (patient) {
+        res.send(patient.settings);
+      }
+    })
+    .catch(err => console.log(err));
+})
+
+router.post("/setrecepie", passport.authenticate("jwt", {
+  session: false
+}), (req, res) => {
+  const {
+    recepie,
+    patientID
+  } = req.body;
+  Patient.findById(patientID).then(patient => {
+    if (patient) {
+      patient.recepies.push(recepie);
+      patient.save();
+      console.log("saved");
+    }
+  })
+});
+
+router.get("/recepies/:id", passport.authenticate("jwt", {
+  session: false
+}), (req, res) => {
+  Patient.findById(req.params.id)
+    .then(patient => {
+      if (patient) {
+        res.send(patient.recepies);
+      }
+    })
+
+});
+
+router.get("/appointments/:id", passport.authenticate("jwt", {
+  session: false
+}), (req, res) => {
+  Patient.findById(req.params.id)
+    .then(patient => {
+      if (patient) {
+        res.send(patient.appointments);
+      }
+    })
+    .catch(err => console.log(err));
+})
 
 module.exports = router;

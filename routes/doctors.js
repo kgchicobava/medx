@@ -39,16 +39,23 @@ router.post("/register", (req, res) => {
 
 router.post(
 	"/tokens",
-	passport.authenticate("jwt", { session: false }),
+	passport.authenticate("jwt", {
+		session: false
+	}),
 	(req, res) => {
 		Doctor.findById(req.body.id, (err, doctor) => {
 			if (err) console.log(err);
 			console.log(doctor);
 		});
 		Doctor.findByIdAndUpdate(
-			req.body.id,
-			{ $push: { tokens: req.body.token } },
-			{ new: true, upsert: true },
+			req.body.id, {
+				$push: {
+					tokens: req.body.token
+				}
+			}, {
+				new: true,
+				upsert: true
+			},
 			(err, doctor) => {
 				if (err) console.log(err);
 				console.log(doctor);
@@ -60,14 +67,20 @@ router.post(
 
 router.get(
 	"/:id",
-	passport.authenticate("jwt", { session: false }),
+	passport.authenticate("jwt", {
+		session: false
+	}),
 	(req, res) => {
 		Doctor.findById(req.params.id)
 			.then(doc => {
 				let monData = doc.patients.map(
 					elem => new mongoose.Types.ObjectId(elem._id)
 				);
-				Patient.find({ _id: { $in: monData } }, (err, patients) => {
+				Patient.find({
+					_id: {
+						$in: monData
+					}
+				}, (err, patients) => {
 					if (err) console.log(err);
 					res.send(patients);
 				});
@@ -76,22 +89,41 @@ router.get(
 	}
 );
 
-router.post(
-	"/updateSettings",
-	passport.authenticate("jwt", { session: false }),
+router.get("/getSettings/:id", passport.authenticate("jwt", {
+	session: false
+}), (req, res) => {
+	Doctor.findById(req.params.id)
+		.then(doc => {
+			if (doc) {
+				res.send(doc.settings);
+			}
+		})
+		.catch(err => console.log(err));
+})
+
+router.post("/updateSettings", passport.authenticate("jwt", {
+		session: false
+	}),
 	(req, res) => {
-		const { settings, user } = req.body;
-		Doctor.updateOne(
-			{ _id: user },
-			{ $set: { settings: omitEmpty(settings) } },
-			err => console.log(err)
-		);
-	}
-);
+		const {
+			settings,
+			user
+		} = req.body;
+		Doctor.findById(user).then(doc => {
+				if (doc) {
+					doc.settings = settings;
+					doc.save();
+					console.log("saved")
+				}
+			})
+			.catch(err => console.log(err))
+	});
 
 router.get(
 	"/appointments/:id",
-	passport.authenticate("jwt", { session: false }),
+	passport.authenticate("jwt", {
+		session: false
+	}),
 	(req, res) => {
 		Doctor.findById(req.params.id).then(doc => {
 			if (doc) {
@@ -103,9 +135,16 @@ router.get(
 
 router.post(
 	"/appointments/add",
-	passport.authenticate("jwt", { session: false }),
+	passport.authenticate("jwt", {
+		session: false
+	}),
 	(req, res) => {
-		const { doctorID, patientID, appointment, day } = req.body;
+		const {
+			doctorID,
+			patientID,
+			appointment,
+			day
+		} = req.body;
 		// Doctor.updateOne({_id: doctorID}, {$set : {appointments}}, (err) => console.log(err));
 		Doctor.findById(doctorID)
 			.then(doc => {
@@ -116,17 +155,17 @@ router.post(
 					doc.appointments = tempApps;
 					doc.save();
 
-				Patient.findById(patientID).then(patient => {
-					if (patient) {
-            appointment.name = `Dr. ${doc.firstName} ${doc.lastName}, ${doc.settings.cabinet ? `cab. #${doc.settings.cabinet}` : ""}`;
-						let tempApps = patient.appointments;
-						tempApps[day].push(appointment);
-						patient.appointments = null;
-						patient.appointments = tempApps;
-						patient.save();
-					}
-        });
-      }
+					Patient.findById(patientID).then(patient => {
+						if (patient) {
+							appointment.name = `Dr. ${doc.firstName} ${doc.lastName}, ${doc.settings.cabinet ? `cab. #${doc.settings.cabinet}` : ""}`;
+							let tempApps = patient.appointments;
+							tempApps[day].push(appointment);
+							patient.appointments = null;
+							patient.appointments = tempApps;
+							patient.save();
+						}
+					});
+				}
 			})
 			.catch(err => console.log(err));
 	}
