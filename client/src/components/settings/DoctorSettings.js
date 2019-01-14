@@ -70,7 +70,7 @@ const styles = theme => ({
   }
 });
 
-const scheduleObj = {
+let scheduleObj = {
     monday: {
         fromMonday: "08:00",
         toMonday: "18:00"
@@ -182,7 +182,6 @@ class DoctorSettings extends React.Component {
   };
 
   assignSchedule(targetName, targetValue, day) {
-    console.log(Object.assign({},this.state.schedule[day], { [targetName]: targetValue }))
     return Object.assign({}, this.state.schedule[day], { [targetName]: targetValue });
   }
 
@@ -193,15 +192,17 @@ class DoctorSettings extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.settings) {
       this.setState(Object.assign({}, nextProps.settings));
+      scheduleObj = nextProps.settings.schedule;
     }
   }
 
   handleDateChange = ev => {
+    console.log(`changed`)
     let { name, value } = ev.target;
     let day = name.match(/[A-Z].+/g)[0].toLowerCase();
     switch (day) {
       case "monday":
-        this.setState(Object.assign({}, this.state.schedule.monday, this.assignSchedule(name, value, day)));
+      scheduleObj.monday = this.assignSchedule(name, value, day);
         break;
       case "tuesday":
         scheduleObj.tuesday = this.assignSchedule(name, value, day);
@@ -218,6 +219,7 @@ class DoctorSettings extends React.Component {
       default:
         throw new Error("Shit in switch on doctor settings");
     }
+    this.setState(this.state);
   };
 
   SetSchedule = () => {
@@ -228,7 +230,7 @@ class DoctorSettings extends React.Component {
         <Typography variant="body2">From: </Typography>
         <TextField
           id="time"
-          value={this.state.schedule.monday.fromMonday}
+          value={scheduleObj.monday.fromMonday}
           inputProps={{
             step: 300
           }}
@@ -240,7 +242,7 @@ class DoctorSettings extends React.Component {
         <Typography variant="body2">To: </Typography>
         <TextField
           id="time"
-          value={this.state.schedule.monday.toMonday}
+          value={scheduleObj.monday.toMonday}
           inputProps={{
             step: 300
           }}
@@ -254,7 +256,7 @@ class DoctorSettings extends React.Component {
         <Typography variant="body2">From: </Typography>
         <TextField
           id="time"
-          value={this.state.schedule.tuesday.fromTuesday}
+          value={scheduleObj.tuesday.fromTuesday}
           inputProps={{
             step: 300
           }}
@@ -265,7 +267,7 @@ class DoctorSettings extends React.Component {
         <Typography variant="body2">To: </Typography>
         <TextField
           id="time"
-          value={this.state.schedule.tuesday.toTuesday}
+          value={scheduleObj.tuesday.toTuesday}
           inputProps={{
             step: 300
           }}
@@ -278,7 +280,7 @@ class DoctorSettings extends React.Component {
         <Typography variant="body2">From: </Typography>
         <TextField
           id="time"
-          value={this.state.schedule.wednesday.fromWednesday}
+          value={scheduleObj.wednesday.fromWednesday}
           inputProps={{
             step: 300
           }}
@@ -289,7 +291,7 @@ class DoctorSettings extends React.Component {
         <Typography variant="body2">To: </Typography>
         <TextField
           id="time"
-          value={this.state.schedule.wednesday.toWednesday}
+          value={scheduleObj.wednesday.toWednesday}
           inputProps={{
             step: 300
           }}
@@ -302,7 +304,7 @@ class DoctorSettings extends React.Component {
         <Typography variant="body2">From: </Typography>
         <TextField
           id="time"
-          value={this.state.schedule.thursday.fromThursday}
+          value={scheduleObj.thursday.fromThursday}
           inputProps={{
             step: 300
           }}
@@ -313,7 +315,7 @@ class DoctorSettings extends React.Component {
         <Typography variant="body2">To: </Typography>
         <TextField
           id="time"
-          value={this.state.schedule.thursday.toThursday}
+          value={scheduleObj.thursday.toThursday}
           inputProps={{
             step: 300
           }}
@@ -326,7 +328,7 @@ class DoctorSettings extends React.Component {
         <Typography variant="body2">From: </Typography>
         <TextField
           id="time"
-          value={this.state.schedule.friday.fromFriday}
+          value={scheduleObj.friday.fromFriday}
           inputProps={{
             step: 300
           }}
@@ -337,7 +339,7 @@ class DoctorSettings extends React.Component {
         <Typography variant="body2">To: </Typography>
         <TextField
           id="time"
-          value={this.state.schedule.friday.toFriday}
+          value={scheduleObj.friday.toFriday}
           inputProps={{
             step: 300
           }}
