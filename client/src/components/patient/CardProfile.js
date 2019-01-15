@@ -1,6 +1,5 @@
 /*
 Component that will be shown in My doctors tab for patients, looks like card
-@imported NOWHERE
 */
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
@@ -20,6 +19,10 @@ import StarIcon from "@material-ui/icons/Star";
 import HealingIcon from "@material-ui/icons/Healing";
 import CabinetIcon from "@material-ui/icons/MeetingRoom";
 import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -27,6 +30,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import getAvatarInitials from "../../helpers/getAvatarInitials";
 import { colors } from "../../helpers/palette";
+import { unsubscribeFromDoctor } from "../../actions/utilsActions";
 // components
 import DoctorProfile from "../doctor/profile/DoctorProfile";
 
@@ -54,7 +58,8 @@ const styles = {
 
 class UserCard extends Component {
   state = {
-    profileOpen: false
+    profileOpen: false,
+    openConfirmUnsubscribe: false
   }
 
   closeProfile = () => {
@@ -70,6 +75,11 @@ class UserCard extends Component {
     var ageDifMs = Date.now() - birthday.getTime();
     var ageDate = new Date(ageDifMs); // miliseconds from epoch
     return Math.abs(ageDate.getUTCFullYear() - 1970);
+  }
+
+  unsubscribe = () => {
+    unsubscribeFromDoctor(this.props.parent, this.props.user._id);
+    window.location.reload();
   }
 
   renderSwitch(arg) {
@@ -196,7 +206,7 @@ class UserCard extends Component {
             </CardContent>
           </CardActionArea>
           <CardActions>
-            <Button>Unsubscribe</Button>
+            <Button onClick={() => this.setState({openConfirmUnsubscribe: true})}>Unsubscribe</Button>
             <Button
               onClick={() => {
                 this.setState({ profileOpen: true });
@@ -224,6 +234,28 @@ class UserCard extends Component {
             </Toolbar>
           </AppBar>
           <DoctorProfile user={this.props.user} />
+        </Dialog>
+
+        <Dialog
+          open={this.state.openConfirmUnsubscribe}
+          onClose={() => this.setState({openConfirmUnsubscribe: false})}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">{"Unregister"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Do you really want to unsubscribe from this doctor?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => this.setState({openConfirmUnsubscribe: false})} color="secondary">
+              Cancel
+            </Button>
+            <Button variant="contained" onClick={this.unsubscribe} color="secondary" autoFocus>
+              Yes, Unsubscribe
+            </Button>
+          </DialogActions>
         </Dialog>
       </div>
     );

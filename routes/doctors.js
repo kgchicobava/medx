@@ -6,6 +6,11 @@ const Doctor = require("../models/DoctorModel");
 const Patient = require("../models/PatientModel");
 const mongoose = require("mongoose");
 const omitEmpty = require("omit-empty");
+const chartConfig = require("../config/charts");
+const getAppointmentsLength = require("../client/src/helpers/getAppointmentsLength");
+const getAgesData = require("../client/src/helpers/getAgesData");
+const getVisitsData = require("../client/src/helpers/getVisitsData");
+const countInArray =require("../client/src/helpers/countInArray");
 
 router.post("/register", (req, res) => {
 	const newDoctor = new Doctor({
@@ -48,11 +53,13 @@ router.post(
 			console.log(doctor);
 		});
 		Doctor.findByIdAndUpdate(
-			req.body.id, {
+			req.body.id,
+			{
 				$push: {
 					tokens: req.body.token
 				}
-			}, {
+			},
+			{
 				new: true,
 				upsert: true
 			},
@@ -76,48 +83,56 @@ router.get(
 				let monData = doc.patients.map(
 					elem => new mongoose.Types.ObjectId(elem._id)
 				);
-				Patient.find({
-					_id: {
-						$in: monData
+				Patient.find(
+					{
+						_id: {
+							$in: monData
+						}
+					},
+					(err, patients) => {
+						if (err) console.log(err);
+						res.send(patients);
 					}
-				}, (err, patients) => {
-					if (err) console.log(err);
-					res.send(patients);
-				});
+				);
 			})
 			.catch(err => console.log(err));
 	}
 );
 
-router.get("/getSettings/:id", passport.authenticate("jwt", {
-	session: false
-}), (req, res) => {
-	Doctor.findById(req.params.id)
-		.then(doc => {
-			if (doc) {
-				res.send(doc.settings);
-			}
-		})
-		.catch(err => console.log(err));
-})
-
-router.post("/updateSettings", passport.authenticate("jwt", {
+router.get(
+	"/getSettings/:id",
+	passport.authenticate("jwt", {
 		session: false
 	}),
 	(req, res) => {
-		const {
-			settings,
-			user
-		} = req.body;
-		Doctor.findById(user).then(doc => {
+		Doctor.findById(req.params.id)
+			.then(doc => {
+				if (doc) {
+					res.send(doc.settings);
+				}
+			})
+			.catch(err => console.log(err));
+	}
+);
+
+router.post(
+	"/updateSettings",
+	passport.authenticate("jwt", {
+		session: false
+	}),
+	(req, res) => {
+		const { settings, user } = req.body;
+		Doctor.findById(user)
+			.then(doc => {
 				if (doc) {
 					doc.settings = settings;
 					doc.save();
-					console.log("saved")
+					console.log("saved");
 				}
 			})
-			.catch(err => console.log(err))
-	});
+			.catch(err => console.log(err));
+	}
+);
 
 router.get(
 	"/appointments/:id",
@@ -134,17 +149,29 @@ router.get(
 );
 
 router.post(
+	"/rating",
+	passport.authenticate("jwt", { session: false }),
+	(req, res) => {
+		const { doctorID, stars } = req.body;
+		console.log(doctorID, stars);
+		Doctor.findById(doctorID)
+			.then(doc => {
+				if (doc) {
+					doc.stars.push(stars);
+					doc.save();
+				}
+			})
+			.catch(err => console.log(err));
+	}
+);
+
+router.post(
 	"/appointments/add",
 	passport.authenticate("jwt", {
 		session: false
 	}),
 	(req, res) => {
-		const {
-			doctorID,
-			patientID,
-			appointment,
-			day
-		} = req.body;
+		const { doctorID, patientID, appointment, day } = req.body;
 		// Doctor.updateOne({_id: doctorID}, {$set : {appointments}}, (err) => console.log(err));
 		Doctor.findById(doctorID)
 			.then(doc => {
@@ -157,7 +184,13 @@ router.post(
 
 					Patient.findById(patientID).then(patient => {
 						if (patient) {
-							appointment.name = `Dr. ${doc.firstName} ${doc.lastName}, ${doc.settings.cabinet ? `cab. #${doc.settings.cabinet}` : ""}`;
+							appointment.name = `Dr. ${doc.firstName} ${
+								doc.lastName
+							}, ${
+								doc.settings.cabinet
+									? `cab. #${doc.settings.cabinet}`
+									: ""
+							}`;
 							let tempApps = patient.appointments;
 							tempApps[day].push(appointment);
 							patient.appointments = null;
@@ -171,19 +204,89 @@ router.post(
 	}
 );
 
-module.exports = router;
+router.get(
+	"/stats/:id",
+	passport.authenticate("jwt", { session: false }),
+	(req, res) => {
+		const { quantity, sexesPie, sexesBar, business, satisfaction, monthlyVisitors } = chartConfig;
+		let sexesPieMen = 0,
+			sexesPieWomen = 0;
+		// console.log(quantity);
+		Doctor.findById(req.params.id)
+			.then(doc => {
+				// ============== quantity ===============
+				quantity.options.labels[0] = doc.patients.length;
+				// ============== quantity ===============
 
-// "appointments": {
-//   "monday": [{
-//     "name": "Jasmine",
-//     "time_start": "09:45",
-//     "time_end" : "10:00"
-//   }],
-//   "tuesday": [],
-//   "wednesday": [],
-//   "thursday": [],
-//   "friday": []
-// }
+				// ==============monthly visits ==========
+				monthlyVisitors.options.labels[0] = getAppointmentsLength(
+					doc.appointments
+				);
+				// ==============monthly visits ==========
+
+				// ==============business=================
+				business.series = getVisitsData(doc.appointments);
+				// ==============business=================
+
+				// =================Satisfaction =========
+				satisfaction.series = countInArray(doc.stars);
+				// =================Satisfaction =========
+
+
+				let mongooseData = doc.patients.map(
+					elem => new mongoose.Types.ObjectId(elem._id)
+				);
+				Patient.find(
+					{ _id: { $in: mongooseData } },
+					(err, patients) => {
+						if (err) console.log(err);
+						// ============== ages ===================
+						sexesBar.series = getAgesData(patients);
+						// ============== ages ===================
+						patients.forEach(patient => {
+							switch (patient.settings.sex) {
+								case "male":
+									sexesPieMen++;
+									break;
+								case "female":
+									sexesPieWomen++;
+									break;
+								default:
+									break;
+							}
+						});
+						// ============== sexesPie ====================
+						sexesPie.series[0] = sexesPieMen;
+						sexesPie.series[1] = sexesPieWomen;
+						// ============== sexesPie ====================
+						res.send({
+							quantity,
+							sexesPie,
+							sexesBar,
+							business,
+							satisfaction,
+							monthlyVisitors
+						});
+					}
+				);
+			})
+			.catch(err => console.log(err));
+	}
+);
+
+// let monData = doc.patients.map(
+// 	elem => new mongoose.Types.ObjectId(elem._id)
+// );
+// Patient.find({
+// 	_id: {
+// 		$in: monData
+// 	}
+// }, (err, patients) => {
+// 	if (err) console.log(err);
+// 	res.send(patients);
+// });
+
+module.exports = router;
 
 // appointments.monday.push({name: "Not working", time_start: "07:00", time_end: schedule.monday.fromMonday});
 //         appointments.monday.push({name: "Not working", time_start: `${schedule.monday.toMonday}`, time_end: "19:00"});

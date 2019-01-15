@@ -42,6 +42,10 @@ const DoctorSchema = new Schema({
         },
         appointments: {
             type: Schema.Types.Mixed
+        },
+        stars: {
+            type: [String],
+            default: ["0", "0", "0", "0", "0"]
         }
 });
 

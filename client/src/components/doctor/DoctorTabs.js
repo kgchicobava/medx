@@ -15,6 +15,7 @@ import Stats from "./Stats";
 import Calendar from "./Calendar";
 import { connect } from "react-redux";
 import { getDoctorAppointments } from "../../actions/calendarActions";
+import { getStats } from "../../actions/utilsActions";
 import omitEmpty from "omit-empty";
 import isEmpty from "../../helpers/isempty";
 import Loader from "../utils/Loader";
@@ -34,7 +35,6 @@ const styles = theme => ({
 	}
 });
 
-
 class DoctorTabs extends Component {
 	state = {
 		value: 0
@@ -45,18 +45,24 @@ class DoctorTabs extends Component {
 	};
 	componentDidMount = () => {
 		this.props.getDoctorAppointments(this.props.auth.user.id);
+		this.props.getStats(this.props.auth.user.id);
 	};
 
 	render() {
-		const { classes, appointments } = this.props;
+		const { classes, appointments, stats } = this.props;
 		const { value } = this.state;
-		let content = null;
+		let content = null,
+			chartStats = null;
 		if (isEmpty(omitEmpty(appointments))) {
 			content = null;
 		} else {
 			content = appointments;
 		}
-
+		if (isEmpty(omitEmpty(stats))) {
+			chartStats = null;
+		} else {
+			chartStats = stats;
+		}
 		return (
 			<div>
 				<div className={classes.root}>
@@ -74,7 +80,11 @@ class DoctorTabs extends Component {
 
 					{value === 0 && (
 						<TabContainer>
-							<Stats />
+							{chartStats ? (
+								<Stats stats={chartStats} />
+							) : (
+								<Loader />
+							)}
 						</TabContainer>
 					)}
 					{value === 1 && (
@@ -102,10 +112,11 @@ class DoctorTabs extends Component {
 const mapStateToProps = state => ({
 	auth: state.auth,
 	appointments: state.appointments,
-	general: state.general
+	general: state.general,
+	stats: state.stats
 });
 
 export default connect(
 	mapStateToProps,
-	{ getDoctorAppointments }
+	{ getDoctorAppointments, getStats }
 )(withStyles(styles)(DoctorTabs));

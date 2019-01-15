@@ -5,9 +5,15 @@ import {
 	GET_DOCTORS_LIST,
 	DOCTORS_LOADING,
 	GET_PATIENT_RECORD,
-	GET_PATIENT_RECEPIE
+	GET_PATIENT_RECEPIE,
+	CLEAR_FINDED_DOCTOR,
+	GET_STATS
 } from "./constants";
 import axios from "axios";
+
+export const clearFinded = () => dispatch => {
+	dispatch({type: CLEAR_FINDED_DOCTOR})
+}
 
 export const setToken = (token, id) => dispatch => {
 	axios
@@ -61,11 +67,12 @@ export const sendDiaryRecord = (record, patientID) => dispatch => {
 
 export const getPatientsRecords = patientID => dispatch => {
 	dispatch({ type: PATIENTS_LOADING });
-    axios.get(`/api/patients/records/${patientID}`)
-        .then(res => {
-		dispatch({ type: GET_PATIENT_RECORD, data: res.data });
-    })
-      .catch(err => console.log(err));
+	axios
+		.get(`/api/patients/records/${patientID}`)
+		.then(res => {
+			dispatch({ type: GET_PATIENT_RECORD, data: res.data });
+		})
+		.catch(err => console.log(err));
 };
 
 export const sendRecepie = (recepie, patientID) => dispatch => {
@@ -77,13 +84,36 @@ export const sendRecepie = (recepie, patientID) => dispatch => {
 
 export const getPatientsRecepies = patientID => dispatch => {
 	dispatch({ type: PATIENTS_LOADING });
-    axios.get(`/api/patients/recepies/${patientID}`)
-        .then(res => {
-		dispatch({ type: GET_PATIENT_RECEPIE, data: res.data });
-    })
-      .catch(err => console.log(err));
+	axios
+		.get(`/api/patients/recepies/${patientID}`)
+		.then(res => {
+			dispatch({ type: GET_PATIENT_RECEPIE, data: res.data });
+		})
+		.catch(err => console.log(err));
 };
 
+export const setRating = (stars, doctorID) => {
+	axios
+		.post("/api/doctors/rating", { stars, doctorID })
+		.then(res => console.log(res))
+		.catch(err => console.log(err));
+};
+
+export const unsubscribeFromDoctor = (patientID, doctorID) => {
+	axios
+		.post("/api/patients/unsubscribe", { patientID, doctorID })
+		.then(res => console.log(res))
+		.catch(err => console.log(err));
+};
+
+export const getStats = (doctorID) => dispatch => {
+	axios.get(`/api/doctors/stats/${doctorID}`)
+		.then(res => {
+			console.log(res)
+			dispatch({type: GET_STATS, data: res.data})
+		})
+		.catch(err => console.log(err))
+}
 
 export const setPatientsLoading = () => {
 	return {

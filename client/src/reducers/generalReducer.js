@@ -5,7 +5,9 @@ import {
     GET_DOCTORS_LIST,
     DOCTORS_LOADING,
     GET_PATIENT_RECORD,
-    GET_PATIENT_RECEPIE
+    GET_PATIENT_RECEPIE,
+    CLEAR_FINDED_DOCTOR,
+
 } from "../actions/constants";
 
 const initialState = {
@@ -20,6 +22,13 @@ export default function (state = initialState, action) {
                 findedDoctor: action.data,
                 loading: false
             };
+        case CLEAR_FINDED_DOCTOR:
+        console.log(`welcome from reducer`)
+            return {
+                ...state,
+                findedDoctor: "",
+                loading: false
+            }
         case GET_PATIENTS_LIST:
             return {
                 ...state,

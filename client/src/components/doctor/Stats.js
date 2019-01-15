@@ -3,14 +3,7 @@ import Chart from "react-apexcharts";
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import {
-	quantity,
-	sexesPie,
-	sexesBar,
-	business,
-	satisfaction,
-	monthlyVisitors
-} from "./charts/ChartsConfigs";
+
 
 const styles = theme => ({
 	paperStats: {
@@ -22,18 +15,10 @@ const styles = theme => ({
 });
 
 class Stats extends Component {
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			options: { labels: ["One", "Two", "Three"] },
-			series: [44, 44, 44]
-		};
-	}
 
 	render() {
 		const { classes } = this.props;
-
+		const { quantity, sexesPie, sexesBar, business, satisfaction, monthlyVisitors } = this.props.stats;
 		return (
 			<div className="grid-stats">
 				<div className="stats-quantity">
@@ -141,7 +126,7 @@ class Stats extends Component {
 						Monthly stats
 					</Typography>
 					<Typography align="center" variant="subtitle1">
-						You had
+						You have
 					</Typography>
 					<Chart
 						type="radialBar"
