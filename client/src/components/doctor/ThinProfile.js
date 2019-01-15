@@ -72,7 +72,23 @@ class ThinProfile extends Component {
 
   render() {
     const { classes, user } = this.props;
-    let pickedDate = user.settings.birthday.split("-");
+    if(!user.settings) {
+      user.settings = {
+        birthday: "N/A",
+        address: {
+          city: "N/A",
+          street: "N/A",
+          number : "N/A"
+        },
+        phone: "N/A",
+        work: "N/A",
+        blood: {
+          type: "N/A",
+          rhesus: "N/A"
+        }
+      }
+    }
+    let pickedDate = user.settings ? user.settings.birthday.split("-") : "";
     let recievedDate = new Date(...pickedDate);
     return (
       <div>

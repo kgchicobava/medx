@@ -101,6 +101,23 @@ class UserCard extends Component {
 
   render() {
     const { classes, user } = this.props;
+    if(!user.settings) {
+      user.settings = {
+        birthday: "N/A",
+        address: {
+          city: "N/A",
+          street: "N/A",
+          number : "N/A"
+        },
+        phone: "N/A",
+        work: "N/A",
+        clinicName : "N/A",
+        cabinet : "N/A",
+        workPhone : "N/A",
+        specialty: "N/A",
+        yearsOfPractice: "N/A"
+      }
+    }
     let birthday, pickedDate, recievedDate;
     let initials = getAvatarInitials(user.firstName, user.lastName).join("");
     if (user.settings.birthday) {

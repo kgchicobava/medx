@@ -1,8 +1,2 @@
 Give some text on mainpage
-make box on login less soft
-patient settings dont appear in doctor
-fix crashes when no settings in user
-change shitty date picker in doctor settings
 http://jsfiddle.net/user/rdiaz/fiddles/
-fix crash when doctor doesnt have address
-remove birthday label in settings

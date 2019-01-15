@@ -1,7 +1,3 @@
-/*
-Dark shit going here
-@imported in App
-*/
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -11,7 +7,7 @@ const PrivateRoute = ({ component: Component, auth, ...rest }) => (
   <Route
     {...rest}
     render={props =>
-      auth.isAuthenticated === true ? (
+      auth.isPatientAuthenticated === true ? (
         <Component {...props} />
       ) : (
         <Redirect to="/login" />

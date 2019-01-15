@@ -20,6 +20,7 @@ import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import FavoriteIcon from "@material-ui/icons/Favorite";
 // Components
 import Diary from "./profile-tabs/Diary";
 import Recepies from "./profile-tabs/Recepies";
@@ -103,6 +104,12 @@ class PatientProfileTabs extends Component {
           <Typography className={classes.infoItems} variant="subtitle1">{`${
             user.settings.height
           }cm/${user.settings.weight}kg`}</Typography>
+        </div>
+        <div className="flex flex-center">
+          <FavoriteIcon color="primary" fontSize="large" />
+          <Typography className={classes.infoItems} variant="subtitle1">{`${
+            user.settings.blood.type
+          } ${user.settings.rhesus}`}</Typography>
         </div>
         <ExpansionPanel className="emergencyPanel">
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>

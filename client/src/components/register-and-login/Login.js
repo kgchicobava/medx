@@ -25,8 +25,8 @@ const styles = theme => ({
     margin: "2vh auto"
   },
   paperWidth: {
-    width: "30vw",
-    height: "50vh",
+    width: "400px",
+    height: "350px",
     margin: "10vh auto"
   },
   typographyPadding: {
@@ -90,12 +90,12 @@ class Login extends Component {
       this.setState({ errors: nextProps.errors });
     }
     if (nextProps.auth.user.typeOfUser === "Patient") {
-      if (nextProps.auth.isAuthenticated) {
+      if (nextProps.auth.isPatientAuthenticated) {
         this.props.history.push("/patient/home");
       }
     }
     if (nextProps.auth.user.typeOfUser === "Doctor") {
-      if (nextProps.auth.isAuthenticated) {
+      if (nextProps.auth.isDoctorAuthenticated) {
         this.props.history.push("/doctor/home");
       }
     }
@@ -116,7 +116,7 @@ class Login extends Component {
           >
             Log In
           </Typography>
-          
+
           <form onSubmit={this.onSubmit}>
             <div className="login-container">
             {this.loginErr(`${errors ? errors.email? errors.email : errors.password ? errors.password : "" : ""}`)}

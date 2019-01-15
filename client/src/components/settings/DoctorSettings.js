@@ -391,7 +391,7 @@ class DoctorSettings extends React.Component {
                 name="birthday"
                 onChange={this.onChangeSettings}
                 className={classes.dateField}
-                label="Birthday"
+                label=""
               />
             </ExpansionPanelDetails>
           </ExpansionPanel>
