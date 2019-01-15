@@ -10,20 +10,23 @@ import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import FormControl from "@material-ui/core/FormControl";
 import Typography from "@material-ui/core/Typography";
-import MenuItem from "@material-ui/core/MenuItem";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import FormHelperText from "@material-ui/core/FormHelperText";
-import {
-	ValidatorForm,
-	TextValidator,
-	SelectValidator
-} from "react-material-ui-form-validator";
+import Input from "@material-ui/core/Input";
+import InputLabel from "@material-ui/core/InputLabel";
+import FormLabel from "@material-ui/core/FormLabel";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import Radio from "@material-ui/core/Radio";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 import getRandomMaterialColor from "../../helpers/getRandomMaterialColor";
 // Components
 import Header from "../app-bar/Header";
 // Actions
-import { registerDoctor, registerPatient } from "../../actions/authorizationAction";
+import {
+	registerDoctor,
+	registerPatient
+} from "../../actions/authorizationAction";
 
 const styles = theme => ({
 	paper: {
@@ -32,33 +35,26 @@ const styles = theme => ({
 		paddingTop: "5vh"
 	},
 	layout: {
+		width: "60%",
+		height: '100%',
+		margin: "3vh auto",
 		display: "flex",
 		flexDirection: "column"
 	},
 	row: {
-		flexDirection: "row"
-	},
-	inputLayout: {
-		width: "60%",
-		margin: "3vh auto"
-	},
-	inputLayout2: {
-		width: "100%",
-		margin: "3vh auto"
-	},
-	margin: {
-		width: "100%"
-	},
-	width: {
-		width: "60%"
+		flexDirection: "row",
+		marginBottom: "5vh"
 	},
 	buttonLayout: {
 		width: "48%",
 		margin: "auto"
-  },
-  typographyPadding : {
-    paddingTop: "3vh"
-}
+	},
+	typographyPadding: {
+		paddingTop: "3vh"
+	},
+	marginTop: {
+		marginTop: "5vh"
+	}
 });
 
 class Register extends Component {
@@ -70,7 +66,8 @@ class Register extends Component {
 			email: "",
 			password: "",
 			password2: "",
-			typeOfUser: ""
+			typeOfUser: "",
+			errors: {}
 		};
 		this.onChange = this.onChange.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
@@ -78,156 +75,164 @@ class Register extends Component {
 
 	onChange(ev) {
 		this.setState({
-			[ev.target.name]: ev.target.value
+			[ev.target.name]: ev.target.value,
+			errors: {}
 		});
 	}
 
+	registerErr(errMsg) {
+		if(errMsg) {
+		  return (
+			<div className="register-err">
+			  {errMsg}
+			</div>
+		  )
+		}
+	  }
+
 	onSubmit(ev) {
+		ev.preventDefault();
 		const userData = {
 			firstName: this.state.firstName,
 			lastName: this.state.lastName,
 			email: this.state.email,
 			password: this.state.password,
+			password2: this.state.password2,
 			typeOfUser: this.state.typeOfUser,
 			color: getRandomMaterialColor()
-	};
+		};
 
-	if(this.state.typeOfUser === "Doctor") {
-		this.props.registerDoctor(userData, this.props.history);
-	}
-	if(this.state.typeOfUser === "Patient") {
-		this.props.registerPatient(userData, this.props.history);
-	}
-
+		if (this.state.typeOfUser === "Doctor") {
+			this.props.registerDoctor(userData, this.props.history);
+		}
+		if (this.state.typeOfUser === "Patient") {
+			this.props.registerPatient(userData, this.props.history);
+		}
 	}
 
 	componentDidMount() {
-		ValidatorForm.addValidationRule("isPasswordMatch", value => {
-			if (value !== this.state.password) {
-				return false;
-			}
-			return true;
-		});
+		if (this.props.auth.isAuthenticated) {
+			this.props.history.push("/dashboard");
+		}
+	}
 
-		ValidatorForm.addValidationRule("isEmailFree", value => {
-			// !req to db for email
-		});
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.errors) {
+			this.setState({ errors: nextProps.errors });
+		}
 	}
 
 	render() {
 		const { classes } = this.props;
+		const { errors } = this.state;
 		return (
 			<div>
 				<Header headerLabel="Register" back={true} toLocation="/" />
 				<Paper elevation={3} className={classes.paper}>
-        <Typography className={classes.typographyPadding} variant="h4" align="center">
-					Register
-				</Typography>
-					<ValidatorForm
-						onSubmit={this.onSubmit}
-						onError={errors => console.log(errors.length)}
-					>
+					<Typography
+						className={classes.typographyPadding}
+						variant="h4"
+						align="center">
+						Register
+					</Typography>
+					<form onSubmit={this.onSubmit}>
 						<div className={classes.layout}>
-							<TextValidator
-								className={classes.inputLayout}
-								label="First Name"
-								onChange={this.onChange}
-								name="firstName"
-								value={this.state.firstName}
-								placeholder="Enter your first name"
-								validators={["required"]}
-								errorMessages={["This field is required"]}
-							/>
-
-							<TextValidator
-								className={classes.inputLayout}
-								label="Last Name"
-								onChange={this.onChange}
-								name="lastName"
-								value={this.state.lastName}
-								placeholder="Enter your last name"
-								validators={["required"]}
-								errorMessages={["This field is required"]}
-							/>
-
-							<TextValidator
-								className={classes.inputLayout}
-								label="Email"
-								onChange={this.onChange}
-								name="email"
-								value={this.state.email}
-								placeholder="Enter your E-mail"
-								validators={["required", "isEmail"]}
-								errorMessages={[
-									"this field is required",
-									"email is not valid"
-								]}
-							/>
-
-							<TextValidator
-								className={classes.inputLayout}
-								label="Password"
-								onChange={this.onChange}
-								name="password"
-								type="password"
-								value={this.state.password}
-								placeholder="Enter your password"
-								validators={["required", "minStringLength:5"]}
-								errorMessages={[
-									"this field is required",
-									"This field should be at least 5 symbols long"
-								]}
-							/>
-
-							<TextValidator
-								className={classes.inputLayout}
-								label="Confirm your password"
-								onChange={this.onChange}
-								name="password2"
-								type="password"
-								value={this.state.password2}
-								placeholder="Confirm"
-								validators={["required", "isPasswordMatch"]}
-								errorMessages={[
-									"this field is required",
-									"Passwords do not match"
-								]}
-							/>
-
-							<FormControl className={classes.inputLayout}>
-								<Typography variant="p">
-									Choose your role
-								</Typography>
-								<SelectValidator
-									className={classes.inputLayout2}
-									name="typeOfUser"
+							<FormControl  error={errors.firstName}>
+								<InputLabel>First name</InputLabel>
+								<Input
+									name="firstName"
+									type="text"
+									placeholder="First name"
+									required={true}
 									onChange={this.onChange}
-									value={this.state.typeOfUser}
-									validators={["required"]}
-									errorMessages={["this field is required"]}
-								>
-									<MenuItem value={"Doctor"}>
-										I am a doctor
-									</MenuItem>
-									<MenuItem value={"Patient"}>
-										I am a patient
-									</MenuItem>
-								</SelectValidator>
+								/>
+								{this.registerErr(`${errors.firstName ? errors.firstName : ""}`)}
+							</FormControl>
+
+							<FormControl className={classes.marginTop} error={errors.lastName}>
+								<InputLabel>Last name</InputLabel>
+								<Input
+									name="lastName"
+									type="text"
+									placeholder="Last name"
+
+									required={true}
+									onChange={this.onChange}
+								/>
+								{this.registerErr(`${errors.lastName ? errors.lastName : ""}`)}
+							</FormControl>
+
+							<FormControl className={classes.marginTop} error={errors.email}>
+								<InputLabel >E-mail</InputLabel>
+								<Input
+									name="email"
+									type="email"
+									placeholder="Enter your E-mail"
+									required={true}
+									onChange={this.onChange}
+								/>{this.registerErr(`${errors.email ? errors.email : ""}`)}
+							</FormControl>
+
+							<FormControl className={classes.marginTop} error={errors.password}>
+								<InputLabel >Password</InputLabel>
+								<Input
+									name="password"
+									type="password"
+									placeholder="Enter your password"
+									required={true}
+									onChange={this.onChange}
+								/>
+								{this.registerErr(`${errors.password ? errors.password : ""}`)}
+							</FormControl>
+
+							<FormControl className={classes.marginTop} error={errors.password2}>
+								<InputLabel>Password confirm</InputLabel>
+								<Input
+									name="password2"
+									type="password"
+									placeholder="Confirm your password"
+									required={true}
+									onChange={this.onChange}
+								/>
+								{this.registerErr(`${errors.password2 ? errors.password2 : ""}`)}
+							</FormControl>
+
+							<FormControl className={classes.marginTop} required error={errors.typeOfUser} component="fieldset">
+								<FormLabel component="legend">
+									Choose your role
+								</FormLabel>
+								<RadioGroup
+									name="typeOfUser"
+									required
+									value={this.state.typeOfValue}
+									onChange={this.onChange}>
+									<FormControlLabel
+										value="Doctor"
+										control={<Radio color="secondary" />}
+										label="Doctor"
+										labelPlacement="end"
+									/>
+									<FormControlLabel
+										value="Patient"
+										control={<Radio color="secondary" />}
+										label="Patient"
+										labelPlacement="end"
+									/>
+								</RadioGroup>
 								<FormHelperText>
-									You cannot change this in future
+									You can`t change this in future
 								</FormHelperText>
+								{this.registerErr(`${errors.typeOfUser ? errors.typeOfUser : ""}`)}
 							</FormControl>
 							<FormControl
-								className={`${classes.inputLayout} ${
+								className={`${classes.marginTop} ${
 									classes.row
-								}`}
-							>
+								}`}>
 								<Button
 									className={classes.buttonLayout}
 									variant="contained"
 									color="secondary"
-									type="submit"
-								>
+									type="submit">
 									Register
 								</Button>
 								<Button
@@ -235,21 +240,25 @@ class Register extends Component {
 									variant="outlined"
 									color="secondary"
 									onClick={this.onSubmit}
-									href="/"
-								>
+									href="/">
 									Cancel
 								</Button>
 							</FormControl>
 						</div>
-					</ValidatorForm>
+						</form>
 				</Paper>
 			</div>
 		);
 	}
 }
 
-const mapStateToProps = (state) => ({
-  state
-})
+const mapStateToProps = state => ({
+	auth: state.auth,
+	errors: state.errors,
+	general: state.general
+});
 
-export default connect(mapStateToProps, {registerDoctor, registerPatient})(withStyles(styles)(withRouter(Register)));
+export default connect(
+	mapStateToProps,
+	{ registerDoctor, registerPatient }
+)(withStyles(styles)(withRouter(Register)));

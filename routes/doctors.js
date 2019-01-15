@@ -7,39 +7,51 @@ const Patient = require("../models/PatientModel");
 const mongoose = require("mongoose");
 const omitEmpty = require("omit-empty");
 const chartConfig = require("../config/charts");
-const getAppointmentsLength = require("../client/src/helpers/getAppointmentsLength");
-const getAgesData = require("../client/src/helpers/getAgesData");
-const getVisitsData = require("../client/src/helpers/getVisitsData");
-const countInArray =require("../client/src/helpers/countInArray");
+const statsHelpers = require("../client/src/helpers/statsHelpers");
+
+const validateRegisterInput = require("../validation/registerValidation");
 
 router.post("/register", (req, res) => {
-	const newDoctor = new Doctor({
-		firstName: req.body.userdata.firstName,
-		lastName: req.body.userdata.lastName,
-		email: req.body.userdata.email,
-		password: req.body.userdata.password,
-		typeOfUser: req.body.userdata.typeOfUser,
-		color: req.body.userdata.color,
-		settings: {},
-		appointments: {
-			monday: [],
-			tuesday: [],
-			wednesday: [],
-			thursday: [],
-			friday: []
+	const { errors, isValid } = validateRegisterInput(req.body.userdata);
+	console.log(errors, isValid);
+	if (!isValid) {
+		return res.status(400).json(errors);
+	}
+	Doctor.findOne({ email: req.body.userdata.email }).then(doc => {
+		if (doc) {
+			errors.email = "Email already exists";
+			return res.status(400).json(errors);
+		} else {
+			const newDoctor = new Doctor({
+				firstName: req.body.userdata.firstName,
+				lastName: req.body.userdata.lastName,
+				email: req.body.userdata.email,
+				password: req.body.userdata.password,
+				typeOfUser: req.body.userdata.typeOfUser,
+				color: req.body.userdata.color,
+				settings: {},
+				appointments: {
+					monday: [],
+					tuesday: [],
+					wednesday: [],
+					thursday: [],
+					friday: []
+				}
+			});
+			bcrypt.genSalt(10, (err, salt) => {
+				if (err) throw err;
+				bcrypt.hash(newDoctor.password, salt, (err, hash) => {
+					if (err) throw err;
+					newDoctor.password = hash;
+					newDoctor
+						.save()
+						.then(doctor => res.json(doctor))
+						.catch(err => console.log(err));
+				});
+			});
 		}
-	});
-	bcrypt.genSalt(10, (err, salt) => {
-		if (err) throw err;
-		bcrypt.hash(newDoctor.password, salt, (err, hash) => {
-			if (err) throw err;
-			newDoctor.password = hash;
-			newDoctor
-				.save()
-				.then(doctor => res.json(doctor))
-				.catch(err => console.log(err));
-		});
-	});
+	})
+	.catch(err => console.log(err));
 });
 
 router.post(
@@ -208,10 +220,16 @@ router.get(
 	"/stats/:id",
 	passport.authenticate("jwt", { session: false }),
 	(req, res) => {
-		const { quantity, sexesPie, sexesBar, business, satisfaction, monthlyVisitors } = chartConfig;
+		const {
+			quantity,
+			sexesPie,
+			sexesBar,
+			business,
+			satisfaction,
+			monthlyVisitors
+		} = chartConfig;
 		let sexesPieMen = 0,
 			sexesPieWomen = 0;
-		// console.log(quantity);
 		Doctor.findById(req.params.id)
 			.then(doc => {
 				// ============== quantity ===============
@@ -219,19 +237,18 @@ router.get(
 				// ============== quantity ===============
 
 				// ==============monthly visits ==========
-				monthlyVisitors.options.labels[0] = getAppointmentsLength(
+				monthlyVisitors.options.labels[0] = statsHelpers.getAppointmentsLength(
 					doc.appointments
 				);
 				// ==============monthly visits ==========
 
 				// ==============business=================
-				business.series = getVisitsData(doc.appointments);
+				business.series = statsHelpers.getVisitsData(doc.appointments);
 				// ==============business=================
 
 				// =================Satisfaction =========
-				satisfaction.series = countInArray(doc.stars);
+				satisfaction.series = statsHelpers.countInArray(doc.stars);
 				// =================Satisfaction =========
-
 
 				let mongooseData = doc.patients.map(
 					elem => new mongoose.Types.ObjectId(elem._id)
@@ -241,18 +258,20 @@ router.get(
 					(err, patients) => {
 						if (err) console.log(err);
 						// ============== ages ===================
-						sexesBar.series = getAgesData(patients);
+						sexesBar.series = statsHelpers.getAgesData(patients);
 						// ============== ages ===================
 						patients.forEach(patient => {
-							switch (patient.settings.sex) {
-								case "male":
-									sexesPieMen++;
-									break;
-								case "female":
-									sexesPieWomen++;
-									break;
-								default:
-									break;
+							if (patient.settings) {
+								switch (patient.settings.sex) {
+									case "male":
+										sexesPieMen++;
+										break;
+									case "female":
+										sexesPieWomen++;
+										break;
+									default:
+										break;
+								}
 							}
 						});
 						// ============== sexesPie ====================
@@ -273,18 +292,6 @@ router.get(
 			.catch(err => console.log(err));
 	}
 );
-
-// let monData = doc.patients.map(
-// 	elem => new mongoose.Types.ObjectId(elem._id)
-// );
-// Patient.find({
-// 	_id: {
-// 		$in: monData
-// 	}
-// }, (err, patients) => {
-// 	if (err) console.log(err);
-// 	res.send(patients);
-// });
 
 module.exports = router;
 

@@ -17,7 +17,10 @@ export const registerDoctor = (userdata, history) => dispatch => {
     .then(res => {
       history.push("/login");
     })
-    .catch(err => console.log(err));
+    .catch(err => dispatch({
+      type: GET_ERRORS,
+      data: err.response.data
+    }));
 };
 
 export const registerPatient = (userdata, history) => dispatch => {
@@ -28,7 +31,10 @@ export const registerPatient = (userdata, history) => dispatch => {
     .then(res => {
       history.push("/login");
     })
-    .catch(err => console.log(err));
+    .catch(err => dispatch({
+      type: GET_ERRORS,
+      data: err.response.data
+    }));
 };
 
 export const loginUser = userdata => dispatch => {

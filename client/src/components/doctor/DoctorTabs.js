@@ -74,7 +74,6 @@ class DoctorTabs extends Component {
 							<Tab label="Stats" />
 							<Tab label="Patients" />
 							<Tab label="Upcoming visits" />
-							<Tab label="Moth" />
 						</Tabs>
 					</AppBar>
 
@@ -102,7 +101,6 @@ class DoctorTabs extends Component {
 							}
 						</TabContainer>
 					)}
-					{value === 3 && <TabContainer>Item Three</TabContainer>}
 				</div>
 			</div>
 		);

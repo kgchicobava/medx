@@ -6,27 +6,44 @@ const Doctor = require("../models/DoctorModel");
 const Patient = require("../models/PatientModel");
 const mongoose = require("mongoose");
 
-router.post("/register", (req, res) => {
-	const newPatient = new Patient({
-		firstName: req.body.userdata.firstName,
-		lastName: req.body.userdata.lastName,
-		email: req.body.userdata.email,
-		password: req.body.userdata.password,
-		typeOfUser: req.body.userdata.typeOfUser,
-		color: req.body.userdata.color,
-		settings: {}
-	});
+const validateRegisterInput = require("../validation/registerValidation");
 
-	bcrypt.genSalt(10, (err, salt) => {
-		bcrypt.hash(newPatient.password, salt, (err, hash) => {
-			if (err) throw err;
-			newPatient.password = hash;
-			newPatient
-				.save()
-				.then(patient => res.json(patient))
-				.catch(err => console.log(err));
-		});
-	});
+
+router.post("/register", (req, res) => {
+	const { errors, isValid } = validateRegisterInput(req.body.userdata);
+	console.log(errors, isValid);
+	if (!isValid) {
+		return res.status(400).json(errors);
+	}
+	Patient.findOne({email: req.body.userdata.email}).then(patient => {
+		if(patient) {
+			errors.email = "Email already exists";
+			return res.status(400).json(errors);
+		} else {
+			const newPatient = new Patient({
+				firstName: req.body.userdata.firstName,
+				lastName: req.body.userdata.lastName,
+				email: req.body.userdata.email,
+				password: req.body.userdata.password,
+				typeOfUser: req.body.userdata.typeOfUser,
+				color: req.body.userdata.color,
+				settings: {}
+			});
+
+			bcrypt.genSalt(10, (err, salt) => {
+				bcrypt.hash(newPatient.password, salt, (err, hash) => {
+					if (err) throw err;
+					newPatient.password = hash;
+					newPatient
+						.save()
+						.then(patient => res.json(patient))
+						.catch(err => console.log(err));
+				});
+			});
+		}
+	})
+	.catch(err => console.log(err));
+
 });
 
 router.post(
