@@ -1,10 +1,9 @@
 /*
-Register component
-@Change variant for pick role
-@try to make validation on server
-@imported in App
+	Register component
+	@imported in App
 */
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import Paper from "@material-ui/core/Paper";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -19,6 +18,7 @@ import FormLabel from "@material-ui/core/FormLabel";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import Radio from "@material-ui/core/Radio";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+// Helpers
 import getRandomMaterialColor from "../../helpers/getRandomMaterialColor";
 // Components
 import Header from "../app-bar/Header";
@@ -36,7 +36,7 @@ const styles = theme => ({
 	},
 	layout: {
 		width: "60%",
-		height: '100%',
+		height: "100%",
 		margin: "3vh auto",
 		display: "flex",
 		flexDirection: "column"
@@ -71,6 +71,7 @@ class Register extends Component {
 		};
 		this.onChange = this.onChange.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
+		this.registerErr = this.registerErr.bind(this);
 	}
 
 	onChange(ev) {
@@ -81,14 +82,10 @@ class Register extends Component {
 	}
 
 	registerErr(errMsg) {
-		if(errMsg) {
-		  return (
-			<div className="register-err">
-			  {errMsg}
-			</div>
-		  )
+		if (errMsg) {
+			return <div className="register-err">{errMsg}</div>;
 		}
-	  }
+	}
 
 	onSubmit(ev) {
 		ev.preventDefault();
@@ -137,7 +134,7 @@ class Register extends Component {
 					</Typography>
 					<form onSubmit={this.onSubmit}>
 						<div className={classes.layout}>
-							<FormControl  error={errors.firstName}>
+							<FormControl error={errors.firstName}>
 								<InputLabel>First name</InputLabel>
 								<Input
 									name="firstName"
@@ -146,35 +143,49 @@ class Register extends Component {
 									required={true}
 									onChange={this.onChange}
 								/>
-								{this.registerErr(`${errors.firstName ? errors.firstName : ""}`)}
+								{this.registerErr(
+									`${
+										errors.firstName ? errors.firstName : ""
+									}`
+								)}
 							</FormControl>
 
-							<FormControl className={classes.marginTop} error={errors.lastName}>
+							<FormControl
+								className={classes.marginTop}
+								error={errors.lastName}>
 								<InputLabel>Last name</InputLabel>
 								<Input
 									name="lastName"
 									type="text"
 									placeholder="Last name"
-
 									required={true}
 									onChange={this.onChange}
 								/>
-								{this.registerErr(`${errors.lastName ? errors.lastName : ""}`)}
+								{this.registerErr(
+									`${errors.lastName ? errors.lastName : ""}`
+								)}
 							</FormControl>
 
-							<FormControl className={classes.marginTop} error={errors.email}>
-								<InputLabel >E-mail</InputLabel>
+							<FormControl
+								className={classes.marginTop}
+								error={errors.email}>
+								<InputLabel>E-mail</InputLabel>
 								<Input
 									name="email"
 									type="email"
 									placeholder="Enter your E-mail"
 									required={true}
 									onChange={this.onChange}
-								/>{this.registerErr(`${errors.email ? errors.email : ""}`)}
+								/>
+								{this.registerErr(
+									`${errors.email ? errors.email : ""}`
+								)}
 							</FormControl>
 
-							<FormControl className={classes.marginTop} error={errors.password}>
-								<InputLabel >Password</InputLabel>
+							<FormControl
+								className={classes.marginTop}
+								error={errors.password}>
+								<InputLabel>Password</InputLabel>
 								<Input
 									name="password"
 									type="password"
@@ -182,10 +193,14 @@ class Register extends Component {
 									required={true}
 									onChange={this.onChange}
 								/>
-								{this.registerErr(`${errors.password ? errors.password : ""}`)}
+								{this.registerErr(
+									`${errors.password ? errors.password : ""}`
+								)}
 							</FormControl>
 
-							<FormControl className={classes.marginTop} error={errors.password2}>
+							<FormControl
+								className={classes.marginTop}
+								error={errors.password2}>
 								<InputLabel>Password confirm</InputLabel>
 								<Input
 									name="password2"
@@ -194,10 +209,18 @@ class Register extends Component {
 									required={true}
 									onChange={this.onChange}
 								/>
-								{this.registerErr(`${errors.password2 ? errors.password2 : ""}`)}
+								{this.registerErr(
+									`${
+										errors.password2 ? errors.password2 : ""
+									}`
+								)}
 							</FormControl>
 
-							<FormControl className={classes.marginTop} required error={errors.typeOfUser} component="fieldset">
+							<FormControl
+								className={classes.marginTop}
+								required
+								error={errors.typeOfUser}
+								component="fieldset">
 								<FormLabel component="legend">
 									Choose your role
 								</FormLabel>
@@ -222,7 +245,13 @@ class Register extends Component {
 								<FormHelperText>
 									You can`t change this in future
 								</FormHelperText>
-								{this.registerErr(`${errors.typeOfUser ? errors.typeOfUser : ""}`)}
+								{this.registerErr(
+									`${
+										errors.typeOfUser
+											? errors.typeOfUser
+											: ""
+									}`
+								)}
 							</FormControl>
 							<FormControl
 								className={`${classes.marginTop} ${
@@ -245,12 +274,19 @@ class Register extends Component {
 								</Button>
 							</FormControl>
 						</div>
-						</form>
+					</form>
 				</Paper>
 			</div>
 		);
 	}
 }
+
+Register.propTypes = {
+	auth: PropTypes.object.isRequired,
+	errors: PropTypes.object.isRequired,
+	general: PropTypes.object.isRequired,
+	classes: PropTypes.object.isRequired
+};
 
 const mapStateToProps = state => ({
 	auth: state.auth,

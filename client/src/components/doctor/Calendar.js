@@ -1,3 +1,7 @@
+/*
+	Component that in table-calendar form shows appointments for user
+	@imported at DoctorTabs, PatientTabs
+*/
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { appointmentAdd } from "../../actions/calendarActions";
@@ -35,37 +39,11 @@ const addDays = (date, days) => {
 	return clone;
 };
 
-/* COMPONENTS */
 class Calendar extends Component {
 	constructor(props) {
 		super(props);
-		console.log(props);
-		this.addAppointment = this.addAppointment.bind(this);
 		this.normalizeTimeBlocks(this.props.appointments);
 	}
-
-	// componentWillReceiveProps(nextProps) {
-	// 	if (this.props.appointments !== nextProps.appointments) {
-	// 		this.normalizeTimeBlock(nextProps.appointments);
-	// 	}
-	// }
-
-	addAppointment = ev => {
-		let confirmation = window.confirm(
-			"Do you really want to sign up for this date?"
-		);
-		let { attributes } = ev.target;
-		if (confirmation) {
-			this.props.appointmentAdd(
-				`${this.props.auth.user.firstName} ${
-					this.props.auth.user.lastName
-				}`,
-				attributes[1].nodeValue,
-				this.props.auth.user.id,
-				this.props.calendar
-			);
-		}
-	};
 
 	normalizeTimeBlocks = appointments => {
 		const blockSize = 15;
@@ -116,7 +94,6 @@ class Calendar extends Component {
 	};
 
 	render() {
-		console.log(this.props);
 		const rows = [];
 		for (let time in this.timeBlocks) {
 			const block = this.timeBlocks[time];
@@ -131,7 +108,6 @@ class Calendar extends Component {
 						appointment={block.monday}
 						day="monday"
 						time={time}
-						onClick={this.addAppointment}
 					/>
 					<AppointmentCell
 						appointment={block.tuesday}
@@ -192,7 +168,7 @@ const Appointment = props => {
 		appointment.time_start === "00:00" && appointment.time_end === "00:00";
 
 	const time = wholeDay
-		? "Todo el dÃ­a"
+		? "Todo el día"
 		: `${appointment.time_start} - ${appointment.time_end}`;
 
 	return (
@@ -271,8 +247,6 @@ const AppointmentCell = props => {
 		</Cell>
 	);
 };
-
-
 
 const mapStateToProps = state => ({
 	auth: state.auth,

@@ -11,17 +11,20 @@ import {
 } from "./constants";
 import axios from "axios";
 
+// Clear finded doctor in searchtoken dialog
 export const clearFinded = () => dispatch => {
-	dispatch({type: CLEAR_FINDED_DOCTOR})
-}
+	dispatch({ type: CLEAR_FINDED_DOCTOR });
+};
 
+// Set generated token for doctor
 export const setToken = (token, id) => dispatch => {
 	axios
 		.post("/api/doctors/tokens", { token, id })
-		.then(res => console.log(res))
+		.then(res => res.json())
 		.catch(err => console.log(err));
 };
 
+// Find generated token
 export const findToken = token => dispatch => {
 	axios
 		.post("/api/patients/adddoctor", { token })
@@ -31,6 +34,7 @@ export const findToken = token => dispatch => {
 		.catch(err => console.log(err));
 };
 
+// If token finded, merge patient and doctor
 export const merge = (doctor, patient) => dispatch => {
 	axios
 		.post("/api/patients/merge", { doctor, patient })
@@ -38,6 +42,7 @@ export const merge = (doctor, patient) => dispatch => {
 		.catch(err => console.log(err));
 };
 
+// Get patients list for doctor
 export const getPatientsList = doctorID => dispatch => {
 	dispatch({ type: PATIENTS_LOADING });
 	axios
@@ -48,6 +53,7 @@ export const getPatientsList = doctorID => dispatch => {
 		.catch(err => console.log(err));
 };
 
+// Get doctors list for patient
 export const getDoctorsList = patientId => dispatch => {
 	dispatch({ type: DOCTORS_LOADING });
 	axios
@@ -58,6 +64,7 @@ export const getDoctorsList = patientId => dispatch => {
 		.catch(err => console.log(err));
 };
 
+// Set diary record to patient`s db
 export const sendDiaryRecord = (record, patientID) => dispatch => {
 	axios
 		.post("/api/patients/setdiaryrecord", { record, patientID })
@@ -65,6 +72,7 @@ export const sendDiaryRecord = (record, patientID) => dispatch => {
 		.catch(err => console.log(err));
 };
 
+// Get patient`s records in diary
 export const getPatientsRecords = patientID => dispatch => {
 	dispatch({ type: PATIENTS_LOADING });
 	axios
@@ -75,6 +83,7 @@ export const getPatientsRecords = patientID => dispatch => {
 		.catch(err => console.log(err));
 };
 
+// Set recepie record to patient`s db
 export const sendRecepie = (recepie, patientID) => dispatch => {
 	axios
 		.post("/api/patients/setrecepie", { recepie, patientID })
@@ -82,6 +91,7 @@ export const sendRecepie = (recepie, patientID) => dispatch => {
 		.catch(err => console.log(err));
 };
 
+// Get patient`s recepies
 export const getPatientsRecepies = patientID => dispatch => {
 	dispatch({ type: PATIENTS_LOADING });
 	axios
@@ -92,6 +102,7 @@ export const getPatientsRecepies = patientID => dispatch => {
 		.catch(err => console.log(err));
 };
 
+// Set rating star value for doctor
 export const setRating = (stars, doctorID) => {
 	axios
 		.post("/api/doctors/rating", { stars, doctorID })
@@ -99,6 +110,7 @@ export const setRating = (stars, doctorID) => {
 		.catch(err => console.log(err));
 };
 
+// Unsubscribe from doctor
 export const unsubscribeFromDoctor = (patientID, doctorID) => {
 	axios
 		.post("/api/patients/unsubscribe", { patientID, doctorID })
@@ -106,21 +118,24 @@ export const unsubscribeFromDoctor = (patientID, doctorID) => {
 		.catch(err => console.log(err));
 };
 
-export const getStats = (doctorID) => dispatch => {
-	axios.get(`/api/doctors/stats/${doctorID}`)
+// Get stats data for charts
+export const getStats = doctorID => dispatch => {
+	axios
+		.get(`/api/doctors/stats/${doctorID}`)
 		.then(res => {
-			console.log(res)
-			dispatch({type: GET_STATS, data: res.data})
+			dispatch({ type: GET_STATS, data: res.data });
 		})
-		.catch(err => console.log(err))
-}
+		.catch(err => console.log(err));
+};
 
+// Helper
 export const setPatientsLoading = () => {
 	return {
 		type: PATIENTS_LOADING
 	};
 };
 
+// Helper
 export const setDoctorsLoading = () => {
 	return {
 		type: DOCTORS_LOADING

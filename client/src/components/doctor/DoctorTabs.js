@@ -1,24 +1,25 @@
 /*
-Component for doctor, that takes logic of all tabs for main page
-@NEED FOR RENAME
-@imported in DoctorDashboard
+	Component for doctor, that takes logic of all tabs for main page
+	@imported in DoctorHomepage
 */
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
+import { connect } from "react-redux";
+import isEmpty from "../../helpers/isempty";
+import omitEmpty from "omit-empty";
 // Components
 import PatientsList from "./PatientsList";
 import Stats from "./Stats";
 import Calendar from "./Calendar";
-import { connect } from "react-redux";
+import Loader from "../utils/Loader";
+// Actions
 import { getDoctorAppointments } from "../../actions/calendarActions";
 import { getStats } from "../../actions/utilsActions";
-import omitEmpty from "omit-empty";
-import isEmpty from "../../helpers/isempty";
-import Loader from "../utils/Loader";
 
 function TabContainer(props) {
 	return (
@@ -36,13 +37,18 @@ const styles = theme => ({
 });
 
 class DoctorTabs extends Component {
-	state = {
-		value: 0
-	};
+	constructor(props) {
+		super(props);
+		this.state = {
+			value: 0
+		};
+		this.handleChange = this.handleChange.bind(this);
+	}
 
 	handleChange = (event, value) => {
 		this.setState({ value });
 	};
+
 	componentDidMount = () => {
 		this.props.getDoctorAppointments(this.props.auth.user.id);
 		this.props.getStats(this.props.auth.user.id);
@@ -53,16 +59,19 @@ class DoctorTabs extends Component {
 		const { value } = this.state;
 		let content = null,
 			chartStats = null;
+
 		if (isEmpty(omitEmpty(appointments))) {
 			content = null;
 		} else {
 			content = appointments;
 		}
+
 		if (isEmpty(omitEmpty(stats))) {
 			chartStats = null;
 		} else {
 			chartStats = stats;
 		}
+
 		return (
 			<div>
 				<div className={classes.root}>
@@ -86,11 +95,13 @@ class DoctorTabs extends Component {
 							)}
 						</TabContainer>
 					)}
+
 					{value === 1 && (
 						<TabContainer>
 							<PatientsList />
 						</TabContainer>
 					)}
+
 					{value === 2 && (
 						<TabContainer>
 							{content ? (
@@ -106,6 +117,14 @@ class DoctorTabs extends Component {
 		);
 	}
 }
+
+DoctorTabs.propTypes = {
+	classes: PropTypes.object.isRequired,
+	auth: PropTypes.object.isRequired,
+	appointments: PropTypes.object.isRequired,
+	general: PropTypes.object.isRequired,
+	stats: PropTypes.object.isRequired
+};
 
 const mapStateToProps = state => ({
 	auth: state.auth,

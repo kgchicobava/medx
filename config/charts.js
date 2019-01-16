@@ -1,3 +1,4 @@
+// data template for apex charts, that using in client
 module.exports = {
 	quantity: {
 		series: [100],

@@ -1,9 +1,9 @@
 /*
-Login page
-@Make validation and error messages
-@imported in App
+  Login page
+  @imported in App
 */
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
@@ -18,151 +18,167 @@ import Header from "../app-bar/Header";
 import { loginUser } from "../../actions/authorizationAction";
 
 const styles = theme => ({
-  width: {
-    width: "25vw"
-  },
-  margin: {
-    margin: "2vh auto"
-  },
-  paperWidth: {
-    width: "400px",
-    height: "350px",
-    margin: "10vh auto"
-  },
-  typographyPadding: {
-    paddingTop: "3vh"
-  },
+	width: {
+		width: "25vw"
+	},
+	margin: {
+		margin: "2vh auto"
+	},
+	paperWidth: {
+		width: "400px",
+		height: "350px",
+		margin: "10vh auto"
+	},
+	typographyPadding: {
+		paddingTop: "3vh"
+	}
 });
 
 class Login extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      email: "",
-      password: "",
-      errors: {}
-    };
-    this.onChange = this.onChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
-  }
+	constructor(props) {
+		super(props);
+		this.state = {
+			email: "",
+			password: "",
+			errors: {}
+		};
+		this.onChange = this.onChange.bind(this);
+		this.onSubmit = this.onSubmit.bind(this);
+		this.loginErr = this.loginErr.bind(this);
+	}
 
-  componentDidMount() {
-    if (this.props.auth.user.typeOfUser === "Doctor") {
-      if (this.props.auth.isAuthenticated) {
-        this.props.history.push("/doctor/home");
-      }
-    }
-    if (this.props.auth.user.typeOfUser === "Patient") {
-      if (this.props.auth.isAuthenticated) {
-        this.props.history.push("/patient/home");
-      }
-    }
-  }
+	componentDidMount() {
+		if (this.props.auth.user.typeOfUser === "Doctor") {
+			if (this.props.auth.isAuthenticated) {
+				this.props.history.push("/doctor/home");
+			}
+		}
+		if (this.props.auth.user.typeOfUser === "Patient") {
+			if (this.props.auth.isAuthenticated) {
+				this.props.history.push("/patient/home");
+			}
+		}
+	}
 
-  onSubmit(ev) {
-    ev.preventDefault();
-    const userData = {
-      email: this.state.email,
-      password: this.state.password
-    };
-    this.props.loginUser(userData);
-  }
+	onSubmit(ev) {
+		ev.preventDefault();
+		const userData = {
+			email: this.state.email,
+			password: this.state.password
+		};
+		this.props.loginUser(userData);
+	}
 
-  onChange(ev) {
-    this.setState({
-      [ev.target.name]: ev.target.value,
-      errors: {}
-    });
-  }
+	onChange(ev) {
+		this.setState({
+			[ev.target.name]: ev.target.value,
+			errors: {}
+		});
+	}
 
-  loginErr(errMsg) {
-    if(errMsg) {
-      return (
-        <div className="login-err">
-          {errMsg}
-        </div>
-      )
-    }
-  }
+	loginErr(errMsg) {
+		if (errMsg) {
+			return <div className="login-err">{errMsg}</div>;
+		}
+	}
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.errors) {
-      this.setState({ errors: nextProps.errors });
-    }
-    if (nextProps.auth.user.typeOfUser === "Patient") {
-      if (nextProps.auth.isPatientAuthenticated) {
-        this.props.history.push("/patient/home");
-      }
-    }
-    if (nextProps.auth.user.typeOfUser === "Doctor") {
-      if (nextProps.auth.isDoctorAuthenticated) {
-        this.props.history.push("/doctor/home");
-      }
-    }
-  }
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.errors) {
+			this.setState({ errors: nextProps.errors });
+		}
+		if (nextProps.auth.user.typeOfUser === "Patient") {
+			if (nextProps.auth.isPatientAuthenticated) {
+				this.props.history.push("/patient/home");
+			}
+		}
+		if (nextProps.auth.user.typeOfUser === "Doctor") {
+			if (nextProps.auth.isDoctorAuthenticated) {
+				this.props.history.push("/doctor/home");
+			}
+		}
+	}
 
-  render() {
-    const { classes } = this.props;
-    const { errors } = this.state;
-    return (
-      <div>
-        <Header headerLabel={"Login"} back={true} toLocation="/" />
+	render() {
+		const { classes } = this.props;
+		const { errors } = this.state;
+		return (
+			<div>
+				<Header headerLabel={"Login"} back={true} toLocation="/" />
 
-        <Paper elevation={3} className={classes.paperWidth}>
-          <Typography
-            className={classes.typographyPadding}
-            variant="h4"
-            align="center"
-          >
-            Log In
-          </Typography>
+				<Paper elevation={3} className={classes.paperWidth}>
+					<Typography
+						className={classes.typographyPadding}
+						variant="h4"
+						align="center">
+						Log In
+					</Typography>
 
-          <form onSubmit={this.onSubmit}>
-            <div className="login-container">
-            {this.loginErr(`${errors ? errors.email? errors.email : errors.password ? errors.password : "" : ""}`)}
-              <FormControl error={errors.email}>
-                <InputLabel>Enter your E-mail</InputLabel>
-                <Input
-                  name="email"
-                  type="email"
-                  placeholder="E-Mail"
-                  className={`${classes.width} ${classes.margin}`}
-                  required={true}
-                  onChange={this.onChange}
-                />
-              </FormControl>
-              <FormControl error={errors.password}>
-                <InputLabel>Enter your password</InputLabel>
-                <Input
-                  name="password"
-                  type="password"
-                  placeholder="Password"
-                  className={`${classes.width} ${classes.margin}`}
-                  required={true}
-                  onChange={this.onChange}
-                />
-              </FormControl>
-              <Button
-                variant="contained"
-                color="secondary"
-                className={`${classes.width} ${classes.margin}`}
-                onClick={this.onSubmit}
-              >
-                Submit
-              </Button>
-            </div>
-          </form>
-        </Paper>
-      </div>
-    );
-  }
+					<form onSubmit={this.onSubmit}>
+						<div className="login-container">
+							{this.loginErr(
+								`${
+									errors
+										? errors.email
+											? errors.email
+											: errors.password
+											? errors.password
+											: ""
+										: ""
+								}`
+							)}
+							<FormControl error={errors.email}>
+								<InputLabel>Enter your E-mail</InputLabel>
+								<Input
+									name="email"
+									type="email"
+									placeholder="E-Mail"
+									className={`${classes.width} ${
+										classes.margin
+									}`}
+									required={true}
+									onChange={this.onChange}
+								/>
+							</FormControl>
+							<FormControl error={errors.password}>
+								<InputLabel>Enter your password</InputLabel>
+								<Input
+									name="password"
+									type="password"
+									placeholder="Password"
+									className={`${classes.width} ${
+										classes.margin
+									}`}
+									required={true}
+									onChange={this.onChange}
+								/>
+							</FormControl>
+							<Button
+								variant="contained"
+								color="secondary"
+								className={`${classes.width} ${classes.margin}`}
+								onClick={this.onSubmit}>
+								Submit
+							</Button>
+						</div>
+					</form>
+				</Paper>
+			</div>
+		);
+	}
 }
 
+Login.propTypes = {
+	auth: PropTypes.object.isRequired,
+	errors: PropTypes.object.isRequired,
+	classes: PropTypes.object.isRequired
+};
+
 const mapStateToProps = state => ({
-  auth: state.auth,
-  errors: state.errors
+	auth: state.auth,
+	errors: state.errors
 });
+
 export default connect(
-  mapStateToProps,
-  { loginUser }
+	mapStateToProps,
+	{ loginUser }
 )(withStyles(styles)(Login));

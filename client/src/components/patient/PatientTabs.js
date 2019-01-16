@@ -1,8 +1,9 @@
 /*
-Component that renders tabs for patients, contain all main components and info
-@imported in PatientDashboard
+	Component that renders tabs for patients, contain all main components and info
+	@imported in PatientHomepage
 */
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
@@ -14,12 +15,9 @@ import DoctorsList from "./DoctorsList";
 import PatientDiaryTab from "./PatientDiaryTab";
 import PatientRecepiesTab from "./PatientRecepiesTab";
 import Calendar from "../doctor/Calendar";
-// import Loader from "../utils/Loader";
 import { getPatientAppointments } from "../../actions/calendarActions";
 import omitEmpty from "omit-empty";
 import isEmpty from "../../helpers/isempty";
-
-
 
 function TabContainer(props) {
 	return (
@@ -37,38 +35,41 @@ const styles = theme => ({
 });
 
 const defProps = {
-		monday: [],
-		tuesday: [],
-		wednesday: [],
-		thursday: [],
-		friday: []
-
-}
+	monday: [],
+	tuesday: [],
+	wednesday: [],
+	thursday: [],
+	friday: []
+};
 
 class PatientTabs extends Component {
-	state = {
-		value: 0
-	};
+	constructor(props) {
+		super(props);
+		this.state = {
+			value: 0
+		};
+		this.handleChange = this.handleChange.bind(this);
+	}
 
 	handleChange = (event, value) => {
 		this.setState({ value });
 	};
 
 	componentDidMount = () => {
-    this.props.getPatientAppointments(this.props.auth.user.id);
-  };
-
+		this.props.getPatientAppointments(this.props.auth.user.id);
+	};
 
 	render() {
 		const { classes, appointments } = this.props;
-    const { value } = this.state;
-    console.log(this.props);
-    let content = null;
+		const { value } = this.state;
+		let content = null;
+
 		if (isEmpty(omitEmpty(appointments))) {
 			content = null;
 		} else {
 			content = appointments;
 		}
+
 		return (
 			<div>
 				<div className={classes.root}>
@@ -104,7 +105,7 @@ class PatientTabs extends Component {
 								<Calendar appointments={content} />
 							) : (
 								<Calendar appointments={defProps} />
-              )}
+							)}
 						</TabContainer>
 					)}
 				</div>
@@ -112,6 +113,13 @@ class PatientTabs extends Component {
 		);
 	}
 }
+
+PatientTabs.propTypes = {
+	auth: PropTypes.object.isRequired,
+	appointments: PropTypes.object,
+	general: PropTypes.object.isRequired,
+	classes: PropTypes.object.isRequired
+};
 
 const mapStateToProps = state => ({
 	auth: state.auth,

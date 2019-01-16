@@ -1,2 +1,1 @@
-Give some text on mainpage
 http://jsfiddle.net/user/rdiaz/fiddles/

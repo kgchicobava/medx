@@ -1,10 +1,11 @@
 /*
-Component that shows when you click on profile in My patients tab, as doctor
-@imported in ThinCard
+	Component that shows when you click on profile in My patients tab, as doctor
+	@imported in ThinProfile
 */
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
+import PropTypes from "prop-types";
 import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
 import getAvatarInitials from "../../../helpers/getAvatarInitials";
@@ -22,7 +23,6 @@ import DoctorProfileTabs from "./DoctorProfileTabs";
 
 const styles = theme => ({
 	root: {
-		// ...theme.mixins.gutters(),
 		paddingTop: theme.spacing.unit * 2,
 		paddingBottom: theme.spacing.unit * 2,
 		width: "80%",
@@ -42,15 +42,15 @@ const styles = theme => ({
 	showBtn: {
 		marginLeft: "auto",
 		marginRight: "1em"
-	  },
-	  star: {
+	},
+	star: {
 		display: "flex",
 		justifyContent: "center"
-	  },
-	  rating: {
-		  marginTop: "1em",
-		  transform: "scale(2.5)"
-	  }
+	},
+	rating: {
+		marginTop: "1em",
+		transform: "scale(2.5)"
+	}
 });
 
 class DoctorProfile extends Component {
@@ -79,14 +79,14 @@ class DoctorProfile extends Component {
 	};
 
 	setRate = () => {
-		setRating(this.state.rating, this.props.user._id)
+		setRating(this.state.rating, this.props.user._id);
 		this.handleClose();
-	}
+	};
 
-	getRating = (star) => {
+	getRating = star => {
 		switch (star) {
 			case 1:
-				return "Very unsatisfied"
+				return "Very unsatisfied";
 			case 2:
 				return "Unsatisfied";
 			case 3:
@@ -94,15 +94,14 @@ class DoctorProfile extends Component {
 			case 4:
 				return "Satisfied";
 			case 5:
-				return "Very satisfied"
+				return "Very satisfied";
 			default:
-				return ""
+				return "";
 		}
-	}
+	};
 
 	render() {
 		const { classes, user } = this.props;
-		// console.log(user)
 		let initials = getAvatarInitials(user.firstName, user.lastName).join(
 			""
 		);
@@ -131,7 +130,7 @@ class DoctorProfile extends Component {
 				</Paper>
 				<div>
 					<Dialog
-					className={classes.dialog}
+						className={classes.dialog}
 						open={this.state.open}
 						onClose={this.handleClose}
 						aria-labelledby="alert-dialog-title"
@@ -140,10 +139,11 @@ class DoctorProfile extends Component {
 							{"Rate this doctor from 1 to 5"}
 						</DialogTitle>
 						<DialogContent>
-								<Typography>
-									Let us know what you think about this person, it will help us improve qualitty of our work
-									</Typography>
-									<div className={classes.star}>
+							<Typography>
+								Let us know what you think about this person, it
+								will help us improve qualitty of our work
+							</Typography>
+							<div className={classes.star}>
 								<StarRatingComponent
 									name="rate1"
 									className={classes.rating}
@@ -151,10 +151,10 @@ class DoctorProfile extends Component {
 									value={this.state.rating}
 									onStarClick={this.onStarClick.bind(this)}
 								/>
-								</div>
-								<Typography variant="body1">
-									{this.getRating(this.state.rating)}
-								</Typography>
+							</div>
+							<Typography variant="body1">
+								{this.getRating(this.state.rating)}
+							</Typography>
 						</DialogContent>
 						<DialogActions>
 							<Button onClick={this.handleClose} color="primary">
@@ -176,5 +176,9 @@ class DoctorProfile extends Component {
 		);
 	}
 }
+
+DoctorProfile.propTypes = {
+	classes: PropTypes.object.isRequired
+};
 
 export default withStyles(styles)(DoctorProfile);

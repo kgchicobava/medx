@@ -1,24 +1,22 @@
 /*
-Main cimponent that shows for doctor and contain all tabs and info
-@NEED FOR RENAME
-@imported in App
+	Main cimponent that shows for doctor and contain all tabs and info
+	@imported in App
 */
-import React, { Component } from 'react';
-import ProfileActions from "../app-bar/ProfileActions";
+import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 // Components
-import DoctorTabs from './DoctorTabs';
+import ProfileActions from "../app-bar/ProfileActions";
+import DoctorTabs from "./DoctorTabs";
 
 class DoctorDashboard extends Component {
-  render() {
-    return (
-      <div>
-          <ProfileActions userRole="Doctor" />
-          <DoctorTabs />
-      </div>
-    )
-  }
+	render() {
+		return (
+			<div>
+				<ProfileActions userRole="Doctor" />
+				<DoctorTabs />
+			</div>
+		);
+	}
 }
-
 
 export default withRouter(DoctorDashboard);

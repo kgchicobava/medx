@@ -1,9 +1,9 @@
 /*
-Dialog component, that renders find UI for token and doctor
-@REMOVE STORE
-@imported in DoctorsTab
+	Dialog component, that renders find UI for token and doctor
+	@imported in DoctorsTab
 */
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
@@ -11,6 +11,7 @@ import Avatar from "@material-ui/core/Avatar";
 import deepPurple from "@material-ui/core/colors/deepPurple";
 import Button from "@material-ui/core/Button";
 import { connect } from "react-redux";
+// Helpers
 import getAvatarInitials from "../../helpers/getAvatarInitials";
 // Actions
 import { merge, clearFinded } from "../../actions/utilsActions";
@@ -31,15 +32,14 @@ const styles = theme => ({
 });
 class SearchCard extends Component {
 	handleAdd = () => {
-        this.props.merge(this.props.doctor, this.props.auth.user);
-        this.props.clearFinded();
+		this.props.merge(this.props.doctor, this.props.auth.user);
+		this.props.clearFinded();
 		this.props.close();
 		window.location.reload();
 	};
 
 	render() {
 		const { classes, doctor } = this.props;
-        console.log(this.props)
 		return (
 			<div>
 				<Paper className={classes.root} elevation={3}>
@@ -66,10 +66,13 @@ class SearchCard extends Component {
 	}
 }
 
-const  mapStateToProps = (state) => {
-    return { auth: state.auth,
-            general: state.general };
-}
+SearchCard.propTypes = {
+	auth: PropTypes.object.isRequired,
+	general: PropTypes.object.isRequired,
+	doctor: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({ auth: state.auth, general: state.general });
 
 export default connect(
 	mapStateToProps,

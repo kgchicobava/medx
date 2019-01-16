@@ -1,4 +1,9 @@
-import React from "react";
+/*
+	Component, where displayed sorted patient`s recepies
+	@imported at DoctorProfileTabs
+*/
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -13,8 +18,9 @@ import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 import LastPageIcon from "@material-ui/icons/LastPage";
 import { connect } from "react-redux";
-import { getPatientsRecepies } from "../../../actions/utilsActions";
 import TableHead from "@material-ui/core/TableHead";
+// Actions
+import { getPatientsRecepies } from "../../../actions/utilsActions";
 
 const actionsStyles = theme => ({
 	root: {
@@ -24,7 +30,7 @@ const actionsStyles = theme => ({
 	}
 });
 
-class TablePaginationActions extends React.Component {
+class TablePaginationActions extends Component {
 	handleFirstPageButtonClick = event => {
 		this.props.onChangePage(event, 0);
 	};
@@ -97,6 +103,15 @@ class TablePaginationActions extends React.Component {
 	}
 }
 
+TablePaginationActions.propTypes = {
+	classes: PropTypes.object.isRequired,
+	count: PropTypes.number.isRequired,
+	onChangePage: PropTypes.func.isRequired,
+	page: PropTypes.number.isRequired,
+	rowsPerPage: PropTypes.number.isRequired,
+	theme: PropTypes.object.isRequired
+};
+
 const TablePaginationActionsWrapped = withStyles(actionsStyles, {
 	withTheme: true
 })(TablePaginationActions);
@@ -128,7 +143,7 @@ const styles = theme => ({
 	}
 });
 
-class SortedRecepies extends React.Component {
+class SortedRecepies extends Component {
 	state = {
 		page: 0,
 		rowsPerPage: 5
@@ -136,7 +151,7 @@ class SortedRecepies extends React.Component {
 
 	componentWillUnmount = () => {
 		rows = [];
-	}
+	};
 
 	handleChangePage = (event, page) => {
 		this.setState({ page });
@@ -254,12 +269,17 @@ class SortedRecepies extends React.Component {
 		);
 	}
 }
-const mapStateToProps = state => {
-	return {
-		auth: state.auth,
-		general: state.general
-	};
+
+SortedRecepies.propTypes = {
+	classes: PropTypes.object.isRequired,
+	auth: PropTypes.object.isRequired,
+	general: PropTypes.object.isRequired
 };
+
+const mapStateToProps = state => ({
+	auth: state.auth,
+	general: state.general
+});
 
 export default connect(
 	mapStateToProps,

@@ -1,7 +1,6 @@
 /*
-The first page that user see, route at "/"
-@NEED FOR RENAME
-@imported in App
+	The first page that user see, route at "/"
+	@imported in App
 */
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
@@ -39,10 +38,28 @@ class RootPage extends Component {
 						Welcome to Med-X
 					</Typography>
 					<Typography variant="h6" align="center">
-						Lorem, ipsum dolor sit amet consectetur adipisicing elit. Cumque, corrupti iure pariatur totam omnis laboriosam rerum id nisi ab tempora.
+						Simple medical info-system, that allows patients
+						communicate with doctors and vice versa
 					</Typography>
-					<Link to="/register"><Button className={classes.margins} variant="contained" fullWidth={true} color="secondary" size="large">Register</Button></Link>
-					<Link to="/login"><Button variant="outlined" fullWidth={true} color="secondary" size="large">Login</Button></Link>
+					<Link to="/register">
+						<Button
+							className={classes.margins}
+							variant="contained"
+							fullWidth={true}
+							color="secondary"
+							size="large">
+							Register
+						</Button>
+					</Link>
+					<Link to="/login">
+						<Button
+							variant="outlined"
+							fullWidth={true}
+							color="secondary"
+							size="large">
+							Login
+						</Button>
+					</Link>
 				</div>
 			</div>
 		);

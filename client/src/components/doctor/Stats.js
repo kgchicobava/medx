@@ -1,9 +1,13 @@
+/*
+	Component, that display a few charts, with stats info for doctor
+	@imported in DoctorTabs
+*/
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import Chart from "react-apexcharts";
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-
 
 const styles = theme => ({
 	paperStats: {
@@ -15,10 +19,16 @@ const styles = theme => ({
 });
 
 class Stats extends Component {
-
 	render() {
 		const { classes } = this.props;
-		const { quantity, sexesPie, sexesBar, business, satisfaction, monthlyVisitors } = this.props.stats;
+		const {
+			quantity,
+			sexesPie,
+			sexesBar,
+			business,
+			satisfaction,
+			monthlyVisitors
+		} = this.props.stats;
 		return (
 			<div className="grid-stats">
 				<div className="stats-quantity">
@@ -118,31 +128,36 @@ class Stats extends Component {
 				</div>
 
 				<div className="stats-month">
-				<Paper  elevation={3}>
-					<Typography
-						className={classes.headerMargin}
-						align="center"
-						variant="h5">
-						Monthly stats
-					</Typography>
-					<Typography align="center" variant="subtitle1">
-						You have
-					</Typography>
-					<Chart
-						type="radialBar"
-						options={monthlyVisitors.options}
-						series={monthlyVisitors.series}
-						height="100%"
-						width="100%"
-					/>
-					<Typography align="center" variant="subtitle1">
-						Visits this month
-					</Typography>
-				</Paper>
+					<Paper elevation={3}>
+						<Typography
+							className={classes.headerMargin}
+							align="center"
+							variant="h5">
+							Monthly stats
+						</Typography>
+						<Typography align="center" variant="subtitle1">
+							You have
+						</Typography>
+						<Chart
+							type="radialBar"
+							options={monthlyVisitors.options}
+							series={monthlyVisitors.series}
+							height="100%"
+							width="100%"
+						/>
+						<Typography align="center" variant="subtitle1">
+							Visits this month
+						</Typography>
+					</Paper>
 				</div>
 			</div>
 		);
 	}
 }
+
+Stats.propTypes = {
+	classes: PropTypes.object.isRequired,
+	stats: PropTypes.object.isRequired
+};
 
 export default withStyles(styles)(Stats);

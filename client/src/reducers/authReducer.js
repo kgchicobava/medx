@@ -15,18 +15,21 @@ export default function(state = initialState, action) {
 				isDoctorAuthenticated: !isEmpty(action.data),
 				user: action.data
 			};
+
 		case SET_PATIENT:
 			return {
 				...state,
 				isPatientAuthenticated: !isEmpty(action.data),
 				user: action.data
 			};
+
 		case LOGOUT:
 			return {
 				...state,
 				isPatientAuthenticated: false,
 				isDoctorAuthenticated: false
 			};
+
 		default:
 			return state;
 	}

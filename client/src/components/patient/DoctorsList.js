@@ -5,6 +5,7 @@ Component that show dialog for registering token for patient
 @imported in NavTabs2
 */
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import Fab from "@material-ui/core/Fab";
@@ -21,8 +22,8 @@ import IconButton from "@material-ui/core/IconButton";
 // Actions
 import {
 	findToken,
-    getDoctorsList,
-    clearFinded
+	getDoctorsList,
+	clearFinded
 } from "../../actions/utilsActions";
 // Components
 import SearchTokenDialog from "./SearchTokenDialog";
@@ -41,16 +42,25 @@ const styles = theme => ({
 });
 
 class DoctorsList extends Component {
-	state = {
-		dialogOpen: false,
-		token: ""
-	};
+	constructor(props) {
+		super(props);
+		this.state = {
+			dialogOpen: false,
+			token: ""
+		};
+		this.dialogOpen = this.dialogOpen.bind(this);
+		this.dialogClose = this.dialogClose.bind(this);
+		this.handleFab = this.handleFab.bind(this);
+		this.handleToken = this.handleToken.bind(this);
+		this.onChangeDialog = this.onChangeDialog.bind(this);
+	}
+
 	dialogOpen = () => {
 		this.setState({ dialogOpen: true });
 	};
 
 	dialogClose = () => {
-        this.props.clearFinded();
+		this.props.clearFinded();
 		this.setState({ dialogOpen: false, token: "" });
 	};
 
@@ -141,7 +151,7 @@ class DoctorsList extends Component {
 							close={() => {
 								this.dialogClose();
 							}}
-                            doctor={findedDoctor}
+							doctor={findedDoctor}
 						/>
 					) : (
 						""
@@ -160,13 +170,17 @@ class DoctorsList extends Component {
 		);
 	}
 }
-//TE36mdgnKEh6Nic6s4XN7D
-function mapStateToProps(state) {
-	return {
-		general: state.general,
-		auth: state.auth
-	};
-}
+
+DoctorsList.propTypes = {
+	general: PropTypes.object.isRequired,
+	auth: PropTypes.object.isRequired,
+	classes: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+	general: state.general,
+	auth: state.auth
+});
 
 export default connect(
 	mapStateToProps,

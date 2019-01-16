@@ -1,9 +1,9 @@
 /*
-Patient settings. Very fcking large component, bit how to change it no variants for now.
-@add a few items
-@imported in App
+	Patient settings
+	@imported in App
 */
 import React from "react";
+import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
@@ -22,7 +22,6 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Snackbar from "@material-ui/core/Snackbar";
 import IconButton from "@material-ui/core/Icon";
 import CloseIcon from "@material-ui/icons/Close";
-
 // Components
 import ProfileActions from "../app-bar/ProfileActions";
 // Actions
@@ -70,38 +69,48 @@ const styles = theme => ({
 });
 
 class PatientSettings extends React.Component {
-	state = {
-		expanded: null,
-		openSnackBar: false,
-		address: {
-			street: "",
-			city: "",
-			number: ""
-		},
-		birthday: "",
-		sex: "",
-		email: "",
-		work: "",
-		maritalStatus: "",
-		emergency: {
-			fName: "",
-			lName: "",
-			relation: "",
-			phoneNumber: ""
-		},
-		phone: "",
-		allergies: "",
-		medAllergies: "",
-		injuries: "",
-		operations: "",
-		currMeds: "",
-		height: "",
-		weight: "",
-		blood: {
-			type: "",
-			rhesus: ""
-		}
-	};
+	constructor(props) {
+		super(props);
+		this.state = {
+			expanded: null,
+			openSnackBar: false,
+			address: {
+				street: "",
+				city: "",
+				number: ""
+			},
+			birthday: "",
+			sex: "",
+			email: "",
+			work: "",
+			maritalStatus: "",
+			emergency: {
+				fName: "",
+				lName: "",
+				relation: "",
+				phoneNumber: ""
+			},
+			phone: "",
+			allergies: "",
+			medAllergies: "",
+			injuries: "",
+			operations: "",
+			currMeds: "",
+			height: "",
+			weight: "",
+			blood: {
+				type: "",
+				rhesus: ""
+			}
+		};
+		this.handleExpand = this.handleExpand.bind(this);
+		this.handleCloseSnackBar = this.handleCloseSnackBar.bind(this);
+		this.onAddress = this.onAddress.bind(this);
+		this.onEmergency = this.onEmergency.bind(this);
+		this.onChangeSettings = this.onChangeSettings.bind(this);
+		this.onChangeBloodType = this.onChangeBloodType.bind(this);
+		this.onSave = this.onSave.bind(this);
+	}
 
 	handleExpand = panel => (event, expanded) => {
 		this.setState({
@@ -189,7 +198,7 @@ class PatientSettings extends React.Component {
 								<TextField
 									type="text"
 									onChange={this.onAddress}
-                                    name="city"
+									name="city"
 									value={this.state.address.city}
 									variant="outlined"
 									label="Your city"
@@ -197,7 +206,7 @@ class PatientSettings extends React.Component {
 								/>
 								<TextField
 									type="text"
-                                    onChange={this.onAddress}
+									onChange={this.onAddress}
 									name="street"
 									variant="outlined"
 									label="Your street"
@@ -207,7 +216,7 @@ class PatientSettings extends React.Component {
 								<TextField
 									type="text"
 									onChange={this.onAddress}
-                                    name="number"
+									name="number"
 									variant="outlined"
 									value={this.state.address.number}
 									label="Your house number"
@@ -232,7 +241,6 @@ class PatientSettings extends React.Component {
 							<TextField
 								type="date"
 								variant="outlined"
-								defaultValue="2000-01-01"
 								name="birthday"
 								value={this.state.birthday}
 								onChange={this.onChangeSettings}
@@ -696,13 +704,18 @@ class PatientSettings extends React.Component {
 	}
 }
 
-function mapStateToProps(state) {
-	return {
-		auth: state.auth,
-		general: state.general,
-		settings: state.settings
-	};
-}
+PatientSettings.propTypes = {
+	auth: PropTypes.object.isRequired,
+	general: PropTypes.object.isRequired,
+	settings: PropTypes.object.isRequired,
+	classes: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+	auth: state.auth,
+	general: state.general,
+	settings: state.settings
+});
 
 export default connect(
 	mapStateToProps,
