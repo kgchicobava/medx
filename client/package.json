@@ -1,6 +1,10 @@
 {
   "name": "client",
   "version": "0.1.0",
+  "engines" : {
+    "node" : "10.15.0",
+    "npm" : "6.5.0"
+  },
   "private": true,
   "dependencies": {
     "@material-ui/core": "^3.6.1",
@@ -22,7 +26,8 @@
     "react-star-rating-component": "^1.4.1",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
-    "uuid-token-generator": "^1.0.0"
+    "uuid-token-generator": "^1.0.0",
+    "node-sass": "^4.10.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -39,8 +44,5 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ],
-  "devDependencies": {
-    "node-sass": "^4.10.0"
-  }
+  ]
 }
