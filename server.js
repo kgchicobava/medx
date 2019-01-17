@@ -32,7 +32,7 @@ require("./config/passport")(passport);
 app.use("/api/user", api);
 app.use("/api/patients", patients);
 app.use("/api/doctors", doctors);
-
+app.use(express.static(path.join(__dirname, "client/build")));
 // If in production
 if (process.env.NODE_ENV === "production") {
 	app.use(express.static("client/build"));
