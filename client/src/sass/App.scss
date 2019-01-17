@@ -73,6 +73,10 @@
     grid-row-gap: 3em;
 }
 
+a {
+    text-decoration: none;
+}
+
 .login-err {
     box-sizing: border-box;
     color: red;

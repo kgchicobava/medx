@@ -45,7 +45,6 @@ router.post("/login", (req, res) => {
 								token: "Bearer " + token
 							});
 						});
-						console.log(`User matched!`);
 					} else {
 						console.log(`Password incorrect`);
 						errors.password = "Password incorrect";

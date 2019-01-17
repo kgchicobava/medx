@@ -216,9 +216,9 @@ class Diary extends Component {
 				<div className="flex flex-center">
 					<TextField
 						multiline
-						placeholder="placeholder"
+						placeholder="Symptoms, threatment, etc..."
 						value={this.state.diaryRecord}
-						label="label"
+						label="Set record"
 						className={classes.inputAdjustment}
 						variant="outlined"
 						onChange={ev => {

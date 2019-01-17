@@ -36,7 +36,14 @@ router.post("/register", (req, res) => {
 					password: req.body.userdata.password,
 					typeOfUser: req.body.userdata.typeOfUser,
 					color: req.body.userdata.color,
-					settings: {}
+					settings: {},
+					appointments: {
+						monday: [],
+						tuesday: [],
+						wednesday: [],
+						thursday: [],
+						friday: []
+					}
 				});
 				// Hash password with bcrypt
 				bcrypt.genSalt(10, (err, salt) => {
@@ -234,7 +241,6 @@ router.post(
 			if (patient) {
 				patient.recepies.push(recepie);
 				patient.save();
-				console.log("saved");
 			}
 		});
 	}

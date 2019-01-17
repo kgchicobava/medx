@@ -228,8 +228,8 @@ class Recepies extends React.Component {
 						onChange={ev =>
 							this.setState({ meds: ev.target.value })
 						}
-						placeholder="placeholder"
-						label="label"
+						placeholder="Write down medicines, that you think patient needs"
+						label="Medicines"
 						className={classes.inputAdjustment}
 						variant="outlined"
 					/>
@@ -239,8 +239,8 @@ class Recepies extends React.Component {
 						onChange={ev =>
 							this.setState({ order: ev.target.value })
 						}
-						placeholder="placeholder"
-						label="label"
+						placeholder="In what order to take them"
+						label="Order"
 						className={classes.inputAdjustment}
 						variant="outlined"
 					/>

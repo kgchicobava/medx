@@ -14,7 +14,7 @@ export default (state = initialState, action) => {
 			return action.data;
 
 		case APPOINTMENT_ADD:
-			state[action.day].push(action.appointment);
+			state[action.day].push(action.data.appointment);
 			return { ...state };
 
 		default:

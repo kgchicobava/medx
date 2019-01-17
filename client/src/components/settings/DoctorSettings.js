@@ -209,7 +209,6 @@ class DoctorSettings extends Component {
 	}
 
 	handleDateChange = ev => {
-		console.log(`changed`);
 		let { name, value } = ev.target;
 		let day = name.match(/[A-Z].+/g)[0].toLowerCase();
 		switch (day) {
@@ -689,7 +688,7 @@ class DoctorSettings extends Component {
 								Cabinet
 							</Typography>
 							<Typography className={classes.secondaryHeading}>
-								? of your cabinet
+								# of your cabinet
 							</Typography>
 						</ExpansionPanelSummary>
 						<ExpansionPanelDetails>
