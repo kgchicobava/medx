@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const passport = require("passport");
+const path = require("path");
 // Routes
 const doctors = require("./routes/doctors");
 const patients = require("./routes/patients");
