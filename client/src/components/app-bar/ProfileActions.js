@@ -25,11 +25,16 @@ import Snackbar from "@material-ui/core/Snackbar";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { Link } from "react-router-dom";
 import ArrowBack from "@material-ui/icons/ArrowBack";
+import Slide from "@material-ui/core/Slide";
+import CloseIcon from "@material-ui/icons/Close";
 
 import getAvatarInitials from "../../helpers/getAvatarInitials";
+// Components
+import LocalPatientProfile from "../patient/profile/LocalPatientProfile";
+import LocalDoctorProfile from "../doctor/profile/LocalDoctorProfile";
 // Actions
 import { logout } from "../../actions/authorizationAction";
-import { setToken } from "../../actions/utilsActions";
+import { setToken, getUserData } from "../../actions/utilsActions";
 
 const TokenGenerator = require("uuid-token-generator");
 
@@ -76,6 +81,9 @@ const styles = theme => ({
 		[theme.breakpoints.up("md")]: {
 			display: "flex"
 		}
+	},
+	appBar: {
+		position: "relative"
 	}
 });
 
@@ -86,7 +94,8 @@ class ProfileActions extends React.Component {
 			anchorEl: null,
 			mobileMoreAnchorEl: null,
 			open: false,
-			snackOpen: false
+			snackOpen: false,
+			openProfile: false
 		};
 		this.handleProfileMenuOpen = this.handleProfileMenuOpen.bind(this);
 		this.handleMenuClose = this.handleMenuClose.bind(this);
@@ -97,7 +106,21 @@ class ProfileActions extends React.Component {
 		this.dialogCopy = this.dialogCopy.bind(this);
 		this.snackClose = this.snackClose.bind(this);
 		this.handleSend = this.handleSend.bind(this);
+		this.closeProfile = this.closeProfile.bind(this);
+		this.Transition = this.Transition.bind(this);
 	}
+
+	componentDidMount() {
+		this.props.getUserData(this.props.auth.user.id);
+	}
+
+	Transition(props) {
+		return <Slide direction="up" {...props} />;
+	}
+
+	closeProfile = () => {
+		this.setState({ openProfile: false });
+	};
 
 	handleProfileMenuOpen = event => {
 		this.setState({ anchorEl: event.currentTarget });
@@ -153,7 +176,12 @@ class ProfileActions extends React.Component {
 				transformOrigin={{ vertical: "top", horizontal: "right" }}
 				open={isMenuOpen}
 				onClose={this.handleMenuClose}>
-				<MenuItem onClick={this.handleMenuClose}>My Profile</MenuItem>
+				<MenuItem
+					onClick={() => {
+						this.setState({ openProfile: true });
+					}}>
+					My Profile
+				</MenuItem>
 				{this.props.userRole === "Doctor" ? (
 					<div>
 						<MenuItem onClick={this.dialogOpen}>
@@ -261,6 +289,35 @@ class ProfileActions extends React.Component {
 					</Toolbar>
 				</AppBar>
 				{renderMenu}
+				<Dialog
+					fullScreen
+					open={this.state.openProfile}
+					onClose={this.closeProfile}
+					TransitionComponent={this.Transition}>
+					<AppBar className={classes.appBar}>
+						<Toolbar>
+							<IconButton
+								color="inherit"
+								onClick={this.closeProfile}
+								aria-label="Close">
+								<CloseIcon />
+							</IconButton>
+							<Typography
+								variant="h6"
+								color="inherit"
+								className={classes.flex}>
+								{`${this.props.auth.user.firstName} ${
+									this.props.auth.user.lastName
+								}`}
+							</Typography>
+						</Toolbar>
+					</AppBar>
+					{this.props.userRole === "Patient" ? (
+						<LocalPatientProfile user={this.props.auth.localUser} />
+					) : (
+						<LocalDoctorProfile user={this.props.auth.localUser} />
+					)}
+				</Dialog>
 			</div>
 		);
 	}
@@ -276,5 +333,5 @@ ProfileActions.propTypes = {
 
 export default connect(
 	mapStateToProps,
-	{ logout, setToken }
+	{ logout, setToken, getUserData }
 )(withStyles(styles)(ProfileActions));

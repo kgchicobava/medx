@@ -7,7 +7,8 @@ import {
 	GET_PATIENT_RECORD,
 	GET_PATIENT_RECEPIE,
 	CLEAR_FINDED_DOCTOR,
-	GET_STATS
+	GET_STATS,
+	GET_USER_DATA
 } from "./constants";
 import axios from "axios";
 
@@ -125,6 +126,13 @@ export const getStats = doctorID => dispatch => {
 		.then(res => {
 			dispatch({ type: GET_STATS, data: res.data });
 		})
+		.catch(err => console.log(err));
+};
+
+export const getUserData = id => dispatch => {
+	axios
+		.get(`/api/user/get/:${id}`)
+		.then(res => dispatch({ type: GET_USER_DATA, data: res.data }))
 		.catch(err => console.log(err));
 };
 

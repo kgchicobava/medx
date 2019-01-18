@@ -1,10 +1,16 @@
-import { SET_DOCTOR, SET_PATIENT, LOGOUT } from "../actions/constants";
+import {
+	SET_DOCTOR,
+	SET_PATIENT,
+	LOGOUT,
+	GET_USER_DATA
+} from "../actions/constants";
 import isEmpty from "../helpers/isempty";
 
 const initialState = {
 	isPatientAuthenticated: false,
 	isDoctorAuthenticated: false,
-	user: {}
+	user: {},
+	localUser: {}
 };
 
 export default function(state = initialState, action) {
@@ -28,6 +34,12 @@ export default function(state = initialState, action) {
 				...state,
 				isPatientAuthenticated: false,
 				isDoctorAuthenticated: false
+			};
+
+		case GET_USER_DATA:
+			return {
+				...state,
+				localUser: action.data
 			};
 
 		default:

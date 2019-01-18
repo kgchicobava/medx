@@ -17,6 +17,13 @@
     display: flex;
 }
 
+.localProfileGrid {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-row-gap: 3em;
+    padding: 2em;
+}
+
 .login-container {
     display: flex;
     flex-wrap: wrap;

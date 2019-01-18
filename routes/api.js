@@ -3,6 +3,7 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const keys = require("../config/keys");
+const passport = require("passport");
 
 // Load Patient & Doctor mongoose models
 const Patient = require("../models/PatientModel");
@@ -102,5 +103,33 @@ router.post("/login", (req, res) => {
 		})
 		.catch(err => console.log(err));
 });
+
+// @route 	GET /api/user/get/:id
+// @desc 	get data about user, for their profile
+// @access 	Private
+router.get(
+	"/get/:id",
+	passport.authenticate("jwt", { session: false }),
+	(req, res) => {
+		console.log(req.params);
+		Doctor.findById(req.params.id.substring(1))
+			.then(doc => {
+				if (doc) {
+					console.log("doc " + doc);
+					res.send(doc);
+				} else {
+					Patient.findById(req.params.id.substring(1)).then(
+						patient => {
+							if (patient) {
+								console.log("patient " + patient);
+								res.send(patient);
+							} else res.status(400).send();
+						}
+					);
+				}
+			})
+			.catch(err => console.log(err));
+	}
+);
 
 module.exports = router;
