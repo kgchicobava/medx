@@ -1,14 +1,17 @@
 # MedX
-As i need something in my portfolio (Lol), i decided to make a full-stack app. At first i thought to make this as my diploma project, but then i decided this is not the best idea because it might be more difficult that i wanted to be.
+## Medical info-system, written in MERN stack
+(Yeah, i`m not very powerfull in naming)
 
-**Idea is simple:** info-system, where tou can register/login as patient or doctor. As patient you can plan your visit to doctor, see what recepies he gave you, pay bills, etc. I think ideas will come. As doctor you can manage your patients, see individual their profiles, set threatment, manage your schedule.
+At first i thought to make this as my diploma project, but then i decided this is not the best idea because it might be more difficult that i wanted to be. But eventually, i think it quite good.
 
-Now it is in development. I only made authentication system. But i hope more will coming.
+**Idea is simple:** info-system, where tou can register/login as patient or doctor. As patient you can plan your visit to doctor, see what recepies he gave you, select doctor. As doctor you can manage your patients, see individual their profiles, set threatment, manage your schedule.
+__*(Features are in next sections)*__
+
 
 ## Used technology
-* React - well known frontend library
+* React - well known front-end library
 * Redux - for managing states in react
-* React Router - for route logic in react
+* React Router - for route logic
 * Material UI library - because bootstrap is borring, and i personally like Material Design
 * Express - back-end framework for NodeJS
 * JSONWebToken - for auth purposes
@@ -34,7 +37,7 @@ and you can run back-end and react server
 ```bash
 npm run dev
 ```
-And then open in browser localhost:3000
+And then open in browser **localhost:3000**
 
 ## Features
 ### As **Doctor** you can:
@@ -77,15 +80,15 @@ And then open in browser localhost:3000
 1. See all recepies that was signed to you. No more paper cards needed
 [![image.png](https://i.postimg.cc/hG2cW4gL/image.png)](https://postimg.cc/hJQHVBXv)
 1. Look in calendar view at all your planned visits to all doctors current week
-[![image.png](https://i.postimg.cc/13tZ0hD4/image.png)](https://postimg.cc/9rvSVk8j) 
+[![image.png](https://i.postimg.cc/13tZ0hD4/image.png)](https://postimg.cc/9rvSVk8j)
 1. And of course change settings
 [![image.png](https://i.postimg.cc/Zqvtg87S/image.png)](https://postimg.cc/hJn5QdRy)
 ## Keys
-In config folder you should create keys.js file and include your own keys
+In config folder you should create keys_dev.js file and include your own keys
 ```javascript
 module.exports = {
     mongoURI: "YOUR MONGOURI",
-    secretKey: 'YOUR SECRET KEY'
+    secretKey: "YOUR SECRET KEY"
 }
 ```
 
@@ -96,5 +99,3 @@ module.exports = {
 [![image.png](https://i.postimg.cc/jdNh8ZrT/image.png)](https://postimg.cc/4mftyvd2)
 * Login page
 [![image.png](https://i.postimg.cc/63yrChhD/image.png)](https://postimg.cc/cgGtSw2m)
-
-*I know that in real systems doctors are not register on site, hospitals work with companies, but this is not a commercial product, so i made this simpler*
